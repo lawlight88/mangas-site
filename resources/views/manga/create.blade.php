@@ -3,18 +3,24 @@
 @section('title', 'Manga Upload')
 
 @section('content')
-    <form action="" method="post" enctype="multipart/form-data">
+
+
+    <form action="{{ route('manga.create') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row justify-content-center">
             <div class="col-md-5">
+
+                @include('includes.validation-form')
+
+
                 <label for="name">Name:</label><br>
-                <input class="form-control" type="text" name="name" id="name"><br>
+                <input class="form-control" type="text" name="name" id="name" value="{{ old('name') }}"><br>
                 <label for="desc">Description:</label><br>
-                <input class="form-control" type="text" name="desc" id="desc"><br>
+                <textarea class="form-control" name="desc" id="desc" rows="3">{{ old('desc') }}</textarea><br>
                 <label for="author">Author:</label><br>
-                <input class="form-control" type="text" name="author" id="author"><br>
+                <input class="form-control" type="text" name="author" id="author" value="{{ old('author') }}"><br>
                 <label for="pages">Chapter 1 Pages:</label><br>
-                <input class="form-control" type="file" name="pages" id="pages" multiple><br>
+                <input class="form-control" type="file" name="pages[]" id="pages" value="{{ old('pages') }}" multiple><br>
 
                 Genres:
                 <div class="row">
@@ -24,7 +30,9 @@
                         @endif
 
                             <div class="form-check">
-                                <input type="checkbox" name="genres[]" value="{{ $genre }}" id="{{ $genre }}">
+                                <input type="checkbox" name="genres[{{ $key }}]" value="{{ $key }}" id="{{ $genre }}"
+                                    {{ old("genres.$key") ? 'checked="checked"' : null  }}
+                                >
                                 <label for="{{ $genre }}">{{ Str::ucfirst($genre) }}</label>
                             </div>
 
@@ -36,12 +44,15 @@
                 </div>
 
                 <div class="d-flex justify-content-center my-3">
-
-                    <input class="form-check-input" type="radio" name="ongoing" id="ongoing">
+                    <input class="form-check-input" type="radio" name="ongoing" id="ongoing"
+                        {{ old('ongoing') ? 'checked="checked"' : null }}
+                    >
                     <label for="ongoing">Ongoing</label><br>
                 </div>
 
-
+                <div class="d-flex justify-content-center mb-4">
+                    <button class="btn btn-light" type="submit">Submit</button>
+                </div>
 
             </div>
         </div>

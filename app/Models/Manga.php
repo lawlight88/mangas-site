@@ -9,7 +9,7 @@ class Manga extends Model
 {
     use HasFactory;
 
-    public $genres = [
+    public static $genres = [
         'action',
         'adventure',
         'historical',
@@ -52,6 +52,7 @@ class Manga extends Model
         'genres',
         'id',
         'desc',
+        // 'chapters',
     ];
 
     protected $casts = [

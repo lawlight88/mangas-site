@@ -35,10 +35,9 @@ class AppController extends Controller
 
         $user = null;
 
-        if(Auth::check()) {
+        if(Auth::check())
             $user = Auth::user();
-        }
-
+        
         return view('index', compact('covers_pop', 'user'));
         // return view('index');
     }

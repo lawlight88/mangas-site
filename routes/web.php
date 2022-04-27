@@ -20,8 +20,10 @@ Route::controller(AppController::class)
 Route::controller(MangaController::class)
                 ->as('manga.')
                 ->prefix('manga')
+                ->middleware('auth')
                 ->group(function() {
                     Route::get('/', 'create')->name('create');
+                    Route::post('/', 'store');
 });
 
 Route::get('/dashboard', function () {

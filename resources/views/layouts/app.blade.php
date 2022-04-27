@@ -23,7 +23,7 @@
         <!-- Page Heading -->
         <div class="container">
             <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-                <a href="/" class="d-flex align-items-center col-md-1 mb-2 mb-md-0 text-dark text-decoration-none">
+                <a href="{{ route('app.index') }}" class="d-flex align-items-center col-md-1 mb-2 mb-md-0 text-dark text-decoration-none">
                     <img src="img/favicon.png" alt="logo">
                 </a>
 
@@ -52,13 +52,13 @@
                 </div>
 
                 @auth
-                    <div class="col-md-3 col-md-1 dropdown text-end">
+                    <div class="col-md-3 dropdown text-end">
                         <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             @if (isset($user))
                                 {{ $user->name }}
                             @endif
                         </a>
-                        <ul class="dropdown-menu text-small">
+                        <ul class="dropdown-menu dropdown-menu-end text-small">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
