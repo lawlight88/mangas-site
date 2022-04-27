@@ -28,12 +28,12 @@
                 </a>
 
                 <div class="col-12 col-md-8 mb-2 mb-md-0 row">
-                    <form class="col-10 col-md-4 mb-2 justify-content-center mb-md-0">
+                    <form class="col-10 col-md-5 mb-2 justify-content-center mb-md-0">
                         <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
                     </form>
 
                     <div class="col-2 col-md-1 dropdown text-end">
-                        <a href="#" class="d-block text-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="d-block text-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                           <img src="img/down_arrow.png" alt="mdo" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small">
@@ -43,14 +43,32 @@
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Info</a></li>
                         </ul>
-                </div>
+                    </div>
             
-              </div>
+                </div>
+
+                @auth
+                    <div class="col-md-3 col-md-1 dropdown text-end">
+                        <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            @if (isset($user))
+                                {{ $user->name }}
+                            @endif
+                        </a>
+                        <ul class="dropdown-menu text-small">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
+                        </ul>
+                    </div>
+
+                    @else
+
+                    <div class="col-md-3 text-end">
+                        <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Login</a>
+                        <a href="{{ route('register') }}" class="btn btn-primary">Sign-up</a>
+                    </div>
+                @endauth
         
-              <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2">Login</button>
-                <button type="button" class="btn btn-primary">Sign-up</button>
-              </div>
             </header>
           </div>
 
