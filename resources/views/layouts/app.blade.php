@@ -41,6 +41,10 @@
                             <li><a class="dropdown-item" href="#">Genres</a></li>
                             <li><a class="dropdown-item" href="#">Authors</a></li>
                             <li><hr class="dropdown-divider"></li>
+                            @auth
+                                <li><a class="dropdown-item" href="{{ route('manga.create') }}">Upload</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            @endauth
                             <li><a class="dropdown-item" href="#">Info</a></li>
                         </ul>
                     </div>

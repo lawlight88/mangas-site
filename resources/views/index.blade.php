@@ -7,7 +7,7 @@
         @foreach ($covers_pop as $cover)
             <div class="content-block mb-4">
                 <a href="#">
-                    <img src="data:image/png;base64,{{ $cover }}" alt="">
+                    <img src="data:image/png;base64,{{ $cover }}" width="175" height="200" alt="">
                 </a>
             </div>
         @endforeach

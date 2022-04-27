@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\AppController;
+use App\Http\Controllers\{
+    AppController,
+    MangaController
+};
 use Illuminate\Support\Facades\Route;
 
 
@@ -12,6 +15,13 @@ Route::controller(AppController::class)
                 ->as('app.')
                 ->group(function() {
                     Route::get('/', 'index')->name('index');
+});
+
+Route::controller(MangaController::class)
+                ->as('manga.')
+                ->prefix('manga')
+                ->group(function() {
+                    Route::get('/', 'create')->name('create');
 });
 
 Route::get('/dashboard', function () {
