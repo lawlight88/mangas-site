@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUpdateMangaRequest;
 use App\Models\Manga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MangaController extends Controller
 {
@@ -18,23 +19,26 @@ class MangaController extends Controller
 
     public function store(StoreUpdateMangaRequest $request)
     {
-        $genres = Manga::$genres;
+        $pages = $request->pages; //ch
+        $data = $request->except('_token', 'genres', 'pages');
+        $data['ongoing'] = isset($data['ongoing']);
+        $data['genres'] = Manga::convertGenreKey($request->genres);
+        $data['genres'] = implode('#', $data['genres']);
+        $data['id'] = Manga::genId();
 
-        $data = $request->except('_token', 'genres');
-        $data['genres'] = [];
-        $data_genres = $request->genres;
-
-        foreach($data_genres as $genre_key) {
-            foreach($genres as $key2 => $genre) {
-                if($genre_key == $key2)
-                    $data['genres'][] = $genre;
-            }
+        foreach($pages as $key => $page) {
+            $ext = $page->getClientOriginalExtension();
+            $pages[$key] = $page->storeAs("{$data['id']}/chapter_1", "page_". ($key+1) .".$ext");
         }
+
+        Manga::create($data);
         
-        dd($data);
-
-        // create storage
-
         return redirect()->route('app.index');
+    }
+
+    public function details(int $id)
+    {
+        dd(Manga::genId());
+        dd(Manga::find($id));
     }
 }

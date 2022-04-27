@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Manga;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,12 +15,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mangas', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->string('name');
+            $table->integer('id')->unique();
+            $table->string('name')->unique();
             $table->string('author');
             $table->text('desc');
             $table->boolean('ongoing')->default(true);
             $table->string('genres');
+            $table->timestamps();
         });
     }
 

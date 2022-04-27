@@ -24,6 +24,7 @@ Route::controller(MangaController::class)
                 ->group(function() {
                     Route::get('/', 'create')->name('create');
                     Route::post('/', 'store');
+                    Route::get('/{id}', 'details')->name('details');
 });
 
 Route::get('/dashboard', function () {

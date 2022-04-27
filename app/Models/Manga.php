@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 class Manga extends Model
 {
@@ -50,8 +51,8 @@ class Manga extends Model
         'ongoing',
         'author',
         'genres',
-        'id',
         'desc',
+        'id',
         // 'chapters',
     ];
 
@@ -59,4 +60,34 @@ class Manga extends Model
         'chapters' => 'int',
         'ongoing' => 'boolean',
     ];
+
+    public static function genId()
+    {
+        $id = [
+            'id' => rand(100000, 999999)
+        ];
+
+        $rules = ['id' => 'unique:mangas'];
+
+        $validate = Validator::make($id, $rules);
+
+        return $validate ? $id['id'] : Manga::genId();
+    }
+
+    public static function convertGenreKey(array $data_genres)
+    {
+        $genres = self::$genres;
+        $genres_converted = [];
+
+        foreach($data_genres as $genre_key) {
+            foreach($genres as $key2 => $genre) {
+                if($genre_key == $key2) {
+                    $genres_converted[] = $genre;
+                    break;
+                }
+            }
+        }
+
+        return $genres_converted;
+    }
 }

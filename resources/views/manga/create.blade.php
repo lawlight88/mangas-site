@@ -43,8 +43,8 @@
                     @endforeach
                 </div>
 
-                <div class="d-flex justify-content-center my-3">
-                    <input class="form-check-input" type="radio" name="ongoing" id="ongoing"
+                <div class="d-flex justify-content-center my-3 form-check">
+                    <input class="form-check-input" type="checkbox" name="ongoing" id="ongoing"
                         {{ old('ongoing') ? 'checked="checked"' : null }}
                     >
                     <label for="ongoing">Ongoing</label><br>
