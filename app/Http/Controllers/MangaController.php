@@ -26,9 +26,11 @@ class MangaController extends Controller
         $data['genres'] = implode('#', $data['genres']);
         $data['id'] = Manga::genId();
 
+        dd(gettype($pages[0]));
+
         foreach($pages as $key => $page) {
             $ext = $page->getClientOriginalExtension();
-            $pages[$key] = $page->storeAs("{$data['id']}/chapter_1", "page_". ($key+1) .".$ext");
+            $pages[$key] = $page->storeAs("{$data['id']}/chapter_1", ($key+1).".$ext");
         }
 
         Manga::create($data);
