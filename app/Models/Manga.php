@@ -57,7 +57,7 @@ class Manga extends Model
     ];
 
     protected $casts = [
-        'chapters' => 'int',
+        'chapters' => 'integer',
         'ongoing' => 'boolean',
     ];
 

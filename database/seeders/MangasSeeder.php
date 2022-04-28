@@ -44,25 +44,35 @@ class MangasSeeder extends Seeder
             ]);
 
             $m_title= "example-manga#$id";
-            $m_chapter = 'chapter_1';
 
-            for($c = 1; $c <= random_int(10, 40); $c++) {
-                $m_page = "page_$c";
-                $im = @imagecreate ($width,$height);
+            $number_of_chapters = is_null($one_shot) ? random_int(3, 5) : 1;
 
-                imagecolorallocate ($im, 255, 255, 255); //white background
-                $text_color = imagecolorallocate ($im, 0, 0,0);//black text
+            for($b = 1; $b <= $number_of_chapters; $b++) {
+                $m_chapter = "chapter_$b";
 
-                imagettftext($im, $size, 0, 110, 800, $text_color, $font, $m_title);
-                imagettftext($im, $size, 0, 110, 900, $text_color, $font, $m_chapter);
-                imagettftext($im, $size, 0, 110, 1000, $text_color, $font, $m_page);
 
-                $path = public_path("/storage/$id/chapter_1");
+                $number_of_pages = random_int(10, 40);
 
-                if(!file_exists($path))
-                    mkdir($path, 0777, true);
-                imagepng($im, "$path/$c.png");
-                imagedestroy($im);
+                //create chapter seed
+
+                for($c = 1; $c <= $number_of_pages; $c++) {
+                    $m_page = "page_$c";
+                    $im = @imagecreate ($width,$height);
+
+                    imagecolorallocate ($im, 255, 255, 255); //white background
+                    $text_color = imagecolorallocate ($im, 0, 0,0);//black text
+
+                    imagettftext($im, $size, 0, 110, 800, $text_color, $font, $m_title);
+                    imagettftext($im, $size, 0, 110, 900, $text_color, $font, $m_chapter);
+                    imagettftext($im, $size, 0, 110, 1000, $text_color, $font, $m_page);
+
+                    $path = public_path("/storage/$id/$m_chapter");
+
+                    if(!file_exists($path))
+                        mkdir($path, 0777, true);
+                    imagepng($im, "$path/$c.png");
+                    imagedestroy($im);
+                }
             }
         }
 
