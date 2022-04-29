@@ -50,7 +50,7 @@ class MangasSeeder extends Seeder
 
             for($b = 1; $b <= $number_of_chapters; $b++) {
                 $m_chapter = "chapter_$b";
-                $path = public_path("/storage/$id/$m_chapter");
+                $path = public_path()."/storage/$id/$m_chapter";
 
 
                 $number_of_pages = random_int(10, 40);
@@ -76,7 +76,7 @@ class MangasSeeder extends Seeder
                     'name' => str_replace('_', ' ', $m_chapter),
                     'id' => $b,
                     'id_manga' => $id,
-                    'path' => $path,
+                    'path' => str_replace(public_path().'/', '', $path),
                     'pages' => $number_of_pages,
                 ]);
             }

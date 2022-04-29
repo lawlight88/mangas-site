@@ -22,6 +22,6 @@ class Chapter extends Model
 
     public function manga()
     {
-        return $this->belongsTo(Manga::class);
+        return $this->belongsTo(Manga::class, 'id_manga');
     }
 }
