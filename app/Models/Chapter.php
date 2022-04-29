@@ -20,4 +20,8 @@ class Chapter extends Model
         'pages' => 'integer'
     ];
 
+    public function manga()
+    {
+        return $this->belongsTo(Manga::class);
+    }
 }

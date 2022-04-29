@@ -90,4 +90,9 @@ class Manga extends Model
 
         return $genres_converted;
     }
+
+    public function chapters()
+    {
+        return $this->hasMany(Chapter::class);
+    }
 }

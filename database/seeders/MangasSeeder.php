@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Chapter;
 use App\Models\Manga;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -37,7 +38,7 @@ class MangasSeeder extends Seeder
             Manga::create([
                 'name' => "manga#$i",
                 'id' => $id,
-                'desc' => str_replace('</p>', '', str_replace('<p>', '', (Http::get('loripsum.net/api/1/short')->body()))),
+                'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid censes in Latino fore? Quorum sine causa fieri nihil putandum est. Ille enim occurrentia nescio quae comminiscebatur; Duo Reges: constructio interrete. Ergo illi intellegunt quid Epicurus dicat, ego non intellego? Illa argumenta propria videamus, cur omnia sint paria peccata. Graece donan, Latine voluptatem vocant.',
                 'author' => $faker->name(),
                 'ongoing' => $one_shot ?? rand(0, 1),
                 'genres' => $genres,
@@ -49,11 +50,10 @@ class MangasSeeder extends Seeder
 
             for($b = 1; $b <= $number_of_chapters; $b++) {
                 $m_chapter = "chapter_$b";
+                $path = public_path("/storage/$id/$m_chapter");
 
 
                 $number_of_pages = random_int(10, 40);
-
-                //create chapter seed
 
                 for($c = 1; $c <= $number_of_pages; $c++) {
                     $m_page = "page_$c";
@@ -66,13 +66,19 @@ class MangasSeeder extends Seeder
                     imagettftext($im, $size, 0, 110, 900, $text_color, $font, $m_chapter);
                     imagettftext($im, $size, 0, 110, 1000, $text_color, $font, $m_page);
 
-                    $path = public_path("/storage/$id/$m_chapter");
-
                     if(!file_exists($path))
                         mkdir($path, 0777, true);
                     imagepng($im, "$path/$c.png");
                     imagedestroy($im);
                 }
+
+                Chapter::create([
+                    'name' => str_replace('_', ' ', $m_chapter),
+                    'id' => $b,
+                    'id_manga' => $id,
+                    'path' => $path,
+                    'pages' => $number_of_pages,
+                ]);
             }
         }
 
