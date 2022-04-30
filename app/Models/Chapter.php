@@ -12,16 +12,16 @@ class Chapter extends Model
     protected $fillable = [
         'id_manga',
         'name',
-        'path',
-        'pages'
-    ];
-
-    protected $casts = [
-        'pages' => 'integer'
+        'order',
     ];
 
     public function manga()
     {
         return $this->belongsTo(Manga::class, 'id_manga');
+    }
+
+    public function pages()
+    {
+        return $this->hasMany(Page::class, 'id_chapter');
     }
 }

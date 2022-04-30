@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Chapter;
 use App\Models\Manga;
+use App\Models\Page;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -27,7 +28,7 @@ class MangasSeeder extends Seeder
         $height = 1835;
         $font = public_path('/fonts/ARIAL.TTF');
         
-        for($i = 1; $i <= 5; $i++) {
+        for($i = 1; $i <= 10; $i++) {
             $id = Manga::genId();
 
             $genre_key_array = array_rand(Manga::$genres, random_int(2, 7));
@@ -55,6 +56,12 @@ class MangasSeeder extends Seeder
 
                 $number_of_pages = random_int(10, 40);
 
+                $id_chapter = Chapter::create([
+                    'name' => str_replace('_', ' ', $m_chapter),
+                    'id_manga' => $id,
+                    'order' => $b,
+                ])->id;
+
                 for($c = 1; $c <= $number_of_pages; $c++) {
                     $m_page = "page_$c";
                     $im = @imagecreate ($width,$height);
@@ -68,17 +75,16 @@ class MangasSeeder extends Seeder
 
                     if(!file_exists($path))
                         mkdir($path, 0777, true);
-                    imagepng($im, "$path/$c.png");
+                    $path_page = "$path/$c.png";
+                    imagepng($im, $path_page);
                     imagedestroy($im);
-                }
 
-                Chapter::create([
-                    'name' => str_replace('_', ' ', $m_chapter),
-                    'id' => $b,
-                    'id_manga' => $id,
-                    'path' => str_replace(public_path().'/', '', $path),
-                    'pages' => $number_of_pages,
-                ]);
+                    Page::create([
+                        'order' => $c,
+                        'id_chapter' => $id_chapter,
+                        'path' => str_replace(public_path().'/', '', $path_page),
+                    ]);
+                }
             }
         }
 
