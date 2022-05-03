@@ -118,7 +118,7 @@ class Manga extends Model
     {
         return Manga::withCount(['pages' => function($q) use($chapter_order) {
                 $q->where('chapters.order', $chapter_order);
-            }])->with(['pages' => function($q) use($chapter_order, $page_order) {
+            }, 'chapters'])->with(['pages' => function($q) use($chapter_order, $page_order) {
                 $q->where('chapters.order', $chapter_order)
                     ->where('pages.order', $page_order)
                     ->select('pages.order', 'path');
