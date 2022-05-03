@@ -27,7 +27,7 @@
 
     <div class="bg-dark-1 p-4">
         @foreach ($manga->chapters as $chapter)
-                <a href="" class="d-block bg-light w-100 my-2 p-2 text-dark text-decoration-none">
+                <a href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter->order]) }}" class="d-block bg-light w-100 my-2 p-2 text-dark text-decoration-none">
                     <div class="row">
                         <div class="d-flex col-6 justify-content-start">
                             {{ $chapter->name }}

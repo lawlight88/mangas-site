@@ -16,6 +16,7 @@ Route::controller(AppController::class)
                 ->group(function() {
                     Route::get('/', 'index')->name('index');
                     Route::get('/m/{id}', 'mangaMain')->name('manga.main');
+                    Route::get('/m/{id}/{chapter_order}/{page_order?}', 'mangaView')->name('manga.view');
 });
 
 Route::controller(MangaController::class)

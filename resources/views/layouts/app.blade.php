@@ -23,9 +23,11 @@
         <!-- Page Heading -->
         <div class="container">
             <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-                <a href="{{ route('app.index') }}" class="d-flex align-items-center col-md-1 mb-2 mb-md-0 text-dark text-decoration-none">
-                    <img src="{{ asset('img/favicon.png') }}" alt="logo">
-                </a>
+                <span class="d-flex align-items-center col-md-1 mb-2 mb-md-0">
+                    <a href="{{ route('app.index') }}">
+                        <img src="{{ asset('img/favicon.png') }}" alt="logo">
+                    </a>
+                </span>
 
                 <div class="col-12 col-md-8 mb-2 mb-md-0 row">
                     <form class="col-10 col-md-5 mb-2 justify-content-center mb-md-0">

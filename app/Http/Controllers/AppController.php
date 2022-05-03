@@ -39,4 +39,15 @@ class AppController extends Controller
 
         return view('manga.main', compact('manga', 'cover'));
     }
+
+    public function mangaView(int $id, int $chapter_order, int $page_order = 1)
+    {
+        if(!$manga = Manga::withPages($chapter_order, $page_order)->find($id))
+            return back();
+
+        if(!$page = $manga->pages->first())
+            return back();
+
+        return view('manga.chapter', compact('manga', 'page', 'chapter_order'));
+    }
 }
