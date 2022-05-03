@@ -1,11 +1,17 @@
-.content-block {
+.manga-block {
     padding: 7px;
     width: 250px;
     height: 400px;
+}
+
+.bg-dark-1 {
     background-color: #36454F;
 }
 
-.idx-img {
-    width: 500px;
-    max-height: 735px;
+.text-decoration-none {
+    text-decoration: none;
+}
+
+.main-cover {
+    max-height: 500px;
 }

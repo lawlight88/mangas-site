@@ -36,9 +36,4 @@ class MangaController extends Controller
         return redirect()->route('app.index');
     }
 
-    public function details(int $id)
-    {
-        dd(Manga::genId());
-        dd(Manga::find($id));
-    }
 }

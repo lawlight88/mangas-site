@@ -54,7 +54,7 @@ class MangasSeeder extends Seeder
                 $path = public_path()."/storage/$id/$m_chapter";
 
 
-                $number_of_pages = random_int(10, 40);
+                $number_of_pages = random_int(5, 10);
 
                 $id_chapter = Chapter::create([
                     'name' => str_replace('_', ' ', $m_chapter),

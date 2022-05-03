@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
 
 class Manga extends Model
@@ -59,7 +59,6 @@ class Manga extends Model
     ];
 
     protected $casts = [
-        'chapters' => 'integer',
         'ongoing' => 'boolean',
     ];
 
@@ -93,25 +92,26 @@ class Manga extends Model
         return $genres_converted;
     }
 
-    public static function getCoversPath(Collection $mangas)
+    public static function getCoverPathAndId(Collection|LengthAwarePaginator $mangas)
     {
         foreach($mangas as $manga) {
-            $paths[] = $manga->chapters()
-                            ->where('chapters.order', 1)
-                            ->first()
-                                ->pages()
-                                ->where('pages.order', 1)
-                                ->first()->path;
+            $paths[$manga->id] = Manga::getCoverPath($manga);
         }
         return $paths;
     }
 
     public static function getIndexMangas(int $limit = 25, int $skip = 0) {
-        return Manga::with(['chapters' => function($q) {
-            $q->where('order', 1);
-        }, 'chapters.pages' => function($q) {
-            $q->where('order', 1);
-        }])->limit($limit)->skip($skip)->get();
+        return Manga::with(['pages' => function($q) {
+            $q->where('pages.order', 1);
+        }])->skip($skip)->limit($limit)->get();
+    }
+
+    public static function getCoverPath(Manga $manga)
+    {
+        return $manga->pages()
+                ->where('pages.order', 1)
+                ->first()
+                ->path;
     }
 
     public function chapters()

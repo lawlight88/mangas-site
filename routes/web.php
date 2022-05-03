@@ -15,6 +15,7 @@ Route::controller(AppController::class)
                 ->as('app.')
                 ->group(function() {
                     Route::get('/', 'index')->name('index');
+                    Route::get('/m/{id}', 'mangaMain')->name('manga.main');
 });
 
 Route::controller(MangaController::class)
@@ -24,7 +25,6 @@ Route::controller(MangaController::class)
                 ->group(function() {
                     Route::get('/', 'create')->name('create');
                     Route::post('/', 'store');
-                    Route::get('/{id}', 'details')->name('details');
 });
 
 Route::get('/dashboard', function () {
