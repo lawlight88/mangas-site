@@ -20,4 +20,49 @@
         @endif
     </div>
 
+    <div class="bg-dark-1 p-4 mb-4">
+        @auth
+            @include('manga._partials.comment_form')
+        @else
+            <textarea class="form-control" name="body" placeholder="Log in to comment..." rows="3" disabled></textarea>
+        @endauth
+
+        @if (empty($comments->first()))
+            <hr>
+            <div class="text-center h4 mt-4">
+                There are not any comments
+            </div>
+        @else
+            @foreach ($comments as $comment)
+                <hr>
+                <div class="p-2">
+                    <div class="d-flex justify-content-between">
+                        <a class="text-decoration-none text-light" href="#">{{$comment->user->name}}</a>
+                        <span>
+                            @if ($comment->updated_at > $comment->created_at)
+                                <small>(edited)</small>
+                            @endif
+                            {{$comment->created_at->format('Y-m-d H:i')}}
+                        </span>
+                    </div>
+                    <div class="p-2" id="{{ $comment->id }}">
+                        {{$comment->body}}
+                    </div>
+                    
+                    @if (Auth::id() == $comment->id_user)
+                        @if ($id_comment_edit == $comment->id)
+                            @include('manga._partials.comment_form')                               
+                        @endif
+                        @if (is_null($id_comment_edit))
+                            <div class="d-flex justify-content-end">
+                                <a href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter_order, 'page_order' => $page->order, 'id_comment_edit' => $comment->id]) . "#$comment->id" }}" class="text-light"><i class="fas fa-edit"></i></a>
+                            </div>
+                        @endif
+                    @endif
+                </div>
+            @endforeach
+        @endif
+
+    </div>
+
 @endsection

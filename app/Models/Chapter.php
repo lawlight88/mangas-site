@@ -24,4 +24,9 @@ class Chapter extends Model
     {
         return $this->hasMany(Page::class, 'id_chapter');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'id_chapter');
+    }
 }

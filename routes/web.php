@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\{
     AppController,
-    MangaController
+    MangaController,
+    CommentController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,7 @@ Route::controller(AppController::class)
                 ->group(function() {
                     Route::get('/', 'index')->name('index');
                     Route::get('/m/{id}', 'mangaMain')->name('manga.main');
-                    Route::get('/m/{id}/{chapter_order}/{page_order?}', 'mangaView')->name('manga.view');
+                    Route::get('/m/{id}/{chapter_order}/{page_order?}/{id_comment_edit?}', 'mangaView')->name('manga.view');
 });
 
 Route::controller(MangaController::class)
@@ -26,6 +27,15 @@ Route::controller(MangaController::class)
                 ->group(function() {
                     Route::get('/', 'create')->name('create');
                     Route::post('/', 'store');
+});
+
+Route::controller(CommentController::class)
+                ->as('comment.')
+                ->prefix('comment')
+                ->middleware('auth')
+                ->group(function() {
+                    Route::post('/{id_user}/{id_chapter}', 'store')->name('store');
+                    Route::put('/{id_comment}', 'update')->name('update');
 });
 
 Route::get('/dashboard', function () {

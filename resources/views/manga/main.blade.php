@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="bg-dark-1 p-4">
+    <div class="bg-dark-1 p-4 mb-4">
         @foreach ($manga->chapters as $chapter)
                 <a href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter->order]) }}" class="d-block bg-light w-100 my-2 p-2 text-dark text-decoration-none">
                     <div class="row">

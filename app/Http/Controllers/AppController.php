@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Manga;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class AppController extends Controller
 {
@@ -40,14 +37,16 @@ class AppController extends Controller
         return view('manga.main', compact('manga', 'cover'));
     }
 
-    public function mangaView(int $id, int $chapter_order, int $page_order = 1)
+    public function mangaView(int $id, int $chapter_order, int $page_order = 1, int $id_comment_edit = null)
     {
-        if(!$manga = Manga::withPages($chapter_order, $page_order)->find($id))
+        if(!$manga = Manga::mangaViewQuery($chapter_order, $page_order)->find($id))
             return back();
 
         if(!$page = $manga->pages->first())
             return back();
+        
+        $comments = $manga->chapters->first()->comments;
 
-        return view('manga.chapter', compact('manga', 'page', 'chapter_order'));
+        return view('manga.chapter', compact('manga', 'page', 'chapter_order', 'comments', 'id_comment_edit'));
     }
 }

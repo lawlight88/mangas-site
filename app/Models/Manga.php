@@ -114,14 +114,21 @@ class Manga extends Model
                 ->path;
     }
 
-    public static function withPages(int $chapter_order, int $page_order)
+    public static function mangaViewQuery(int $chapter_order, int $page_order)
     {
-        return Manga::withCount(['pages' => function($q) use($chapter_order) {
+        return Manga::query()->select('id', 'name')->withCount(['pages' => function($q) use($chapter_order) {
                 $q->where('chapters.order', $chapter_order);
-            }, 'chapters'])->with(['pages' => function($q) use($chapter_order, $page_order) {
-                $q->where('chapters.order', $chapter_order)
-                    ->where('pages.order', $page_order)
-                    ->select('pages.order', 'path');
+            }, 'chapters'])->with(['chapters' => function($q) use($chapter_order) {
+                $q->select('id', 'id_manga')
+                    ->where('chapters.order', $chapter_order);
+            }, 'pages' => function($q) use($chapter_order, $page_order) {
+                $q->select('pages.order', 'path')
+                    ->where('chapters.order', $chapter_order)
+                    ->where('pages.order', $page_order);
+            }, 'chapters.comments' => function($q) {
+                $q->orderBy('comments.created_at', 'desc');
+            }, 'chapters.comments.user' => function($q) {
+                $q->select('users.id', 'users.name');
         }]);
     }
 

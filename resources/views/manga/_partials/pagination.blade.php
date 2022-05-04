@@ -1,3 +1,8 @@
+<span class="float-start mt-1">
+    <a href="{{ route('app.manga.main', $manga->id) }}" class="text-light">
+        <i class="fa-solid fa-arrow-left fa-2x"></i>
+    </a>
+</span>
 <nav aria-label="page navigation">
     <ul class="pagination justify-content-center">
         <li class="page-item {{ $page->order == 1 ? 'disabled' : '' }}">
