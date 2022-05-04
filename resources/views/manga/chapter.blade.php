@@ -37,7 +37,13 @@
                 <hr>
                 <div class="p-2">
                     <div class="d-flex justify-content-between">
-                        <a class="text-decoration-none text-light" href="#">{{$comment->user->name}}</a>
+                        <a class="text-decoration-none text-light" href="{{ route('user.profile', $comment->user->id) }}">
+                            @if ($comment->user->id == Auth::id())
+                                Me
+                            @else
+                                {{$comment->user->name}}
+                            @endif
+                        </a>
                         <span>
                             @if ($comment->updated_at > $comment->created_at)
                                 <small>(edited)</small>

@@ -51,7 +51,7 @@ class MangasSeeder extends Seeder
 
             for($b = 1; $b <= $number_of_chapters; $b++) {
                 $m_chapter = "chapter_$b";
-                $path = public_path()."/storage/$id/$m_chapter";
+                $path = public_path()."/storage/mangas/$id/$m_chapter";
 
 
                 $number_of_pages = random_int(5, 10);

@@ -3,7 +3,8 @@
 use App\Http\Controllers\{
     AppController,
     MangaController,
-    CommentController
+    CommentController,
+    UserController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,14 @@ Route::controller(CommentController::class)
                 ->group(function() {
                     Route::post('/{id_user}/{id_chapter}', 'store')->name('store');
                     Route::put('/{id_comment}', 'update')->name('update');
+});
+
+Route::controller(UserController::class)
+                ->as('user.')
+                ->prefix('user')
+                ->group(function() {
+                    Route::get('/{id}', 'profile')->name('profile');
+                    Route::middleware('auth')->get('/{id}/edit', 'edit')->name('edit');
 });
 
 Route::get('/dashboard', function () {
