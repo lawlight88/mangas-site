@@ -45,6 +45,7 @@ Route::controller(UserController::class)
                 ->group(function() {
                     Route::get('/{id}', 'profile')->name('profile');
                     Route::middleware('auth')->get('/{id}/edit', 'edit')->name('edit');
+                    Route::middleware('auth')->put('/{id}/edit', 'update');
 });
 
 Route::get('/dashboard', function () {

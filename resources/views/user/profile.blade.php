@@ -5,7 +5,7 @@
 @section('content')
     <div class="row bg-dark-1 p-4 mb-4">
         <div class="col-md-4">
-            <img src="#" alt="profile image" class="img-fluid">
+            <img src="{{ asset($user->profile_image) }}" alt="profile image" class="img-fluid">
         </div>
         <div class="col-md-8">
             <div>Name: {{ $user->name }}</div>

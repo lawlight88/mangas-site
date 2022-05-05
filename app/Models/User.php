@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_image',
+        'show_favorites',
+        'show_comments',
     ];
 
     /**
@@ -41,6 +43,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'show_favorites' => 'boolean',
+        'show_comments' => 'boolean',
     ];
 
     public static function withRecentComments()
