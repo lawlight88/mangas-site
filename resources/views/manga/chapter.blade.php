@@ -20,7 +20,7 @@
         @endif
     </div>
 
-    <div class="bg-dark-1 p-4 mb-4">
+    <div class="bg-dark-1 p-4 mb-5">
         @auth
             @include('manga._partials.comment_form')
         @else
@@ -35,37 +35,7 @@
         @else
             @foreach ($comments as $comment)
                 <hr>
-                <div class="p-2">
-                    <div class="d-flex justify-content-between">
-                        <a class="text-decoration-none text-light" href="{{ route('user.profile', $comment->user->id) }}">
-                            @if ($comment->user->id == Auth::id())
-                                Me
-                            @else
-                                {{$comment->user->name}}
-                            @endif
-                        </a>
-                        <span>
-                            @if ($comment->updated_at > $comment->created_at)
-                                <small>(edited)</small>
-                            @endif
-                            {{$comment->created_at->format('Y-m-d H:i')}}
-                        </span>
-                    </div>
-                    <div class="p-2" id="{{ $comment->id }}">
-                        {{$comment->body}}
-                    </div>
-                    
-                    @if (Auth::id() == $comment->id_user)
-                        @if ($id_comment_edit == $comment->id)
-                            @include('manga._partials.comment_form')                               
-                        @endif
-                        @if (is_null($id_comment_edit))
-                            <div class="d-flex justify-content-end">
-                                <a href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter_order, 'page_order' => $page->order, 'id_comment_edit' => $comment->id]) . "#$comment->id" }}" class="text-light"><i class="fas fa-edit"></i></a>
-                            </div>
-                        @endif
-                    @endif
-                </div>
+                @include('_partials.comment')
             @endforeach
         @endif
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -25,9 +26,8 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|min:3',
+            'password' => ['nullable', Password::defaults()],
             'profile_image' => 'nullable|image|max:2048',
-            'favorites' => 'nullable',      
-            'comments' => 'nullable',      
         ];
     }
 }

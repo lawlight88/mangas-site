@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -13,7 +12,7 @@ class UserController extends Controller
     {
         if(!$user = User::withRecentComments()->find($id))
             return back();
-
+                
         return view('user.profile', compact('user'));
     }
 
@@ -30,6 +29,11 @@ class UserController extends Controller
         if(!$user = User::find($id))
             return back();
 
+        $data = $req->only('name');
+
+        if($req->password)
+            $data['password'] = bcrypt($req->password);
+
         $storage_dir = "users/$id";
         $dir_local = public_path("storage/$storage_dir");
         if(isset($req->profile_image)) {
@@ -39,14 +43,11 @@ class UserController extends Controller
             File::cleanDirectory($dir_local);
             $path = $req->profile_image->store($storage_dir);
             $path = "storage/$path";
+
+            $data['profile_image'] = $path;
         }
 
-        $user->update([
-            'name' => $req->name,
-            // 'show_favorites' => isset($req->favorites) ? false : true,
-            // 'show_comments' => isset($req->comments) ? false : true,
-            'profile_image' => $path ?? $user->profile_image,
-        ]);
+        $user->update($data);
 
         return redirect()->route('user.profile', $id);
     }

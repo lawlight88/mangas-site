@@ -57,8 +57,8 @@
                 @auth
                     <div class="col-md-3 dropdown text-end">
                         <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            @if (isset($user))
-                                {{ $user->name }}
+                            @if (Auth::check())
+                                {{ Auth::user()->name }}
                             @endif
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end text-small">

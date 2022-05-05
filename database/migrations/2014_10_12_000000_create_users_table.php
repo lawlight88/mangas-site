@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('profile_image')->default('img/favicon.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('show_favorites')->default(true);
-            $table->boolean('show_comments')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

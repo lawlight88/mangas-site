@@ -35,4 +35,14 @@ class CommentController extends Controller
         
         return redirect(route('app.manga.view', ['id' => $comment->chapter->id_manga, 'chapter_order' => $comment->chapter->order]) . "#$comment->id");
     }
+
+    public function delete(int $id)
+    {
+        if(!$comment = Comment::find($id))
+            return back();
+
+        $comment->delete();
+
+        return back();
+    }
 }

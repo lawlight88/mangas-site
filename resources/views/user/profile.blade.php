@@ -31,6 +31,17 @@
             Recent Comments
             <hr>
         </div>
-        <div>test</div>
+        @if (empty($user->comments->first()))
+            <div class="text-center h5 mt-3">
+                This user does not have any comment.
+            </div>
+        @else
+            @foreach ($user->comments as $key => $comment)
+                @if ($key != 0)
+                    <hr>
+                @endif
+                @include('_partials.comment')
+            @endforeach
+        @endif
     </div>
 @endsection

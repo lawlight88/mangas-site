@@ -128,7 +128,7 @@ class Manga extends Model
             }, 'chapters.comments' => function($q) {
                 $q->orderBy('comments.created_at', 'desc');
             }, 'chapters.comments.user' => function($q) {
-                $q->select('users.id', 'users.name');
+                $q->select('users.id', 'users.name', 'users.profile_image');
         }]);
     }
 
