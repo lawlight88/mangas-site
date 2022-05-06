@@ -1,5 +1,5 @@
 @include('includes.validation-form')
-<form action="{{ isset($comment->id) ? route('comment.update', $comment->id) : route('comment.store', ['id_user' => Auth::id(), 'id_chapter' => $manga->chapters->first()->id ]) }}" method="post">
+<form action="{{ isset($comment->id) ? route('comment.update', $comment->id) : route('comment.store', $manga->chapters->first()->id) }}" method="post">
     @csrf
     @if (isset($comment->id))
         @method('put')

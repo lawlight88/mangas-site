@@ -6,19 +6,21 @@ use App\Http\Requests\StoreUpdateCommentRequest;
 use App\Models\Chapter;
 use App\Models\Comment;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(int $id_user, int $id_chapter, StoreUpdateCommentRequest $req)
+    public function store(int $id_chapter, StoreUpdateCommentRequest $req)
     {
-        if(!$user = User::find($id_user))
+        $id = Auth::id();
+        if(!$user = User::find($id))
             return back();
 
         if(!Chapter::find($id_chapter))
             return back();
         
         $user->comments()->create([
-            'id_user' => $id_user,
+            'id_user' => $id,
             'id_chapter' => $id_chapter,
             'body' => $req->body,
         ]);

@@ -35,7 +35,7 @@ Route::controller(CommentController::class)
                 ->prefix('comment')
                 ->middleware('auth')
                 ->group(function() {
-                    Route::post('/{id_user}/{id_chapter}', 'store')->name('store');
+                    Route::post('/{id_chapter}', 'store')->name('store');
                     Route::put('/{id_comment}', 'update')->name('update');
                     Route::delete('/{id_comment}', 'delete')->name('delete');
 });

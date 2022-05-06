@@ -13,7 +13,7 @@ class UserController extends Controller
     {
         if(!$user = User::withRecentComments()->find($id))
             return back();
-                
+        
         return view('user.profile', compact('user'));
     }
 
