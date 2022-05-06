@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
@@ -16,18 +17,17 @@ class UserController extends Controller
         return view('user.profile', compact('user'));
     }
 
-    public function edit(int $id)
+    public function edit()
     {
-        if(!$user = User::find($id))
-            return back();
+        $user = Auth::user();
 
         return view('user.edit', compact('user'));
     }
 
-    public function update(int $id, UpdateUserRequest $req)
+    public function update(UpdateUserRequest $req)
     {
-        if(!$user = User::find($id))
-            return back();
+        $id = Auth::id();
+        $user = User::find($id);
 
         $data = $req->only('name');
 

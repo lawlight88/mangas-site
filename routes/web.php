@@ -44,9 +44,9 @@ Route::controller(UserController::class)
                 ->as('user.')
                 ->prefix('user')
                 ->group(function() {
+                    Route::middleware('auth')->get('/edit', 'edit')->name('edit');
+                    Route::middleware('auth')->put('/edit', 'update');
                     Route::get('/{id}', 'profile')->name('profile');
-                    Route::middleware('auth')->get('/{id}/edit', 'edit')->name('edit');
-                    Route::middleware('auth')->put('/{id}/edit', 'update');
 });
 
 Route::get('/dashboard', function () {

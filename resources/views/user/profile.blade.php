@@ -11,7 +11,7 @@
             <div>Name: {{ $user->name }}</div>
             <div>Joined: {{ $user->created_at->format('Y-m-d H:i') }}</div>
             @if (Auth::id() == $user->id)
-                <a href="{{ route('user.edit', $user->id) }}" class="text-light">Edit Profile</a>
+                <a href="{{ route('user.edit') }}" class="text-light">Edit Profile</a>
             @endif
         </div>
     </div>

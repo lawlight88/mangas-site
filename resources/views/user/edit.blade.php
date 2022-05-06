@@ -8,7 +8,7 @@
             <img src="{{ asset($user->profile_image) }}" alt="profile image" class="img-fluid">
         </div>
         <div class="col-md-8">
-            <form action="{{ route('user.edit', $user->id) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('user.edit') }}" method="post" enctype="multipart/form-data">
                 @method('put')
                 @csrf
                 <div class="row mb-3">
