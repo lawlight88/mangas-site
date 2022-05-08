@@ -55,7 +55,7 @@ class Manga extends Model
         'genres',
         'desc',
         'id',
-        // 'chapters',
+        'cover',
     ];
 
     protected $casts = [
@@ -92,26 +92,17 @@ class Manga extends Model
         return $genres_converted;
     }
 
-    public static function getCoverPathAndId(Collection|LengthAwarePaginator $mangas)
-    {
-        foreach($mangas as $manga) {
-            $paths[$manga->id] = Manga::getCoverPath($manga);
-        }
-        return $paths;
-    }
-
     public static function getIndexMangas(int $limit = 25, int $skip = 0) {
-        return Manga::with(['pages' => function($q) {
-            $q->where('pages.order', 1);
-        }])->skip($skip)->limit($limit)->get();
+        return Manga::skip($skip)
+                    ->limit($limit)
+                    ->get();
     }
 
-    public static function getCoverPath(Manga $manga)
+    public static function withChapters()
     {
-        return $manga->pages()
-                ->where('pages.order', 1)
-                ->first()
-                ->path;
+        return Manga::with(['chapters' => function($q) {
+            $q->orderBy('order', 'asc');
+        }]);
     }
 
     public static function mangaViewQuery(int $chapter_order, int $page_order)

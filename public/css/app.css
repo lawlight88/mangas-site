@@ -8,6 +8,11 @@
     background-color: #36454F;
 }
 
+.list-group-item-dark-1 {
+    background-color: #37373800 !important;
+    /* background-color: #212529 !important; */
+}
+
 .text-decoration-none {
     text-decoration: none;
 }

@@ -13,9 +13,6 @@ class AppController extends Controller
         $mangas_new = Manga::getIndexMangas(limit:5, skip:5); //
         // orderBy('updated_at', 'desc')... when store //
 
-        $mangas_pop = Manga::getCoverPathAndId($mangas_pop);
-        $mangas_new = Manga::getCoverPathAndId($mangas_new);
-
         $user = null;
         if(Auth::check())
             $user = Auth::user();
@@ -25,16 +22,12 @@ class AppController extends Controller
 
     public function mangaMain(int $id)
     {
-        if(!$manga = Manga::with('chapters.pages')->find($id)) //
+        if(!$manga = Manga::withChapters()->find($id))
             return back();
 
-        $cover = Manga::getCoverPath($manga);
-        
         $manga->genres = explode('#', $manga->genres);
 
-        $manga->chapters = $manga->chapters()->orderBy('order', 'asc')->get();
-
-        return view('manga.main', compact('manga', 'cover'));
+        return view('manga.main', compact('manga'));
     }
 
     public function mangaView(int $id, int $chapter_order, int $page_order = 1, int $id_comment_edit = null)

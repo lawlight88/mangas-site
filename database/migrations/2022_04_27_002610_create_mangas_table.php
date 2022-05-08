@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('desc');
             $table->boolean('ongoing')->default(true);
             $table->string('genres');
+            $table->string('cover')->unique();
             $table->timestamps();
         });
     }

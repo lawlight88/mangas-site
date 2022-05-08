@@ -19,8 +19,8 @@
                 <textarea class="form-control" name="desc" id="desc" rows="3">{{ old('desc') }}</textarea><br>
                 <label for="author">Author:</label><br>
                 <input class="form-control" type="text" name="author" id="author" value="{{ old('author') }}"><br>
-                <label for="pages">Chapter 1 Pages:</label><br>
-                <input class="form-control" type="file" name="pages[]" id="pages" value="{{ old('pages') }}" multiple><br>
+                <label for="pages">Cover:</label><br>
+                <input class="form-control" type="file" name="cover" id="cover"><br>
 
                 Genres:
                 <div class="row">

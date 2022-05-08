@@ -26,10 +26,25 @@
             @include('layouts._partials.heading')
         </div>
 
-        <!-- Page Content -->
-        <main class="container text-white">
-            @yield('content')
-        </main>
+        <div class="container">
+			<div class="row">
+				<aside class="col-md-2">
+					<ul class="list-group">
+						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scans</a></li>
+						{{-- <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scan</a></li> --}}
+						{{-- <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Create Scan</a></li> --}}
+						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('manga.create') }}">Create Manga</a></li>
+						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requesting</a></li>
+					</ul>
+				</aside>
+                <!-- Page Content -->
+                <main class="col-md-10 text-white">
+                    @yield('content')
+                </main>
+            </div>
+        </div>
+
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>

@@ -36,6 +36,28 @@ class MangasSeeder extends Seeder
             $one_shot = in_array('one shot', $genres) ? false : null;
             $genres = implode('#', $genres);
 
+            $m_title= "example-manga#$id";
+
+            $number_of_chapters = is_null($one_shot) ? random_int(3, 5) : 1;
+
+            //cover
+            $m_path = public_path() . "/storage/mangas/$id";
+            $m_name = "manga#$i";
+            $cover_text = "cover";
+            $im = @imagecreate ($width,$height);
+
+            imagecolorallocate ($im, 255, 255, 255); //white background
+            $text_color = imagecolorallocate ($im, 0, 0,0);//black text
+
+            imagettftext($im, $size, 0, 110, 800, $text_color, $font, $m_name);
+            imagettftext($im, $size, 0, 110, 900, $text_color, $font, $cover_text);
+
+            mkdir($m_path, 0777, true);
+            $cover_path = "$m_path/cover.png";
+            imagepng($im, $cover_path);
+            imagedestroy($im);
+            //end cover
+
             Manga::create([
                 'name' => "manga#$i",
                 'id' => $id,
@@ -43,11 +65,8 @@ class MangasSeeder extends Seeder
                 'author' => $faker->name(),
                 'ongoing' => $one_shot ?? rand(0, 1),
                 'genres' => $genres,
+                'cover' => str_replace(public_path().'/', '', $cover_path),
             ]);
-
-            $m_title= "example-manga#$id";
-
-            $number_of_chapters = is_null($one_shot) ? random_int(3, 5) : 1;
 
             for($b = 1; $b <= $number_of_chapters; $b++) {
                 $m_chapter = "chapter_$b";
@@ -86,7 +105,7 @@ class MangasSeeder extends Seeder
                     ]);
                 }
             }
-        }
 
+        }
     }
 }

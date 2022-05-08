@@ -23,7 +23,7 @@ class StoreUpdateMangaRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => [
                 'required',
                 'unique:mangas,name',
@@ -38,18 +38,15 @@ class StoreUpdateMangaRequest extends FormRequest
                 'min:3',
                 'max:255',
             ],
-            'pages' => [
-                'required',
-                'array',
-                'min:2',
-            ],
-            'ongoing' => [
-                'nullable',
-            ],
-            'genres' => [
-                'required',
-                'array',
-            ],
+            'ongoing' => 'nullable',
+            'genres' => 'required|array',
+            'cover' => 'nullable|image|max:2048',
         ];
+
+        if(url()->previous() == route('manga.create')) {
+            $rules['cover'] = 'required|image|max:2048';
+        }
+
+        return $rules; 
     }
 }
