@@ -15,13 +15,6 @@ class Comment extends Model
         'id_chapter',
     ];
 
-    public static function withRedirectParams()
-    {
-        return Comment::with(['chapter' => function($q) {
-            $q->select('id', 'id_manga', 'order');
-        }]);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');

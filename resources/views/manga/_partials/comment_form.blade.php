@@ -1,7 +1,7 @@
 @include('includes.validation-form')
-<form action="{{ isset($comment->id) ? route('comment.update', $comment->id) : route('comment.store', $manga->chapters->first()->id) }}" method="post">
+<form action="{{ isset($comment) ? route('comment.update', $comment) : route('comment.store', $manga->chapters->first()->id) }}" method="post">
     @csrf
-    @if (isset($comment->id))
+    @if (isset($comment))
         @method('put')
     @endif
     <textarea class="form-control" name="body" placeholder="Comment..." rows="3">{{ $comment->body ?? old('body') }}</textarea>

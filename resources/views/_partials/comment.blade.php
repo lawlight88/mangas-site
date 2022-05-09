@@ -23,7 +23,7 @@
                 {{$comment->body}}
             </div>
             
-            @if (Request::is('m/*') && Auth::id() == $comment->id_user)
+            @if (Request::is('m/*') && Auth::user()->can(['update', 'delete'], $comment))
                 @if ($id_comment_edit == $comment->id)
                     @include('manga._partials.comment_form')
                 @endif

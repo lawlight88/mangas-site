@@ -12,9 +12,12 @@ class CommentController extends Controller
 {
     public function store(int $id_chapter, StoreUpdateCommentRequest $req)
     {
+        $this->authorize('create', Comment::class);
+        
         $id = Auth::id();
-        if(!$user = User::find($id))
-            return back();
+        $user = User::find($id);
+        //need to use User::find() instead of Auth::user()
+        //in order to create the comment
 
         if(!Chapter::find($id_chapter))
             return back();
@@ -28,20 +31,19 @@ class CommentController extends Controller
         return back();
     }
 
-    public function update(int $id_comment, StoreUpdateCommentRequest $req)
+    public function update(Comment $comment, StoreUpdateCommentRequest $req)
     {
-        if(!$comment = Comment::withRedirectParams()->find($id_comment))
-            return back();
+        $this->authorize('update', $comment);
 
         $comment->update($req->only('body'));
+        $comment->chapter;
         
         return redirect(route('app.manga.view', ['id' => $comment->chapter->id_manga, 'chapter_order' => $comment->chapter->order]) . "#$comment->id");
     }
 
-    public function delete(int $id)
+    public function delete(Comment $comment)
     {
-        if(!$comment = Comment::find($id))
-            return back();
+        $this->authorize('delete', $comment);
 
         $comment->delete();
 

@@ -43,8 +43,8 @@ Route::group(['middleware' => 'auth'], function() {
         'controller' => CommentController::class,
     ], function() {
         Route::post('/{id_chapter}', 'store')->name('store');
-        Route::put('/{id_comment}', 'update')->name('update');
-        Route::delete('/{id_comment}', 'delete')->name('delete');
+        Route::put('/{comment}', 'update')->name('update');
+        Route::delete('/{comment}', 'delete')->name('delete');
     });
     
     //management
