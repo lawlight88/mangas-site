@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,20 +16,27 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Factory::create();
+
         User::create([
             'name' => 'micael',
             'email' => 'micael@teste.com',
-            'password' => bcrypt('12341234')
+            'password' => bcrypt('12341234'),
+            // 'role' => Role::IS_ADMIN
         ]);
-        User::create([
-            'name' => 'maria',
-            'email' => 'maria@teste.com',
-            'password' => bcrypt('12341234')
-        ]);
+
         User::create([
             'name' => 'jose',
             'email' => 'jose@teste.com',
             'password' => bcrypt('12341234')
         ]);
+
+        for($i = 0; $i < 100; $i++) {
+            User::create([
+                'name' => $faker->name(),
+                'email' => $faker->email(),
+                'password' => bcrypt('12341234')
+            ]);
+        }
     }
 }

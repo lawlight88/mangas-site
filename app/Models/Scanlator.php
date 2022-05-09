@@ -18,8 +18,8 @@ class Scanlator extends Model
 
     public static function getIndexScans()
     {
-        return Scanlator::limit(20)
-                            ->paginate();
+        return Scanlator::select('id', 'name', 'image', 'created_at')
+                        ->paginate(20);
     }
 
     public function mangas()

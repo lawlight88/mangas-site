@@ -24,14 +24,16 @@ class StoreUpdateScanlatorRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|unique:scanlators,name|min:3|max:255',
+            'name' => 'required|min:3|max:255',
             'desc' => 'nullable|max:255',
             'image' => 'nullable|image|max:2048',
             'leader' => 'prohibited', //change
         ];
 
-        if(url()->previous() == route('scan.create'))
+        if(url()->previous() == route('scan.create')) {
             $rules['image'] = 'required|image|max:2048';
+            $rules['name'] = 'required|unique:scanlators,name|min:3|max:255';
+        }
 
         return $rules;
     }

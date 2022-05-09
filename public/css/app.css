@@ -4,6 +4,13 @@
     height: 400px;
 }
 
+.scan-block {
+    padding: 20px;
+    min-width: 200px;
+    max-width: 300px;
+    max-height: 250px;
+}
+
 .bg-dark-1 {
     background-color: #36454F;
 }
