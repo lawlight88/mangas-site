@@ -3,25 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateMangaRequest;
-use App\Models\Chapter;
 use App\Models\Manga;
-use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class MangaController extends Controller
 {
-    public function index()
-    {
-        return view('manga.management.index');
-    }
-
     public function create() 
     {
         $genres = Manga::$genres;
         $user = Auth::user();
-        return view('manga.management.create', compact('user', 'genres'));
+        return view('manga.management.create_manga', compact('user', 'genres'));
     }
 
     public function store(StoreUpdateMangaRequest $request)
@@ -40,7 +33,7 @@ class MangaController extends Controller
 
         Manga::create($data);
 
-        return redirect()->route('manga.index');
+        return redirect()->route('manga.index'); //change
     }
 
 }

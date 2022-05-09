@@ -32,13 +32,13 @@
 					<ul class="list-group">
 						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scans</a></li>
 						{{-- <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scan</a></li> --}}
-						{{-- <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Create Scan</a></li> --}}
+						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.create') }}">Create Scan</a></li>
 						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('manga.create') }}">Create Manga</a></li>
 						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requesting</a></li>
 					</ul>
 				</aside>
                 <!-- Page Content -->
-                <main class="col-md-10 text-white">
+                <main class="col-md-10 text-white border p-4">
                     @yield('content')
                 </main>
             </div>

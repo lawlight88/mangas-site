@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('ongoing')->default(true);
             $table->string('genres');
             $table->string('cover')->unique();
+            $table->foreignId('scanlator')->nullable()->default(null)->constrained('scanlators');
             $table->timestamps();
         });
     }

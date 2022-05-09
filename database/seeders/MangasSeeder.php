@@ -8,7 +8,6 @@ use App\Models\Page;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Http;
 
 use function PHPUnit\Framework\fileExists;
 

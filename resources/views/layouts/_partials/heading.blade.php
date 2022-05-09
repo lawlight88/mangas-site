@@ -20,7 +20,7 @@
                 <li><a class="dropdown-item" href="#">Authors</a></li>
                 <li><hr class="dropdown-divider"></li>
                 @auth
-                    <li><a class="dropdown-item" href="{{ route('manga.index') }}">Upload</a></li>
+                    <li><a class="dropdown-item" href="{{ route('scan.index') }}">Upload</a></li>
                     <li><hr class="dropdown-divider"></li>
                 @endauth
                 <li><a class="dropdown-item" href="#">Info</a></li>

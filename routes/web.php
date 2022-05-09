@@ -4,7 +4,8 @@ use App\Http\Controllers\{
     AppController,
     MangaController,
     CommentController,
-    UserController
+    UserController,
+    ScanlatorController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -45,15 +46,27 @@ Route::group(['middleware' => 'auth'], function() {
         Route::put('/{id_comment}', 'update')->name('update');
         Route::delete('/{id_comment}', 'delete')->name('delete');
     });
+    
+    //management
+    Route::group(['prefix' => 'mgmt'], function() {
+        Route::group([
+            'controller' => MangaController::class,
+            'as' => 'manga.',
+            'prefix' => 'manga',
+        ], function() {
+            Route::get('/create', 'create')->name('create');
+            Route::post('/create', 'store');
+        });
 
-    Route::group([
-        'as' => 'manga.',
-        'prefix' => 'manga/mgmt', //management
-        'controller' => MangaController::class,
-    ], function() {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/create', 'store');
+        Route::group([
+            'controller' => ScanlatorController::class,
+            'as' => 'scan.',
+            'prefix' => 'scan',
+        ], function() {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/create', 'store');
+        });
     });
 });
 
