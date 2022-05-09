@@ -18,7 +18,7 @@ class ScanlatorController extends Controller
 
     public function scanView(int $id_scan)
     {
-        if(!$scan = Scanlator::find($id_scan))
+        if(!$scan = Scanlator::withLeader()->find($id_scan))
             return back();
 
         return view('manga.management.view_scan', compact('scan'));
