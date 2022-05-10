@@ -14,7 +14,7 @@ class ScanlatorPolicy
 
     public function create(User $user)
     {
-        return is_null($user->scanlator);
+        return $user->role == Role::IS_USER && is_null($user->scanlator);
     }
 
     public function view(User $user)
@@ -31,5 +31,9 @@ class ScanlatorPolicy
     {
         return $user->role == Role::IS_ADMIN || $scan->id_leader == $user->id;
     }
-    
+
+    public function delete(User $user, Scanlator $scan)
+    {
+        return $user->role == Role::IS_ADMIN || $scan->id_leader == $user->id;
+    }
 }

@@ -73,6 +73,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::get('/create', 'create')->name('create');
             Route::post('/create', 'store');
             Route::put('/update/{scan}', 'update')->name('update');
+            Route::delete('/delete/{scan}', 'delete')->name('delete');
             Route::get('/{id_scan}', 'mgmtScanView')->name('view');
         });
     });

@@ -26,7 +26,7 @@
             @include('layouts._partials.heading')
         </div>
 
-        <div class="container">
+        <div class="container mb-4">
 			<div class="row">
 				<aside class="col-md-2">
 					<ul class="list-group">
@@ -36,8 +36,9 @@
                         @if(!is_null(Auth::user()->scanlator))
                             <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->scanlator) }}">Scan</a></li>
                         @endif                        
-						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('manga.create') }}">Create Manga</a></li>
-						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requesting</a></li>
+                        @if (Auth::user()->role == \App\Models\Role::IS_ADMIN)
+						    <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requesting</a></li>
+                        @endif
 					</ul>
 				</aside>
                 <!-- Page Content -->

@@ -36,7 +36,7 @@ class Scanlator extends Model
 
     public function members()
     {
-        return $this->hasMany(User::class, 'scanlator');
+        return $this->hasMany(User::class, 'scanlator')->select('id', 'name', 'email');
     }
 
     public function leader()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateScanlatorRequest;
+use App\Models\Role;
 use App\Models\Scanlator;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -65,7 +66,8 @@ class ScanlatorController extends Controller
 
         $scan = Scanlator::create($data);
         $leader->update([
-            'scanlator' => $scan->id
+            'scanlator' => $scan->id,
+            'role' => Role::IS_SCAN_LEADER,
         ]);
 
         return redirect()->route('app.index');
@@ -93,5 +95,22 @@ class ScanlatorController extends Controller
         $scan->update($data);
 
         return redirect()->route('scan.view', $scan->id);
+    }
+
+    public function delete(Scanlator $scan)
+    {
+        $this->authorize('delete', $scan);
+
+        $members = $scan->members;
+        foreach($members as $member) {
+            $member->update([
+                'scanlator' => null,
+                'role' => Role::IS_USER,
+            ]);
+        }
+
+        $scan->delete();
+
+        return redirect()->route('app.index');
     }
 }
