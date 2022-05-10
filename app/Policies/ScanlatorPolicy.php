@@ -27,9 +27,9 @@ class ScanlatorPolicy
         return $user->role == Role::IS_ADMIN;
     }
 
-    // public function update(User $user, Scanlator $scan)
-    // {
-    //     return $user->role == Role::IS_ADMIN || $scan->leader == $user->id;
-    // }
+    public function update(User $user, Scanlator $scan)
+    {
+        return $user->role == Role::IS_ADMIN || $scan->id_leader == $user->id;
+    }
     
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUpdateScanlatorRequest;
 use App\Models\Scanlator;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class ScanlatorController extends Controller
 {
@@ -59,7 +60,7 @@ class ScanlatorController extends Controller
         $data = $req->all();
         $data['id_leader'] = $id_leader;
 
-        $path = $req->image->store("scans/$req->name");
+        $path = $req->image->store("scans/$req->id");
         $data['image'] = "storage/$path";
 
         $scan = Scanlator::create($data);
@@ -70,10 +71,27 @@ class ScanlatorController extends Controller
         return redirect()->route('app.index');
     }
 
-    public function update(StoreUpdateScanlatorRequest $req)
+    public function update(Scanlator $scan, StoreUpdateScanlatorRequest $req)
     {
-        // $this->authorize('update', $scan);
+        $this->authorize('update', $scan);
 
-        dd($req->all());
+        $data = $req->only('name', 'desc');
+
+        $storage_dir = "scans/$scan->id";
+        $dir_local = public_path("storage/$storage_dir");
+        if(isset($req->image)) {
+            if(!file_exists($dir_local))
+                mkdir($dir_local, 0777, true);
+                
+            File::cleanDirectory($dir_local);
+            $path = $req->image->store($storage_dir);
+            $path = "storage/$path";
+
+            $data['image'] = $path;
+        }
+
+        $scan->update($data);
+
+        return redirect()->route('scan.view', $scan->id);
     }
 }

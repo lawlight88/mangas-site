@@ -1,4 +1,4 @@
-<form action="{{ route('scan.create') }}" method="post" enctype="multipart/form-data">
+<form action="{{ Request::routeIs('scan.view') ? route('scan.update', $scan) : route('scan.create') }}" method="post" enctype="multipart/form-data">
     @csrf
     @if (Request::routeIs('scan.view'))
         @method('put')

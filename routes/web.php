@@ -72,7 +72,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::get('/', 'adminAllScans')->name('all');
             Route::get('/create', 'create')->name('create');
             Route::post('/create', 'store');
-            Route::put('/create', 'update');
+            Route::put('/update/{scan}', 'update')->name('update');
             Route::get('/{id_scan}', 'mgmtScanView')->name('view');
         });
     });

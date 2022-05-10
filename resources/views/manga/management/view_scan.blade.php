@@ -4,10 +4,10 @@
 
 @section('content')
 
-    @if (!(Auth::id() == $scan->leader || Auth::user()->role == 4)) {{---------------------------}}
-        @include('includes.view_scan')
-    @else
+    @can('update', $scan)
         @include('manga.management._partials.scan_form')
-    @endif
+    @else
+        @include('includes.view_scan')
+    @endcan
 
 @endsection

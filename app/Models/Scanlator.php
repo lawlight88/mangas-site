@@ -24,7 +24,7 @@ class Scanlator extends Model
 
     public static function withLeader()
     {
-        return Scanlator::with(['id_leader' => function($q) {
+        return Scanlator::with(['leader' => function($q) {
             $q->select('id', 'name');
         }]);
     }
