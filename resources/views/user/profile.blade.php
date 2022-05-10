@@ -4,10 +4,10 @@
 
 @section('content')
     <div class="row bg-dark-1 p-4 mb-4">
-        <div class="col-md-4">
-            <img src="{{ asset($user->profile_image) }}" alt="profile image" class="img-fluid">
+        <div class="col-md-3 px-5">
+            <img src="{{ asset($user->profile_image) }}" alt="profile image" class="img-fluid profile-img">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div>Name: {{ $user->name }}</div>
             <div>Joined: {{ $user->created_at->format('Y-m-d H:i') }}</div>
             @if (Auth::id() == $user->id)

@@ -27,3 +27,7 @@
 .main-cover {
     max-height: 500px;
 }
+
+.profile-img {
+    min-width: 150px;
+}

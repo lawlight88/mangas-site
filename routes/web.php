@@ -17,11 +17,17 @@ use Illuminate\Support\Facades\Route;
 //app
 Route::group([
     'as' => 'app.',
-    'controller' => AppController::class,
 ], function() {
-    Route::get('/', 'index')->name('index');
-    Route::get('/m/{id}', 'mangaMain')->name('manga.main');
-    Route::get('/m/{id}/{chapter_order}/{page_order?}/{id_comment_edit?}', 'mangaView')->name('manga.view');
+    Route::group(['controller' => AppController::class], function() {
+        Route::get('/', 'index')->name('index');
+        Route::get('/m/{id}', 'mangaMain')->name('manga.main');
+        Route::get('/m/{id}/{chapter_order}/{page_order?}/{id_comment_edit?}', 'mangaView')->name('manga.view');
+    });
+
+    Route::group(['controller' => ScanlatorController::class], function() {
+        Route::get('/scans', 'allScans')->name('scans');
+        Route::get('/scan/{scan}', 'view')->name('scan.view');
+    });
 });
 
 //user
@@ -63,11 +69,11 @@ Route::group(['middleware' => 'auth'], function() {
             'as' => 'scan.',
             'prefix' => 'scan',
         ], function() {
-            Route::get('/', 'index')->name('index');
+            Route::get('/', 'adminAllScans')->name('all');
             Route::get('/create', 'create')->name('create');
             Route::post('/create', 'store');
             Route::put('/create', 'update');
-            Route::get('/{id_scan}', 'scanView')->name('view');
+            Route::get('/{id_scan}', 'mgmtScanView')->name('view');
         });
     });
 });

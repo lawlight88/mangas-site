@@ -22,22 +22,24 @@
             <div class="py-2 px-4" id="{{ $comment->id }}">
                 {{$comment->body}}
             </div>
-            
-            @if (Request::is('m/*') && Auth::user()->can(['update', 'delete'], $comment))
-                @if ($id_comment_edit == $comment->id)
-                    @include('manga._partials.comment_form')
+
+            @auth
+                @if (Request::is('m/*') && Auth::user()->can(['update', 'delete'], $comment))
+                    @if ($id_comment_edit == $comment->id)
+                        @include('manga._partials.comment_form')
+                    @endif
+                    @if (is_null($id_comment_edit))
+                        <div class="text-end">
+                            <form action="{{ route('comment.delete', $comment->id) }}" method="post">
+                                @method('delete')
+                                @csrf
+                                <a class="text-light btn btn-lg fa-lg d-inline-block" href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter_order, 'page_order' => $page->order, 'id_comment_edit' => $comment->id]) . "#$comment->id" }}"><i class="fas fa-edit"></i></a>
+                                <button type="submit" class="text-light btn btn-lg fa-lg d-inline-block mx-4"><i class="fa-solid fa-x"></i></button>
+                            </form>
+                        </div>
+                    @endif
                 @endif
-                @if (is_null($id_comment_edit))
-                    <div class="text-end">
-                        <form action="{{ route('comment.delete', $comment->id) }}" method="post">
-                            @method('delete')
-                            @csrf
-                            <a class="text-light btn btn-lg fa-lg d-inline-block" href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter_order, 'page_order' => $page->order, 'id_comment_edit' => $comment->id]) . "#$comment->id" }}"><i class="fas fa-edit"></i></a>
-                            <button type="submit" class="text-light btn btn-lg fa-lg d-inline-block mx-4"><i class="fa-solid fa-x"></i></button>
-                        </form>
-                    </div>
-                @endif
-            @endif
+            @endauth
         </div>
     </div>
 </div>

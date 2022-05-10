@@ -28,6 +28,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|string|max:255|min:3',
             'password' => ['nullable', Password::defaults()],
             'profile_image' => 'nullable|image|max:2048',
+            'role' => 'prohibited',
         ];
     }
 }

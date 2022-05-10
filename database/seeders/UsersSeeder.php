@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,7 +23,13 @@ class UsersSeeder extends Seeder
             'name' => 'micael',
             'email' => 'micael@teste.com',
             'password' => bcrypt('12341234'),
-            // 'role' => Role::IS_ADMIN
+        ]);
+
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('12341234'),
+            'role' => Role::IS_ADMIN,
         ]);
 
         User::create([

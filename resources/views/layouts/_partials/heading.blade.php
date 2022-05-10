@@ -18,9 +18,17 @@
                 <li><a class="dropdown-item" href="#">Random</a></li>
                 <li><a class="dropdown-item" href="#">Genres</a></li>
                 <li><a class="dropdown-item" href="#">Authors</a></li>
+                <li><a class="dropdown-item" href="{{ route('app.scans') }}">Scans</a></li>
                 <li><hr class="dropdown-divider"></li>
                 @auth
-                    <li><a class="dropdown-item" href="{{ route('scan.index') }}">Upload</a></li>
+                    @can('adminAllScans', \App\Models\Scanlator::class)
+                        <li><a class="dropdown-item" href="{{ route('scan.all') }}">Admin - Scans</a></li>
+                    @endcan
+                    @can('create', \App\Models\Scanlator::class)
+                        <li><a class="dropdown-item" href="{{ route('scan.create') }}">Create Scan</a></li>
+                    @elsecan('view', App\Models\Scanlator::class)
+                        <li><a class="dropdown-item" href="{{ route('scan.view', Auth::user()->scanlator) }}">Scan</a></li>
+                    @endcan
                     <li><hr class="dropdown-divider"></li>
                 @endauth
                 <li><a class="dropdown-item" href="#">Info</a></li>

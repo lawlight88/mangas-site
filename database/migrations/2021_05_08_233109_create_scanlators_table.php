@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('desc')->nullable()->default(null);
             $table->string('image');
-            $table->foreignId('leader')->constrained('users');
+            $table->foreignId('id_leader')->constrained('users');
             $table->timestamps();
         });
         // 2022_05_08_233109_create_scanlators_table //

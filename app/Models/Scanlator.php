@@ -13,7 +13,7 @@ class Scanlator extends Model
         'name',
         'image',
         'desc',
-        'leader',
+        'id_leader',
     ];
 
     public static function getIndexScans()
@@ -24,7 +24,7 @@ class Scanlator extends Model
 
     public static function withLeader()
     {
-        return Scanlator::with(['leader' => function($q) {
+        return Scanlator::with(['id_leader' => function($q) {
             $q->select('id', 'name');
         }]);
     }
@@ -41,6 +41,6 @@ class Scanlator extends Model
 
     public function leader()
     {
-        return $this->belongsTo(User::class, 'leader');
+        return $this->belongsTo(User::class, 'id_leader')->select('id', 'name', 'email');
     }
 }

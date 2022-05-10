@@ -30,9 +30,12 @@
 			<div class="row">
 				<aside class="col-md-2">
 					<ul class="list-group">
-						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.index') }}">Scans</a></li>
-						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->scanlator) }}">Scan</a></li>
-						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.create') }}">Create Scan</a></li>
+                        @can('adminAllScans', \App\Models\Scanlator::class)
+						    <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.all') }}">Scans</a></li>
+                        @endcan
+                        @if(!is_null(Auth::user()->scanlator))
+                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->scanlator) }}">Scan</a></li>
+                        @endif                        
 						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('manga.create') }}">Create Manga</a></li>
 						<li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requesting</a></li>
 					</ul>
