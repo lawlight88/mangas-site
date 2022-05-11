@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Manga;
+use App\Models\Request as ModelsRequest;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 
 class AppController extends Controller
@@ -22,12 +24,16 @@ class AppController extends Controller
 
     public function mangaMain(int $id)
     {
-        if(!$manga = Manga::withChapters()->find($id))
+        if(!$manga = Manga::withChaptersScan()->find($id))
             return back();
-
+        
+        $requested = null;
+        if(Auth::user()->role == Role::IS_SCAN_LEADER && is_null($manga->scanlator))
+            $requested = ModelsRequest::checkIfAlreadyRequested(id_requester: Auth::user()->scanlator, id_manga: $id);
+        
         $manga->genres = explode('#', $manga->genres);
 
-        return view('manga.main', compact('manga'));
+        return view('manga.main', compact('manga', 'requested'));
     }
 
     public function mangaView(int $id, int $chapter_order, int $page_order = 1, int $id_comment_edit = null)

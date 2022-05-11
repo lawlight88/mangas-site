@@ -4,6 +4,15 @@
     </div>
     <div class="col-md-8">
         <div>Name: {{ $scan->name }}</div>
+        @if (Request::routeIs('app.scan.view'))
+            <div>
+                <div>Description:</div>
+                <div class="px-3 py-1">
+                    {{ $scan->desc }}
+                </div> 
+            </div>
+        @endif
+        <div>Name: {{ $scan->name }}</div>
         <div>Created At: {{ $scan->created_at->format('Y-m-d H:i') }}</div>
         <div>Leader: <a class="text-secondary" href="{{ route('user.profile', $scan->leader->id) }}">{{ $scan->leader->name }}</a></div>
     </div>

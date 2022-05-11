@@ -56,6 +56,7 @@ class Manga extends Model
         'desc',
         'id',
         'cover',
+        'id_scanlator',
     ];
 
     protected $casts = [
@@ -98,29 +99,51 @@ class Manga extends Model
                     ->get();
     }
 
-    public static function withChapters()
+    public static function withChaptersScan()
     {
-        return Manga::with(['chapters' => function($q) {
-            $q->orderBy('order', 'asc');
-        }]);
+        return Manga::with([
+            'chapters' => function($q) {
+                $q->orderBy('order', 'asc');
+            },
+            'scanlator',
+        ]);
     }
 
     public static function mangaViewQuery(int $chapter_order, int $page_order)
     {
-        return Manga::query()->select('id', 'name')->withCount(['pages' => function($q) use($chapter_order) {
-                $q->where('chapters.order', $chapter_order);
-            }, 'chapters'])->with(['chapters' => function($q) use($chapter_order) {
-                $q->select('id', 'id_manga')
-                    ->where('chapters.order', $chapter_order);
-            }, 'pages' => function($q) use($chapter_order, $page_order) {
-                $q->select('pages.order', 'path')
-                    ->where('chapters.order', $chapter_order)
-                    ->where('pages.order', $page_order);
-            }, 'chapters.comments' => function($q) {
-                $q->orderBy('comments.created_at', 'desc');
-            }, 'chapters.comments.user' => function($q) {
-                $q->select('users.id', 'users.name', 'users.profile_image');
+        return Manga::query()->select('id', 'name')
+            ->withCount([
+                'pages' => function($q) use($chapter_order) {
+                    $q->where('chapters.order', $chapter_order);
+                },
+                'chapters'
+            ])
+            ->with([
+                'chapters' => function($q) use($chapter_order) {
+                    $q->select('id', 'id_manga')
+                        ->where('chapters.order', $chapter_order);
+            },
+                'pages' => function($q) use($chapter_order, $page_order) {
+                    $q->select('pages.order', 'path')
+                        ->where('chapters.order', $chapter_order)
+                        ->where('pages.order', $page_order);
+            },
+                'chapters.comments' => function($q) {
+                    $q->orderBy('comments.created_at', 'desc');
+            },
+                'chapters.comments.user' => function($q) {
+                    $q->select('users.id', 'users.name', 'users.profile_image');
         }]);
+    }
+
+    public function scanlator()
+    {
+        return $this->belongsTo(Scanlator::class, 'id_scanlator')->select('id', 'name');
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(\App\models\Request::class, 'id_manga');
     }
 
     public function chapters()

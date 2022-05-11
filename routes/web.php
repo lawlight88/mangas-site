@@ -5,7 +5,8 @@ use App\Http\Controllers\{
     MangaController,
     CommentController,
     UserController,
-    ScanlatorController
+    ScanlatorController,
+    RequestController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,14 @@ Route::group(['middleware' => 'auth'], function() {
             Route::put('/update/{scan}', 'update')->name('update');
             Route::delete('/delete/{scan}', 'delete')->name('delete');
             Route::get('/{id_scan}', 'mgmtScanView')->name('view');
+        });
+
+        Route::group([
+            'controller' => RequestController::class,
+            'as' => 'request.',
+            'prefix' => 'req',
+        ], function() {
+            Route::post('/create/{id_manga}', 'store')->name('create');
         });
     });
 });

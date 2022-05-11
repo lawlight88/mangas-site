@@ -35,10 +35,13 @@
                         @endcan
                         @if(!is_null(Auth::user()->scanlator))
                             <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->scanlator) }}">Scan</a></li>
-                        @endif                        
-                        @if (Auth::user()->role == \App\Models\Role::IS_ADMIN)
-						    <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requesting</a></li>
                         @endif
+                        @can('scanRequests', \App\Models\Request::class)
+                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scan's Requests</a></li>
+                        @endcan                        
+                        @can('view', \App\Models\Request::class)
+                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requests</a></li>
+                        @endcan
 					</ul>
 				</aside>
                 <!-- Page Content -->

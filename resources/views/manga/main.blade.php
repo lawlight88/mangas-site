@@ -21,7 +21,24 @@
             <div>
                 {{ $manga->ongoing ? 'Ongoing' : 'Finished' }}
             </div>
-            <small>Chapters: {{ $manga->chapters->count() }}</small>
+            <small>Chapters: {{ $manga->chapters->count() }}</small><br>
+            <div class="mb-3">
+                <small>Scanlator:
+                    @if (isset($manga->scanlator))
+                        <a href="{{ route('app.scan.view', $manga->scanlator) }}" class="text-secondary">{{ $manga->scanlator->name }}</a>
+                    @else
+                        <span class="text-warning">None</span>
+                    @endif
+                </small>
+            </div>
+            @can('request', \App\Models\Request::class)
+                @if (!isset($manga->scanlator))
+                    <form action="{{ route('request.create', $manga->id) }}" method="post">
+                        @csrf
+                        <button class="btn {{ is_null($requested) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($requested) ? '' : 'disabled' }} type="submit">Request</button>
+                    </form>
+                @endif
+            @endcan
         </div>
     </div>
 
