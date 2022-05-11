@@ -43,6 +43,7 @@
                             <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.admin') }}">Requests</a></li>
                         @endcan
                             <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scan's Mangas</a></li>
+                        <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.history') }}">History</a></li>
 					</ul>
 				</aside>
                 <!-- Page Content -->

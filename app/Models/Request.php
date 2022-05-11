@@ -13,13 +13,11 @@ class Request extends Model
         'id_requester',
         'id_manga',
         'status',
-        'visible_admin',
         'visible_scan',
     ];
 
     protected $casts = [
         'status' => 'boolean',
-        'visible_admin' => 'boolean',
         'visible_scan' => 'boolean',
     ];
 
@@ -43,10 +41,31 @@ class Request extends Model
         return Request::dontSelectVisibleColumns()
                     ->with([
                         'manga:name,id',
-                        'scanlator:name,id,id_leader',
-                        'scanlator.leader:name,id'
+                        'scanlator:name,id',
                     ])
                     ->where('status', null)
+                    ->orderBy('updated_at', 'desc');
+    }
+
+    public static function adminAnsweredRequests()
+    {
+        return Request::dontSelectVisibleColumns()
+                    ->with([
+                        'manga:name,id',
+                        'scanlator:name,id'
+                    ])
+                    ->where('status', '!=', null)
+                    ->orderBy('updated_at', 'desc');
+    }
+
+    public static function answeredRequests(int $id_requester)
+    {
+        return Request::dontSelectVisibleColumns()
+                    ->with([
+                        'manga:name,id',
+                    ])
+                    ->where('status', '!=', null)
+                    ->where('id_requester', $id_requester)
                     ->orderBy('updated_at', 'desc');
     }
 

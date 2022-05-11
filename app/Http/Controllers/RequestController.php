@@ -95,27 +95,20 @@ class RequestController extends Controller
         return back();
     }
 
-    public function delete(int $id_req)
+    public function history()
     {
-        $this->authorize('delete', ModelsRequest::class);
-
-        if(!$req = ModelsRequest::find($id_req))
-            return back();
+        $this->authorize('history', ModelsRequest::class);
 
         if(Auth::user()->role == Role::IS_ADMIN) {
-            $req->update([
-                'visible_admin' => false
-            ]);
-        }
-        if(Auth::user()->role == Role::IS_SCAN_LEADER) {
-            $req->update([
-                'visible_scan' => false
-            ]);
-        }
-        dd($req); //-----------------------------------------------------------
-        if(!$req->visible_admin && !$req->visible_scan)
-            $req->delete();
 
-        return back();
+            $requests = ModelsRequest::adminAnsweredRequests()->get();
+
+        } else {
+            
+            $requests = ModelsRequest::answeredRequests(Auth::user()->id_scanlator)->get();
+
+        }
+
+        return view('manga.management.history', compact('requests'));
     }
 }

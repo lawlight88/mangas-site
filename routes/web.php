@@ -83,13 +83,13 @@ Route::group(['middleware' => 'auth'], function() {
             'as' => 'request.',
             'prefix' => 'requests',
         ], function() {
-            Route::post('/create/{id_manga}', 'store')->name('create');
-            Route::delete('/cancel/{id_req}', 'cancel')->name('cancel');
-            Route::delete('/delete/{id_req}', 'delete')->name('delete');
-            Route::put('/accept/{id_req}', 'accept')->name('accept');
-            Route::put('/refuse/{id_req}', 'refuse')->name('refuse');
             Route::get('/', 'scanRequests')->name('scan');
             Route::get('/admin', 'adminRequests')->name('admin');
+            Route::get('/history', 'history')->name('history');
+            Route::post('/create/{id_manga}', 'store')->name('create');
+            Route::delete('/cancel/{id_req}', 'cancel')->name('cancel');
+            Route::put('/accept/{id_req}', 'accept')->name('accept');
+            Route::put('/refuse/{id_req}', 'refuse')->name('refuse');
         });
     });
 });

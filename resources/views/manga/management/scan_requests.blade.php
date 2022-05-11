@@ -17,7 +17,7 @@
             <div class="d-flex justify-content-between">
                 @include('manga.management._partials.request_status')
                 <div>
-                    <form action="{{ is_null($request->status) ? route('request.cancel', $request->id) : route('request.delete', $request->id) }}" method="post">
+                    <form action="{{ route('request.cancel', $request->id) }}" method="post">
                         @method('delete')
                         @csrf
                         <button type="submit" class="text-light btn fa-lg d-inline-block"><i class="fa-solid fa-x"></i></button>

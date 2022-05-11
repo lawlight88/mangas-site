@@ -36,13 +36,13 @@ class RequestPolicy
         return $user->role == Role::IS_SCAN_LEADER;
     }
 
-    public function delete(User $user)
-    {
-        return in_array($user->role, [Role::IS_SCAN_LEADER, Role::IS_ADMIN]);
-    }
-
     public function adminRequests(User $user)
     {
         return $user->role == Role::IS_ADMIN;
+    }
+
+    public function history(User $user)
+    {
+        return in_array($user->role, [Role::IS_ADMIN, Role::IS_SCAN_LEADER, Role::IS_SCAN_HELPER]);
     }
 }
