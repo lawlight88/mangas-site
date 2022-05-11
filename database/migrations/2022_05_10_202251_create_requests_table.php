@@ -22,6 +22,8 @@ return new class extends Migration
             $table->foreign('id_manga')->references('id')->on('mangas')->onDelete('cascade');
 
             $table->boolean('status')->nullable()->default(null);
+            $table->boolean('visible_admin')->default(true);
+            $table->boolean('visible_scan')->default(true);
 
             $table->timestamps();
         });

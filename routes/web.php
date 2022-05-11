@@ -81,9 +81,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::group([
             'controller' => RequestController::class,
             'as' => 'request.',
-            'prefix' => 'req',
+            'prefix' => 'requests',
         ], function() {
             Route::post('/create/{id_manga}', 'store')->name('create');
+            Route::get('/', 'scanRequests')->name('scan');
         });
     });
 });

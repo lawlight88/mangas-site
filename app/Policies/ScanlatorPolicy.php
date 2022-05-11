@@ -14,12 +14,12 @@ class ScanlatorPolicy
 
     public function create(User $user)
     {
-        return $user->role == Role::IS_USER && is_null($user->scanlator);
+        return $user->role == Role::IS_USER && is_null($user->id_scanlator);
     }
 
     public function view(User $user)
     {
-        return $user->role == Role::IS_ADMIN || !is_null($user->scanlator);
+        return $user->role == Role::IS_ADMIN || !is_null($user->id_scanlator);
     }
 
     public function adminAllScans(User $user)

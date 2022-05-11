@@ -33,11 +33,11 @@
                         @can('adminAllScans', \App\Models\Scanlator::class)
 						    <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.all') }}">Scans</a></li>
                         @endcan
-                        @if(!is_null(Auth::user()->scanlator))
-                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->scanlator) }}">Scan</a></li>
+                        @if(!is_null(Auth::user()->id_scanlator))
+                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->id_scanlator) }}">Scan</a></li>
                         @endif
                         @can('scanRequests', \App\Models\Request::class)
-                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scan's Requests</a></li>
+                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.scan') }}">Scan's Requests</a></li>
                         @endcan                        
                         @can('view', \App\Models\Request::class)
                             <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requests</a></li>

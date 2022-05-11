@@ -29,14 +29,31 @@ class Scanlator extends Model
         }]);
     }
 
+    public static function withRequests()
+    {
+        return Scanlator::with([
+                        'requests' => function($q) {
+                            $q->select('id', 'id_requester', 'id_manga', 'status', 'created_at', 'updated_at')
+                                ->where('visible_scan', true)
+                                ->orderBy('updated_at', 'desc');
+                        },
+                        'requests.manga:id,name'
+        ]);
+    }
+
     public function mangas()
     {
         return $this->hasMany(Manga::class, 'scanlator');
     }
 
+    public function requests()
+    {
+        return $this->hasMany(\App\Models\Request::class, 'id_requester');
+    }
+
     public function members()
     {
-        return $this->hasMany(User::class, 'scanlator')->select('id', 'name', 'email');
+        return $this->hasMany(User::class, 'id_scanlator')->select('id', 'name', 'email');
     }
 
     public function leader()

@@ -66,7 +66,7 @@ class ScanlatorController extends Controller
 
         $scan = Scanlator::create($data);
         $leader->update([
-            'scanlator' => $scan->id,
+            'id_scanlator' => $scan->id,
             'role' => Role::IS_SCAN_LEADER,
         ]);
 
@@ -104,7 +104,7 @@ class ScanlatorController extends Controller
         $members = $scan->members;
         foreach($members as $member) {
             $member->update([
-                'scanlator' => null,
+                'id_scanlator' => null,
                 'role' => Role::IS_USER,
             ]);
         }
