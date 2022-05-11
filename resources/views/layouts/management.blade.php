@@ -39,9 +39,10 @@
                         @can('scanRequests', \App\Models\Request::class)
                             <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.scan') }}">Scan's Requests</a></li>
                         @endcan                        
-                        @can('view', \App\Models\Request::class)
-                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Requests</a></li>
+                        @can('adminRequests', \App\Models\Request::class)
+                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.admin') }}">Requests</a></li>
                         @endcan
+                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scan's Mangas</a></li>
 					</ul>
 				</aside>
                 <!-- Page Content -->

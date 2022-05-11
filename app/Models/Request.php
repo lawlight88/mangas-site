@@ -38,8 +38,25 @@ class Request extends Model
         return Request::select('id', 'id_requester', 'id_manga', 'status', 'created_at', 'updated_at');
     }
 
+    public static function pendingRequests()
+    {
+        return Request::dontSelectVisibleColumns()
+                    ->with([
+                        'manga:name,id',
+                        'scanlator:name,id,id_leader',
+                        'scanlator.leader:name,id'
+                    ])
+                    ->where('status', null)
+                    ->orderBy('updated_at', 'desc');
+    }
+
     public function manga()
     {
         return $this->belongsTo(Manga::class, 'id_manga');
+    }
+
+    public function scanlator()
+    {
+        return $this->belongsTo(Scanlator::class, 'id_requester');
     }
 }

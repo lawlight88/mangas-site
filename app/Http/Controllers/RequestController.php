@@ -36,10 +36,50 @@ class RequestController extends Controller
     {
         $this->authorize('scanRequests', ModelsRequest::class);
 
-        if(!$scan = Scanlator::withRequests()->find(Auth::user()->id_scanlator))
+        if(!$scan = Scanlator::withPendingRequests()->find(Auth::user()->id_scanlator))
             return back();
 
         return view('manga.management.scan_requests', compact('scan'));
+    }
+
+    public function adminRequests()
+    {
+        $this->authorize('adminRequests', ModelsRequest::class);
+
+        $requests = ModelsRequest::pendingRequests()->get();
+
+        return view('manga.management.admin_requests', compact('requests'));
+    }
+
+    public function accept(int $id_req)
+    {
+        $this->authorize('accept', ModelsRequest::class);
+
+        if(!$request = ModelsRequest::with('manga')->find($id_req))
+            return back();
+
+        $request->update([
+            'status' => true
+        ]);
+        $request->manga->update([
+            'id_scanlator' => $request->id_requester
+        ]);
+
+        return back();
+    }
+
+    public function refuse(int $id_req)
+    {
+        $this->authorize('accept', ModelsRequest::class);
+
+        if(!$request = ModelsRequest::find($id_req))
+            return back();
+
+        $request->update([
+            'status' => false
+        ]);
+
+        return back();
     }
 
     public function cancel(int $id_req)
@@ -72,7 +112,7 @@ class RequestController extends Controller
                 'visible_scan' => false
             ]);
         }
-        dd($req);
+        dd($req); //-----------------------------------------------------------
         if(!$req->visible_admin && !$req->visible_scan)
             $req->delete();
 

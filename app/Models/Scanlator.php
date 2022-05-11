@@ -29,12 +29,12 @@ class Scanlator extends Model
         }]);
     }
 
-    public static function withRequests()
+    public static function withPendingRequests()
     {
         return Scanlator::with([
                         'requests' => function($q) {
                             $q->select('id', 'id_requester', 'id_manga', 'status', 'created_at', 'updated_at')
-                                ->where('visible_scan', true)
+                                ->where('status', null)
                                 ->orderBy('updated_at', 'desc');
                         },
                         'requests.manga:id,name'

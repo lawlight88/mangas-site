@@ -26,9 +26,10 @@
                     @endcan
                     @can('create', \App\Models\Scanlator::class)
                         <li><a class="dropdown-item" href="{{ route('scan.create') }}">Create Scan</a></li>
-                    @elsecan('view', App\Models\Scanlator::class)
-                        <li><a class="dropdown-item" href="{{ route('scan.view', Auth::user()->id_scanlator) }}">Scan</a></li>
                     @endcan
+                    @if (Auth::check() && Auth::user()->can('view', App\Models\Scanlator::class) && isset(Auth::user()->id_scanlator))
+                        <li><a class="dropdown-item" href="{{ route('scan.view', Auth::user()->id_scanlator) }}">Scan</a></li>
+                    @endif
                     <li><hr class="dropdown-divider"></li>
                 @endauth
                 <li><a class="dropdown-item" href="#">Info</a></li>
