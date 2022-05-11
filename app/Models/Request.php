@@ -33,6 +33,11 @@ class Request extends Model
         return true;
     }
 
+    public static function dontSelectVisibleColumns()
+    {
+        return Request::select('id', 'id_requester', 'id_manga', 'status', 'created_at', 'updated_at');
+    }
+
     public function manga()
     {
         return $this->belongsTo(Manga::class, 'id_manga');

@@ -21,6 +21,16 @@ class RequestPolicy
         return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER]);
     }
 
+    public function cancel(User $user)
+    {
+        return $user->role == Role::IS_SCAN_LEADER;
+    }
+
+    public function delete(User $user)
+    {
+        return in_array($user->role, [Role::IS_SCAN_LEADER, Role::IS_ADMIN]);
+    }
+
     public function adminRequests(User $user)
     {
         return $user->role == Role::IS_ADMIN;

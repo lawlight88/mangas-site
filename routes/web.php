@@ -84,6 +84,8 @@ Route::group(['middleware' => 'auth'], function() {
             'prefix' => 'requests',
         ], function() {
             Route::post('/create/{id_manga}', 'store')->name('create');
+            Route::delete('/cancel/{id_req}', 'cancel')->name('cancel');
+            Route::delete('/delete/{id_req}', 'delete')->name('delete');
             Route::get('/', 'scanRequests')->name('scan');
         });
     });
