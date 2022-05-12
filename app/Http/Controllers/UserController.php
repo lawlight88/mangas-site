@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Invite;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -13,8 +15,12 @@ class UserController extends Controller
     {
         if(!$user = User::withRecentComments()->find($id))
             return back();
+
+        $invite = null;
+        if(Auth::check() && Auth::user()->role == Role::IS_SCAN_LEADER)
+            $invite = Invite::get(id_scanlator: Auth::user()->id_scanlator, id_invited: $id);
         
-        return view('user.profile', compact('user'));
+        return view('user.profile', compact('user', 'invite'));
     }
 
     public function edit()

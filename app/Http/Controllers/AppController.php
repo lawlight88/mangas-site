@@ -28,7 +28,7 @@ class AppController extends Controller
             return back();
         
         $requested = null;
-        if(Auth::user()->role == Role::IS_SCAN_LEADER && is_null($manga->scanlator))
+        if(Auth::check() && Auth::user()->role == Role::IS_SCAN_LEADER && is_null($manga->scanlator))
             $requested = ModelsRequest::checkIfAlreadyRequested(id_requester: Auth::user()->id_scanlator, id_manga: $id);
         
         $manga->genres = explode('#', $manga->genres);

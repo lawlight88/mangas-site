@@ -47,13 +47,18 @@ class User extends Authenticatable
 
     public static function withRecentComments()
     {
-        return User::select('name', 'id', 'profile_image', 'created_at')
+        return User::select('name', 'id', 'profile_image', 'created_at', 'role')
                     ->with(['comments' => function($q) {
                         $q->orderBy('created_at', 'desc')
                             ->limit(5);
                     }, 'comments.chapter' => function($q) {
                         $q->select('id_manga', 'chapters.id', 'order');
         }]);
+    }
+
+    public static function onlyIdRole()
+    {
+        return User::select('id', 'role');
     }
 
     public function comments()

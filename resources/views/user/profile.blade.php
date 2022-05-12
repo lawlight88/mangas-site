@@ -13,6 +13,28 @@
             @if (Auth::id() == $user->id)
                 <a href="{{ route('user.edit') }}" class="text-light">Edit Profile</a>
             @endif
+            @can('create', [\App\Models\Invite::class, $user])
+                <div class="my-3">
+                    @if (is_null($invite))
+                        <form action="{{ route('invite.create', $user->id) }}" method="post">
+                            @csrf
+                            <button class="btn {{ is_null($invite) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($invite) ? '' : 'disabled' }} type="submit">Invite to Scanlator</button>
+                        </form>
+                    @else
+                        @can('cancel', $invite)
+                            <form action="{{ route('invite.cancel', $invite->id) }}" method="post">
+                                @method('delete')
+                                @if (is_null($invite->response))
+                                    @csrf
+                                    <button class="btn btn-danger" type="submit">Cancel Invite</button>
+                                @else
+                                    <button class="btn btn-secondary" disabled type="submit">This User Refused The Invite</button>
+                                @endif
+                            </form>
+                        @endcan
+                    @endif
+                </div>
+            @endcan
         </div>
     </div>
     <div class="row bg-dark-1 px-4 pb-4 pt-3 mb-4">

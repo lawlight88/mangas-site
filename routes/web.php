@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     CommentController,
     UserController,
     ScanlatorController,
-    RequestController
+    RequestController,
+    InviteController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -90,6 +91,15 @@ Route::group(['middleware' => 'auth'], function() {
             Route::delete('/cancel/{id_req}', 'cancel')->name('cancel');
             Route::put('/accept/{id_req}', 'accept')->name('accept');
             Route::put('/refuse/{id_req}', 'refuse')->name('refuse');
+        });
+
+        Route::group([
+            'controller' => InviteController::class,
+            'as' => 'invite.',
+            'prefix' => 'invite',
+        ], function() {
+            Route::post('/{id_user}', 'create')->name('create');
+            Route::delete('/{id_invite}', 'cancel')->name('cancel');
         });
     });
 });
