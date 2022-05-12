@@ -13,11 +13,21 @@ class InvitePolicy
     
     public function create(User $user, User $invited_user)
     {
-        return $user->role == Role::IS_SCAN_LEADER && $invited_user->role == Role::IS_USER;
+        return $user->role == Role::IS_SCAN_LEADER && $user->id != $invited_user->id && $invited_user->role == Role::IS_USER;
     }
 
     public function cancel(User $user, Invite $invite)
     {
         return $user->role == Role::IS_SCAN_LEADER && $invite->id_scanlator == $user->id_scanlator;
+    }
+
+    public function view(User $user, User $profile_user)
+    {
+        return $user->id == $profile_user->id;
+    }
+
+    public function accept(User $user, Invite $invite)
+    {
+        return $user->id == $invite->id_invited;
     }
 }

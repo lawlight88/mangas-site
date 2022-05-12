@@ -23,6 +23,13 @@ class Invite extends Model
     {
         return Invite::where('id_scanlator', $id_scanlator)
                         ->where('id_invited', $id_invited)
+                        ->orderBy('created_at')
+                        ->limit(5)
                         ->first();
+    }
+
+    public function scanlator()
+    {
+        return $this->belongsTo(Scanlator::class, 'id_scanlator');
     }
 }

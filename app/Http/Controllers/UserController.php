@@ -13,12 +13,17 @@ class UserController extends Controller
 {
     public function profile(int $id)
     {
-        if(!$user = User::withRecentComments()->find($id))
+        if(!$user = User::withUserInfos()->find($id))
             return back();
 
         $invite = null;
-        if(Auth::check() && Auth::user()->role == Role::IS_SCAN_LEADER)
-            $invite = Invite::get(id_scanlator: Auth::user()->id_scanlator, id_invited: $id);
+        if(Auth::check()) {
+            if(Auth::user()->id == $user->id)
+                $user->invites = User::getInvites($user);
+
+            if(Auth::user()->role == Role::IS_SCAN_LEADER)
+                $invite = Invite::get(id_scanlator: Auth::user()->id_scanlator, id_invited: $id);
+        }
         
         return view('user.profile', compact('user', 'invite'));
     }

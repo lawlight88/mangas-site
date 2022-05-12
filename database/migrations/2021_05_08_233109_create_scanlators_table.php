@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('desc')->nullable()->default(null);
-            $table->string('image');
+            $table->string('image')->default('img/favicon.png');
             $table->foreignId('id_leader')->constrained('users');
             $table->timestamps();
         });

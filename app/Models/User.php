@@ -45,7 +45,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function withRecentComments()
+    public static function withUserInfos()
     {
         return User::select('name', 'id', 'profile_image', 'created_at', 'role')
                     ->with(['comments' => function($q) {
@@ -59,6 +59,20 @@ class User extends Authenticatable
     public static function onlyIdRole()
     {
         return User::select('id', 'role');
+    }
+
+    public static function getInvites(User $user)
+    {
+        return $user->invites()
+                        ->with('scanlator:id,name')
+                        ->orderBy('created_at')
+                        ->limit(3)
+                        ->get();
+    }
+
+    public function invites()
+    {
+        return $this->hasMany(Invite::class, 'id_invited');
     }
 
     public function comments()

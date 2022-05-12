@@ -7,7 +7,7 @@
         <div class="col-md-3 px-5">
             <img src="{{ asset($user->profile_image) }}" alt="profile image" class="img-fluid profile-img">
         </div>
-        <div class="col-md-9">
+        <div class="col-md-6">
             <div>Name: {{ $user->name }}</div>
             <div>Joined: {{ $user->created_at->format('Y-m-d H:i') }}</div>
             @if (Auth::id() == $user->id)
@@ -36,6 +36,38 @@
                 </div>
             @endcan
         </div>
+        @can('view', [\App\Models\Invite::class, $user])
+            <div class="col-md-3">
+                <div class="text-info">
+                    Invite(s) to Scans:
+                </div>
+                <ul class="list-group">
+                    @foreach ($user->invites as $invite)
+                        <li class="list-group-item bg-dark text-light border border-light">
+                            <a href="#" class="text-decoration-none text-primary">{{ $invite->scanlator->name }}</a> 
+                            <span>Scan invited you</span>
+                            <div class="d-flex justify-content-end">
+                                <form action="#" method="post" class="d-inline">
+                                    @method('put')
+                                    @csrf
+                                    <button class="text-light fa-sm btn btn-sm d-inline-block"><i class="fas text-success fa-check"></i></button>
+                                </form>
+                                <form action="#" method="post" class="d-inline">
+                                    @method('put')
+                                    @csrf
+                                    <button type="submit" class="text-light fa-sm btn btn-sm d-inline-block"><i class="fa-solid text-danger fa-x"></i></button>
+                                </form>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+                {{-- @foreach ($user->invites as $invite)
+                    <div class="mb-2">
+                        <a href="#" class="text-decoration-none text-primary">{{ $invite->scanlator->name }}</a> Scan invited you
+                    </div>
+                @endforeach --}}
+            </div>
+        @endcan
     </div>
     <div class="row bg-dark-1 px-4 pb-4 pt-3 mb-4">
         <div class="text-center">
