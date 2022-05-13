@@ -28,7 +28,7 @@ Route::group([
 
     Route::group(['controller' => ScanlatorController::class], function() {
         Route::get('/scans', 'allScans')->name('scans');
-        Route::get('/scan/{scan}', 'view')->name('scan.view');
+        Route::get('/scan/{id_scan}', 'view')->name('scan.view');
     });
 });
 

@@ -22,13 +22,6 @@ class Scanlator extends Model
                         ->paginate(20);
     }
 
-    public static function withLeader()
-    {
-        return Scanlator::with(['leader' => function($q) {
-            $q->select('id', 'name');
-        }]);
-    }
-
     public static function withPendingRequests()
     {
         return Scanlator::with([
@@ -38,6 +31,27 @@ class Scanlator extends Model
                                 ->orderBy('updated_at', 'desc');
                         },
                         'requests.manga:id,name'
+        ]);
+    }
+
+    public static function withMembers()
+    {
+        return Scanlator::with([
+                            'leader',
+                            'members' => function($q) {
+                                $q->select('id', 'name', 'id_scanlator', 'joined_scan_at')
+                                    ->orderBy('joined_scan_at');
+                            }
+        ]);
+    }
+
+    public static function withMembersMgmt()
+    {
+        return Scanlator::with([
+                            'leader',
+                            'members' => function($q) {
+                                $q->orderBy('joined_scan_at');
+                            }
         ]);
     }
 
@@ -53,11 +67,11 @@ class Scanlator extends Model
 
     public function members()
     {
-        return $this->hasMany(User::class, 'id_scanlator')->select('id', 'name', 'email');
+        return $this->hasMany(User::class, 'id_scanlator')->select('id', 'name', 'email', 'id_scanlator', 'joined_scan_at');
     }
 
     public function leader()
     {
-        return $this->belongsTo(User::class, 'id_leader')->select('id', 'name', 'email');
+        return $this->belongsTo(User::class, 'id_leader')->select('id', 'name', 'email', 'joined_scan_at');
     }
 }

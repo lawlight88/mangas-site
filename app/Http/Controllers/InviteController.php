@@ -61,7 +61,8 @@ class InviteController extends Controller
 
         $user->update([
             'id_scanlator' => $invite->id_scanlator,
-            'role' => Role::IS_SCAN_HELPER
+            'role' => Role::IS_SCAN_HELPER,
+            'joined_scan_at' => now()
         ]);
 
         $user->deleteInvites();

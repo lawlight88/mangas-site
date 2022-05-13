@@ -24,6 +24,7 @@ class User extends Authenticatable
         'profile_image',
         'id_scanlator',
         'role',
+        'joined_scan_at',
     ];
 
     /**
@@ -43,6 +44,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'joined_scan_at' => 'datetime',
     ];
 
     public static function withUserInfos()

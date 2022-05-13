@@ -27,9 +27,10 @@ class ScanlatorController extends Controller
         return view('manga.management.all_scans', compact('scans'));
     }
 
-    public function view(Scanlator $scan)
+    public function view(int $id_scan)
     {
-        $scan->leader;
+        if(!$scan = Scanlator::withMembers()->find($id_scan))
+            return back();
 
         return view('view_scan', compact('scan'));
     }
@@ -38,7 +39,7 @@ class ScanlatorController extends Controller
     {
         $this->authorize('view', Scanlator::class);
 
-        if(!$scan = Scanlator::withLeader()->find($id_scan))
+        if(!$scan = Scanlator::withMembersMgmt()->find($id_scan))
             return back();
 
         return view('manga.management.view_scan', compact('scan'));
@@ -68,6 +69,7 @@ class ScanlatorController extends Controller
         $leader->update([
             'id_scanlator' => $scan->id,
             'role' => Role::IS_SCAN_LEADER,
+            'joined_scan_at' => now()
         ]);
 
         return redirect()->route('app.index');
@@ -106,6 +108,7 @@ class ScanlatorController extends Controller
             $member->update([
                 'id_scanlator' => null,
                 'role' => Role::IS_USER,
+                'joined_scan_at' => null
             ]);
         }
 
