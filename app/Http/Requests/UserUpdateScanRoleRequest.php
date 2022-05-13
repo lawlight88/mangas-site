@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class UpdateUserRequest extends FormRequest
+class UserUpdateScanRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -25,11 +24,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255|min:3',
-            'password' => ['nullable', Password::defaults()],
-            'profile_image' => 'nullable|image|max:2048',
-            'role' => 'prohibited',
-            'scan_role' => 'prohibited',
+            'scan_role' => 'nullable|max:20'
         ];
     }
 }

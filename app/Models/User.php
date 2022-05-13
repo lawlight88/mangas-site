@@ -24,6 +24,7 @@ class User extends Authenticatable
         'profile_image',
         'id_scanlator',
         'role',
+        'scan_role',
         'joined_scan_at',
     ];
 
@@ -87,5 +88,10 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class, 'id_user');
+    }
+
+    public function scanlator()
+    {
+        return $this->belongsTo(Scanlator::class, 'id_scanlator');
     }
 }

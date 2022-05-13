@@ -62,4 +62,20 @@ class UserController extends Controller
 
         return redirect()->route('user.profile', $id);
     }
+
+    public function removeFromScan(int $id_user)
+    {
+        if(!$user = User::find($id_user))
+            return back();
+
+        $this->authorize('removeFromScan', $user);
+
+        $user->update([
+            'id_scanlator' => null,
+            'role' => Role::IS_USER,
+            'scan_role' => null
+        ]);
+
+        return back();
+    }
 }

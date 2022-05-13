@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::get('/', 'adminAllScans')->name('all');
             Route::get('/create', 'create')->name('create');
             Route::post('/create', 'store');
+            Route::get('/edit/{id_scan}', 'edit')->name('edit');
             Route::put('/update/{scan}', 'update')->name('update');
             Route::delete('/delete/{scan}', 'delete')->name('delete');
             Route::get('/{id_scan}', 'mgmtScanView')->name('view');
@@ -102,6 +103,14 @@ Route::group(['middleware' => 'auth'], function() {
             Route::delete('/{id_invite}', 'cancel')->name('cancel');
             Route::put('/refuse/{id_invite}', 'refuse')->name('refuse');
             Route::put('/accept/{id_invite}', 'accept')->name('accept');
+        });
+
+        Route::group([
+            'as' => 'user.scan.',
+            'prefix' => 'user',
+            'controller' => UserController::class,
+        ], function() {
+            Route::put('/remove{id_user}', 'removeFromScan')->name('remove');
         });
     });
 });

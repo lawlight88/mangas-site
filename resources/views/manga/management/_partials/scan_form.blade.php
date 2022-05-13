@@ -10,7 +10,7 @@
 
 
             <label for="name">Name:</label><br>
-            <input class="form-control" type="text" name="name" id="name" value="{{ $scan->name ?? old('name') }}"><br>
+            <input class="form-control" type="text" name="name" id="name" value="{{ $scan->name ?? old('name') }}" {{ Request::routeIs('scan.edit') ? 'disabled' : '' }}><br>
             <label for="desc">Description:</label><br>
             <textarea class="form-control" name="desc" id="desc" placeholder="(Optional)" rows="3">{{ $scan->desc ?? old('desc') }}</textarea><br>
             <label for="pages">Image:</label><br>

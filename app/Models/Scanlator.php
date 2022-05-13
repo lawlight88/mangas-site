@@ -39,7 +39,7 @@ class Scanlator extends Model
         return Scanlator::with([
                             'leader',
                             'members' => function($q) {
-                                $q->select('id', 'name', 'id_scanlator', 'joined_scan_at')
+                                $q->select('id', 'name', 'id_scanlator', 'joined_scan_at', 'scan_role')
                                     ->orderBy('joined_scan_at');
                             }
         ]);
@@ -67,7 +67,7 @@ class Scanlator extends Model
 
     public function members()
     {
-        return $this->hasMany(User::class, 'id_scanlator')->select('id', 'name', 'email', 'id_scanlator', 'joined_scan_at');
+        return $this->hasMany(User::class, 'id_scanlator')->select('id', 'name', 'email', 'id_scanlator', 'joined_scan_at', 'role', 'scan_role');
     }
 
     public function leader()

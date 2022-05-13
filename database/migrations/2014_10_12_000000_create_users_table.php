@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('role')->default(1);
             $table->integer('id_scanlator')->nullable()->default(null);
+            $table->string('scan_role', 20)->nullable()->default(null);
             $table->string('name');
             $table->string('email')->unique();
             $table->string('profile_image')->default('img/favicon.png');

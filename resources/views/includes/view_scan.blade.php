@@ -16,7 +16,12 @@
             </div>
         @endif
         <div>Leader: <a class="text-info" href="{{ route('user.profile', $scan->leader->id) }}">{{ $scan->leader->name }}</a></div>
-        <div>Main Mangas: ...</div>
+        <div class="d-flex justify-content-between">
+            <span>Main Mangas: ...</span>
+            @can('update', $scan)
+                <a href="{{ route('scan.edit', $scan->id) }}" class="btn btn-info text-light">Edit</a>
+            @endcan
+        </div>
     </div>
     <div class="col-12 mt-3">
         @foreach ($scan->members as $member)
@@ -36,7 +41,7 @@
                             <span class="mb-1">Role</span>
                         </div>
                         <div class="col-3 d-flex justify-content-end">
-                            <form action="#" method="post" class="d-inline">
+                            <form action="{{ route('user.scan.remove', $member->id) }}" method="post" class="d-inline">
                                 @method('put')
                                 @csrf
                                 @can('editScanRole', $member)

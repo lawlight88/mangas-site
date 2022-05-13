@@ -69,10 +69,21 @@ class ScanlatorController extends Controller
         $leader->update([
             'id_scanlator' => $scan->id,
             'role' => Role::IS_SCAN_LEADER,
-            'joined_scan_at' => now()
+            'joined_scan_at' => now(),
+            'scan_role' => 'Leader'
         ]);
 
         return redirect()->route('app.index');
+    }
+
+    public function edit(int $id_scan)
+    {
+        if(!$scan = Scanlator::find($id_scan))
+            return back();
+
+        $this->authorize('update', $scan);
+
+        return view('manga.management.edit_scan', compact('scan'));
     }
 
     public function update(Scanlator $scan, StoreUpdateScanlatorRequest $req)
@@ -108,7 +119,8 @@ class ScanlatorController extends Controller
             $member->update([
                 'id_scanlator' => null,
                 'role' => Role::IS_USER,
-                'joined_scan_at' => null
+                'joined_scan_at' => null,
+                'scan_role' => null
             ]);
         }
 

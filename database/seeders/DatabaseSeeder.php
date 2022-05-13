@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             MangasSeeder::class,
             UsersSeeder::class,
             ScanlatorsSeeder::class,
-            InvitesSeeder::class,
+            // InvitesSeeder::class,
         ]);
     }
 }

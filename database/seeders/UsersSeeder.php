@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Models\Scanlator;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,8 +18,6 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create();
-
         User::create([
             'name' => 'micael',
             'email' => 'micael@teste.com',
@@ -32,18 +31,25 @@ class UsersSeeder extends Seeder
             'role' => Role::IS_ADMIN,
         ]);
 
-        User::create([
-            'name' => 'jose',
-            'email' => 'jose@teste.com',
-            'password' => bcrypt('12341234')
-        ]);
+        User::factory()
+                ->has(
+                    Scanlator::factory()
+                                ->state(function(array $attributes, User $user) {
+                                    return ['id_leader' => $user->id];
+                                })
+                )
+                ->state([
+                    'name' => 'Jose',
+                    'email' => 'jose@teste.com',
+                    'password' => bcrypt('12341234'),
+                    'role' => Role::IS_SCAN_LEADER
+                ])
+                ->create();
 
-        for($i = 0; $i < 100; $i++) {
-            User::create([
-                'name' => $faker->name(),
-                'email' => $faker->email(),
-                'password' => bcrypt('12341234')
-            ]);
-        }
+        User::factory()
+                ->count(100)
+                ->create([
+                    'password' => bcrypt('12341234')
+                ]);
     }
 }
