@@ -43,10 +43,20 @@
             <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 @if (Auth::check())
                     {{ Auth::user()->name }}
+                    @if ($invites_count = \App\Models\Invite::countPendingUserInvites(Auth::id()))
+                        <span class="badge rounded-pill bg-danger text-light">{{ $invites_count }}</span>
+                    @endif
                 @endif
             </a>
             <ul class="dropdown-menu dropdown-menu-end text-small">
-                <li><a class="dropdown-item" href="{{ route('user.profile', Auth::id()) }}">Profile</a></li>
+                <li>
+                    <a class="dropdown-item" href="{{ route('user.profile', Auth::id()) }}">
+                        Profile
+                        @if ($invites_count)
+                            <span class="badge rounded-pill bg-danger text-light">{{ $invites_count }}</span>
+                        @endif
+                    </a>
+                </li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
             </ul>

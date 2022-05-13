@@ -47,12 +47,12 @@
                             <a href="#" class="text-decoration-none text-primary">{{ $invite->scanlator->name }}</a> 
                             <span>Scan invited you</span>
                             <div class="d-flex justify-content-end">
-                                <form action="#" method="post" class="d-inline">
+                                <form action="{{ route('invite.accept', $invite->id) }}" method="post" class="d-inline">
                                     @method('put')
                                     @csrf
                                     <button class="text-light fa-sm btn btn-sm d-inline-block"><i class="fas text-success fa-check"></i></button>
                                 </form>
-                                <form action="#" method="post" class="d-inline">
+                                <form action="{{ route('invite.refuse', $invite->id) }}" method="post" class="d-inline">
                                     @method('put')
                                     @csrf
                                     <button type="submit" class="text-light fa-sm btn btn-sm d-inline-block"><i class="fa-solid text-danger fa-x"></i></button>
@@ -61,11 +61,6 @@
                         </li>
                     @endforeach
                 </ul>
-                {{-- @foreach ($user->invites as $invite)
-                    <div class="mb-2">
-                        <a href="#" class="text-decoration-none text-primary">{{ $invite->scanlator->name }}</a> Scan invited you
-                    </div>
-                @endforeach --}}
             </div>
         @endcan
     </div>

@@ -28,6 +28,13 @@ class Invite extends Model
                         ->first();
     }
 
+    public static function countPendingUserInvites(int $id_user)
+    {
+        return Invite::where('id_invited', $id_user)
+                        ->where('response', null)
+                        ->count();
+    }
+
     public function scanlator()
     {
         return $this->belongsTo(Scanlator::class, 'id_scanlator');

@@ -23,11 +23,16 @@ class InvitePolicy
 
     public function view(User $user, User $profile_user)
     {
-        return $user->id == $profile_user->id;
+        return $user->id == $profile_user->id && $user->role == Role::IS_USER;
     }
 
     public function accept(User $user, Invite $invite)
     {
-        return $user->id == $invite->id_invited;
+        return $user->id == $invite->id_invited && $user->role == Role::IS_USER;
+    }
+
+    public function refuse(User $user, Invite $invite)
+    {
+        return $user->id == $invite->id_invited && $user->role == Role::IS_USER;
     }
 }

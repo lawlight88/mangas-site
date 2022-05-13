@@ -100,6 +100,8 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::post('/{id_user}', 'create')->name('create');
             Route::delete('/{id_invite}', 'cancel')->name('cancel');
+            Route::put('/refuse/{id_invite}', 'refuse')->name('refuse');
+            Route::put('/accept/{id_invite}', 'accept')->name('accept');
         });
     });
 });

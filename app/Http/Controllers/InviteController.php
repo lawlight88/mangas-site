@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invite;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,6 +32,39 @@ class InviteController extends Controller
         $this->authorize('cancel', $invite);
 
         $invite->delete();
+
+        return back();
+    }
+
+    public function refuse(int $id_invite)
+    {
+        if(!$invite = Invite::find($id_invite))
+            return back();
+
+        $this->authorize('refuse', $invite);
+
+        $invite->update([
+            'response' => false
+        ]);
+
+        return back();
+    }
+
+    public function accept(int $id_invite)
+    {
+        if(!$invite = Invite::find($id_invite))
+            return back();
+
+        $this->authorize('accept', $invite);
+
+        $user = User::with('invites')->find(Auth::id());
+
+        $user->update([
+            'id_scanlator' => $invite->id_scanlator,
+            'role' => Role::IS_SCAN_HELPER
+        ]);
+
+        $user->deleteInvites();
 
         return back();
     }

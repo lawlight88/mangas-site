@@ -19,7 +19,7 @@ class UserController extends Controller
         $invite = null;
         if(Auth::check()) {
             if(Auth::user()->id == $user->id)
-                $user->invites = User::getInvites($user);
+                $user->invites = User::getPendingInvites($user);
 
             if(Auth::user()->role == Role::IS_SCAN_LEADER)
                 $invite = Invite::get(id_scanlator: Auth::user()->id_scanlator, id_invited: $id);

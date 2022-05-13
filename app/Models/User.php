@@ -61,13 +61,20 @@ class User extends Authenticatable
         return User::select('id', 'role');
     }
 
-    public static function getInvites(User $user)
+    public static function getPendingInvites(User $user)
     {
         return $user->invites()
                         ->with('scanlator:id,name')
+                        ->where('response', null)
                         ->orderBy('created_at')
                         ->limit(3)
                         ->get();
+    }
+
+    public function deleteInvites()
+    {
+        Invite::where('id_invited', $this->id)
+                ->delete();
     }
 
     public function invites()
