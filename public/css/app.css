@@ -35,3 +35,7 @@
 .profile-img {
     min-width: 150px;
 }
+
+textarea {
+    resize: none !important;
+}

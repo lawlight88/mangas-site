@@ -38,20 +38,34 @@
                     </div>
                     <div class="row">
                         <div class="col-9">
-                            <span class="mb-1">Role</span>
+                            <span class="mb-1">{{ $member->scan_role }}</span>
                         </div>
                         <div class="col-3 d-flex justify-content-end">
-                            <form action="{{ route('user.scan.remove', $member->id) }}" method="post" class="d-inline">
-                                @method('put')
-                                @csrf
-                                @can('editScanRole', $member)
-                                    <a href="#" class="text-light btn fa d-inline"><i class="fas fa-edit fa-sm text-primary"></i></a>
-                                @endcan
-                                @can('removeFromScan', $member)
-                                    <button type="submit" class="text-light btn fa d-inline"><i class="fa-solid fa-sm fa-x text-danger"></i></button>
-                                @endcan
-                            </form>
+                            @if (!$member_edit)
+                                <form action="{{ route('user.scan.remove', $member->id) }}" method="post" class="d-inline">
+                                    @method('put')
+                                    @csrf
+                                    @can('editScanRole', $member)
+                                        <a href="{{ route('scan.view', ['id_scan' => $scan->id, 'member_edit' => $member]) . "#$member->id" }}" class="text-light btn fa d-inline"><i class="fas fa-edit fa-sm text-primary"></i></a>
+                                    @endcan
+                                    @can('removeFromScan', $member)
+                                        <button type="submit" class="text-light btn fa d-inline"><i class="fa-solid fa-sm fa-x text-danger"></i></button>
+                                    @endcan
+                                </form>
+                            @endif
                         </div>
+                        @if ($member_edit && $member_edit->id == $member->id && Auth::user()->can('editScanRole', $member_edit))
+                            <div class="col-9">
+                                <form action="{{ route('user.scan.role.edit', $member) }}" method="post">
+                                    @csrf
+                                    @method('put')
+                                    <div class="input-group">
+                                        <textarea name="scan_role" id="{{ $member->id }}" maxlength="20" cols="25" rows="1">{{ $member->scan_role }}</textarea>
+                                        <button class="btn btn-dark btn-sm" type="submit">Edit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

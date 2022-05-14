@@ -77,7 +77,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::get('/edit/{id_scan}', 'edit')->name('edit');
             Route::put('/update/{scan}', 'update')->name('update');
             Route::delete('/delete/{scan}', 'delete')->name('delete');
-            Route::get('/{id_scan}', 'mgmtScanView')->name('view');
+            Route::get('/{id_scan}/{member_edit?}', 'mgmtScanView')->name('view');
         });
 
         Route::group([
@@ -111,6 +111,7 @@ Route::group(['middleware' => 'auth'], function() {
             'controller' => UserController::class,
         ], function() {
             Route::put('/remove{id_user}', 'removeFromScan')->name('remove');
+            Route::put('/{member}', 'editScanRole')->name('role.edit');
         });
     });
 });

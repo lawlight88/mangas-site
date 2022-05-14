@@ -42,7 +42,8 @@ class UsersSeeder extends Seeder
                     'name' => 'Jose',
                     'email' => 'jose@teste.com',
                     'password' => bcrypt('12341234'),
-                    'role' => Role::IS_SCAN_LEADER
+                    'role' => Role::IS_SCAN_LEADER,
+                    'scan_role' => 'Leader',
                 ])
                 ->create();
 

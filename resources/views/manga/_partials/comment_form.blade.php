@@ -4,7 +4,7 @@
     @if (isset($comment))
         @method('put')
     @endif
-    <textarea class="form-control" name="body" placeholder="Comment..." rows="3">{{ $comment->body ?? old('body') }}</textarea>
+    <textarea class="form-control" id="{{ isset($comment) ? "c_$comment->id" : '' }}" name="body" placeholder="Comment..." rows="3">{{ $comment->body ?? old('body') }}</textarea>
     <div class="d-flex justify-content-end mt-2">
         <button class="btn btn-light" type="submit">Submit</button>
     </div>

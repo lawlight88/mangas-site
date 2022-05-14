@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UserUpdateScanRoleRequest;
 use App\Models\Invite;
 use App\Models\Role;
 use App\Models\User;
@@ -61,6 +62,15 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()->route('user.profile', $id);
+    }
+
+    public function editScanRole(User $member, UserUpdateScanRoleRequest $req)
+    {
+        $this->authorize('editScanRole', $member);
+
+        $member->update($req->only('scan_role'));
+
+        return redirect()->route('scan.view', $member->id_scanlator);
     }
 
     public function removeFromScan(int $id_user)

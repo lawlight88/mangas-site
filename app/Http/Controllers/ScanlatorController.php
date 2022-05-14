@@ -35,14 +35,16 @@ class ScanlatorController extends Controller
         return view('view_scan', compact('scan'));
     }
 
-    public function mgmtScanView(int $id_scan)
+    public function mgmtScanView(int $id_scan, User $member_edit = null)
     {
         $this->authorize('view', Scanlator::class);
+        if($member_edit)
+            $this->authorize('editScanRole', $member_edit);
 
         if(!$scan = Scanlator::withMembersMgmt()->find($id_scan))
             return back();
 
-        return view('manga.management.view_scan', compact('scan'));
+        return view('manga.management.view_scan', compact('scan', 'member_edit'));
     }
 
     public function create()
