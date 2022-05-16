@@ -31,13 +31,11 @@
                     @endif
                 </small>
             </div>
-            @can('request', \App\Models\Request::class)
-                @if (!isset($manga->scanlator))
-                    <form action="{{ route('request.create', $manga->id) }}" method="post">
-                        @csrf
-                        <button class="btn {{ is_null($requested) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($requested) ? '' : 'disabled' }} type="submit">Request</button>
-                    </form>
-                @endif
+            @can('request', [\App\Models\Request::class, $manga])
+                <form action="{{ route('request.create', $manga->id) }}" method="post">
+                    @csrf
+                    <button class="btn {{ is_null($requested) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($requested) ? '' : 'disabled' }} type="submit">Request</button>
+                </form>
             @endcan
         </div>
     </div>

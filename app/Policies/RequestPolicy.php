@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Manga;
 use App\Models\Role;
 use App\Models\Scanlator;
 use App\Models\User;
@@ -11,9 +12,10 @@ class RequestPolicy
 {
     use HandlesAuthorization;
 
-    public function request(User $user)
+    public function request(User $user, Manga $manga)
     {
-        return $user->role == Role::IS_SCAN_LEADER;
+        return $user->role == Role::IS_SCAN_LEADER && is_null($manga->id_scanlator)
+                                                    && $manga->ongoing;
     }
 
     public function scanRequests(User $user)

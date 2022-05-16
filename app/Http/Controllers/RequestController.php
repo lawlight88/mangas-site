@@ -13,10 +13,10 @@ class RequestController extends Controller
 {
     public function store(int $id_manga)
     {
-        $this->authorize('request', ModelsRequest::class);
-
-        if(!$manga = Manga::select('id_scanlator')->find($id_manga))
+        if(!$manga = Manga::select('id_scanlator', 'ongoing')->find($id_manga))
             return back();
+
+        $this->authorize('request', [ModelsRequest::class, $manga]);
 
         if(!is_null($manga->id_scanlator))
             return back();
