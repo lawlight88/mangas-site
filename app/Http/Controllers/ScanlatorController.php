@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUpdateScanlatorRequest;
+use App\Http\Requests\StoreScanlatorRequest;
+use App\Http\Requests\UpdateScanlatorRequest;
 use App\Models\Role;
 use App\Models\Scanlator;
 use App\Models\User;
@@ -29,8 +30,10 @@ class ScanlatorController extends Controller
 
     public function view(int $id_scan)
     {
-        if(!$scan = Scanlator::withMembers()->find($id_scan))
+        if(!$scan = Scanlator::with('leader')->find($id_scan))
             return back();
+
+        $scan->members = $scan->membersPaginate();
 
         return view('view_scan', compact('scan'));
     }
@@ -41,8 +44,10 @@ class ScanlatorController extends Controller
         if($member_edit)
             $this->authorize('editScanRole', $member_edit);
 
-        if(!$scan = Scanlator::withMembersMgmt()->find($id_scan))
+        if(!$scan = Scanlator::with('leader')->find($id_scan))
             return back();
+
+        $scan->members = $scan->membersPaginate();
 
         return view('manga.management.view_scan', compact('scan', 'member_edit'));
     }
@@ -54,7 +59,7 @@ class ScanlatorController extends Controller
         return view('manga.management.create_scan');
     }
 
-    public function store(StoreUpdateScanlatorRequest $req)
+    public function store(StoreScanlatorRequest $req)
     {
         $this->authorize('create', Scanlator::class);
 
@@ -88,7 +93,7 @@ class ScanlatorController extends Controller
         return view('manga.management.edit_scan', compact('scan'));
     }
 
-    public function update(Scanlator $scan, StoreUpdateScanlatorRequest $req)
+    public function update(Scanlator $scan, UpdateScanlatorRequest $req)
     {
         $this->authorize('update', $scan);
 

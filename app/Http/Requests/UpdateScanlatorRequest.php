@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateScanlatorRequest extends FormRequest
+class UpdateScanlatorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,11 @@ class StoreUpdateScanlatorRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
-            'name' => 'required|unique:scanlators,name|min:3|max:255',
+        return [
+            'name' => 'prohibited',
             'desc' => 'nullable|max:255',
             'image' => 'nullable|image|max:2048',
             'leader' => 'prohibited', //change
         ];
-
-        if(url()->previous() == route('scan.edit'))
-            $rules['name'] = 'prohibited';
-
-        return $rules;
     }
 }

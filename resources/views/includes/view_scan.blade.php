@@ -71,5 +71,7 @@
             </div>
         @endforeach
     </div>
+    <div class="d-flex justify-content-center mt-3">
+        {{ $scan->members->links() }}
+    </div>
 </div>
-{{-- members... --}}

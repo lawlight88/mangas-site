@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\Scanlator;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,8 +16,23 @@ class ScanlatorFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->word(),
-            'desc' => $this->faker->sentences(2),
-            'id_leader' => Scanlator::factory()->create()
+            'desc' => $this->faker->sentences(2, true),
+            'id_leader' => User::factory()
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function(Scanlator $scan) {
+            $leader = $scan->leader;
+            $scan->update([
+                'id_leader' => $leader->id
+            ]);
+            $leader->update([
+                'role' => Role::IS_SCAN_LEADER,
+                'scan_role' => 'Leader',
+                'id_scanlator' => $scan->id
+            ]);
+        });
     }
 }

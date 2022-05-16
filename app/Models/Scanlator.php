@@ -34,25 +34,11 @@ class Scanlator extends Model
         ]);
     }
 
-    public static function withMembers()
+    public function membersPaginate()
     {
-        return Scanlator::with([
-                            'leader',
-                            'members' => function($q) {
-                                $q->select('id', 'name', 'id_scanlator', 'joined_scan_at', 'scan_role')
-                                    ->orderBy('joined_scan_at');
-                            }
-        ]);
-    }
-
-    public static function withMembersMgmt()
-    {
-        return Scanlator::with([
-                            'leader',
-                            'members' => function($q) {
-                                $q->orderBy('joined_scan_at');
-                            }
-        ]);
+        return User::where('id_scanlator', $this->id)
+                            ->orderBy('joined_scan_at')
+                            ->paginate(25);
     }
 
     public function mangas()
