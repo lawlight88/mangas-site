@@ -19,7 +19,7 @@ class Scanlator extends Model
     public static function getIndexScans()
     {
         return Scanlator::select('id', 'name', 'image', 'created_at')
-                        ->paginate(20);
+                        ->paginate(28);
     }
 
     public static function withPendingRequests()

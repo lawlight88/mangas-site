@@ -15,7 +15,7 @@ class ScanlatorController extends Controller
     public function allScans()
     {
         $scans = Scanlator::getIndexScans();
-        
+
         return view('all_scans', compact('scans'));
     }
 

@@ -15,7 +15,7 @@ class ScanlatorFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->word(),
+            'name' => ucfirst($this->faker->unique()->words(2, true)),
             'desc' => $this->faker->sentences(2, true),
             'id_leader' => User::factory()
         ];
