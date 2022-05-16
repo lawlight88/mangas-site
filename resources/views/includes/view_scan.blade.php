@@ -26,9 +26,9 @@
     <div class="col-12 mt-3">
         @foreach ($scan->members as $member)
             <div class="list-group">
-                <div href="#" class="list-group-item list-group-item-action flex-column align-items-start bg-light-1">
+                <div class="list-group-item list-group-item-action flex-column align-items-start bg-light-1">
                     <div class="d-flex w-100 justify-content-between">
-                        <a href="#" class="h5 mb-1 text-decoration-none text-dark">
+                        <a href="{{ route('user.profile', $member->id) }}" class="h5 mb-1 text-decoration-none text-dark">
                             {{$member->name}}
                             @if ($member->id == $scan->leader->id)
                                 <i class="text-warning fa-sm fa-spin fa-solid fa-star"></i>

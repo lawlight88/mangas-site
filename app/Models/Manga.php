@@ -99,6 +99,12 @@ class Manga extends Model
                     ->get();
     }
 
+    public static function latestUpdatedPaginate()
+    {
+        return Manga::orderBy('updated_at', 'desc')
+                        ->paginate(25);
+    }
+
     public static function withChaptersScan()
     {
         return Manga::with([
@@ -134,6 +140,13 @@ class Manga extends Model
                 'chapters.comments.user' => function($q) {
                     $q->select('users.id', 'users.name', 'users.profile_image');
         }]);
+    }
+
+    public static function genRandomGenres()
+    {
+        $genre_key_array = array_rand(self::$genres, random_int(2, 7));
+        $genres = self::convertGenreKey($genre_key_array);
+        return implode('#', $genres);
     }
 
     public function scanlator()

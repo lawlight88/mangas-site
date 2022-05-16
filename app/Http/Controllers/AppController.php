@@ -12,8 +12,7 @@ class AppController extends Controller
     public function index()
     {
         $mangas_pop = Manga::getIndexMangas(limit:5, skip:0); //
-        $mangas_new = Manga::getIndexMangas(limit:5, skip:5); //
-        // orderBy('updated_at', 'desc')... when store //
+        $mangas_new = Manga::latestUpdatedPaginate();
 
         $user = null;
         if(Auth::check())

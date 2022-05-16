@@ -14,4 +14,7 @@
             @include('_partials.manga_block')
         @endforeach
     </div>
+    <div class="d-flex justify-content-center mb-4">
+        {{ $mangas_new->links() }}
+    </div>
 @endsection
