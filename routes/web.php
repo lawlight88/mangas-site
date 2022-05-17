@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::put('/update/{scan}', 'update')->name('update');
             Route::delete('/delete/{scan}', 'delete')->name('delete');
             Route::get('/{id_scan}/m', 'mgmtMangasView')->name('mangas');
+            Route::put('/{scan}/m/{manga}', 'removeManga')->name('manga.remove');
             Route::get('/{id_scan}/{member_edit?}', 'mgmtScanView')->name('view');
         });
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreScanlatorRequest;
 use App\Http\Requests\UpdateScanlatorRequest;
+use App\Models\Manga;
 use App\Models\Role;
 use App\Models\Scanlator;
 use App\Models\User;
@@ -156,5 +157,16 @@ class ScanlatorController extends Controller
         $scan->mangas = $scan->mangasPaginate();
 
         return view('manga.management.scan_mangas', compact('scan'));
+    }
+
+    public function removeManga(Scanlator $scan, Manga $manga)
+    {
+        $this->authorize('removeManga', [$scan, $manga]);
+
+        $manga->update([
+            'id_scanlator' => null
+        ]);
+        
+        return back();
     }
 }

@@ -33,11 +33,11 @@
                         <div class="mb-1 row">
                             <div class="col-9">Today Views:</div>
                             <div class="col-3 d-flex justify-content-end">
-                                <form action="#" method="post" class="d-inline">
+                                <form action="{{ route('scan.manga.remove', ['scan' => $scan, 'manga' => $manga]) }}" method="post" class="d-inline">
                                     @method('put')
                                     @csrf
                                     <a href="#" class="text-light btn fa d-inline"><i class="fas fa-edit text-info"></i></a>
-                                    @can('removeManga', $scan)
+                                    @can('removeManga', [$scan, $manga])
                                         <button type="submit" class="text-light btn fa d-inline"><i class="fa-solid fa-x text-danger"></i></button>
                                     @endcan
                                 </form>
