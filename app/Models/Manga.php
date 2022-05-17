@@ -57,6 +57,7 @@ class Manga extends Model
         'id',
         'cover',
         'id_scanlator',
+        'last_chapter_uploaded_at',
     ];
 
     protected $casts = [
@@ -93,7 +94,8 @@ class Manga extends Model
         return $genres_converted;
     }
 
-    public static function getIndexMangas(int $limit = 25, int $skip = 0) {
+    public static function getIndexMangas(int $limit = 25, int $skip = 0)
+    {
         return Manga::skip($skip)
                     ->limit($limit)
                     ->get();
@@ -113,6 +115,13 @@ class Manga extends Model
             },
             'scanlator',
         ]);
+    }
+
+    public function orderedChaptersPaginate()
+    {
+        $this->chapters = Chapter::where('id_manga', $this->id)
+                                    ->orderBy('order', 'asc')
+                                    ->paginate(25);
     }
 
     public static function mangaViewQuery(int $chapter_order, int $page_order)

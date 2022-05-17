@@ -36,4 +36,24 @@ class MangaController extends Controller
         return redirect()->route('manga.index'); //change
     }
 
+    public function removeFromScan(Manga $manga)
+    {
+        $this->authorize('removeFromScan', $manga);
+
+        $manga->update([
+            'id_scanlator' => null
+        ]);
+        
+        return back();
+    }
+
+    public function edit(Manga $manga)
+    {
+        $this->authorize('edit', $manga);
+
+        $manga->orderedChaptersPaginate();
+
+        return view('manga.management.scan_manga_edit', compact('manga'));
+    }
+
 }

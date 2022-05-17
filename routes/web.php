@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     UserController,
     ScanlatorController,
     RequestController,
-    InviteController
+    InviteController,
+    ChapterController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -65,6 +66,17 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::get('/create', 'create')->name('create');
             Route::post('/create', 'store');
+            Route::put('/m/{manga}', 'removeFromScan')->name('scan.remove');
+            Route::get('/m/{manga}', 'edit')->name('edit');
+        });
+
+        Route::group([
+            'controller' => ChapterController::class,
+            'as' => 'chapter.',
+            'prefix' => 'chapter',
+        ], function() {
+            Route::get('/c/{chapter}', 'edit')->name('edit');
+            Route::delete('/c/{chapter}', 'delete')->name('delete');
         });
 
         Route::group([
@@ -79,7 +91,6 @@ Route::group(['middleware' => 'auth'], function() {
             Route::put('/update/{scan}', 'update')->name('update');
             Route::delete('/delete/{scan}', 'delete')->name('delete');
             Route::get('/{id_scan}/m', 'mgmtMangasView')->name('mangas');
-            Route::put('/{scan}/m/{manga}', 'removeManga')->name('manga.remove');
             Route::get('/{id_scan}/{member_edit?}', 'mgmtScanView')->name('view');
         });
 

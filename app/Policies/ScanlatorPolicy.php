@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Chapter;
 use App\Models\Manga;
 use App\Models\Role;
 use App\Models\Scanlator;
@@ -42,12 +43,5 @@ class ScanlatorPolicy
     {
         return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER]) && $user->id_scanlator == $id_scan
                                                                                     || $user->role == Role::IS_ADMIN;
-    }
-
-    public function removeManga(User $user, Scanlator $scan, Manga $manga)
-    {
-        return $user->role == Role::IS_SCAN_LEADER && $user->id_scanlator == $scan->id
-                                                    && $scan->id == $manga->id_scanlator
-                                                    || $user->role == Role::IS_ADMIN;
     }
 }

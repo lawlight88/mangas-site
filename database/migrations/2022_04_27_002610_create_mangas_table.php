@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('genres');
             $table->string('cover');
             $table->foreignId('id_scanlator')->nullable()->default(null)->constrained('scanlators');
+            $table->dateTime('last_chapter_uploaded_at')->nullable()->default(null);
             $table->timestamps();
         });
     }
