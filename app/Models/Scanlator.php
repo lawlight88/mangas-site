@@ -41,9 +41,27 @@ class Scanlator extends Model
                             ->paginate(25);
     }
 
+    public static function withScanInfo()
+    {
+        return Scanlator::with([
+                                'leader',
+                                'mangas' => function($q) {
+                                    $q->select('id', 'name', 'id_scanlator')
+                                        ->limit(3);
+                                }
+                            ])
+                            ->withCount('mangas'); //all
+    }
+
+    public function mangasPaginate()
+    {
+        return Manga::where('id_scanlator', $this->id)
+                        ->paginate(30);
+    }
+
     public function mangas()
     {
-        return $this->hasMany(Manga::class, 'scanlator');
+        return $this->hasMany(Manga::class, 'id_scanlator');
     }
 
     public function requests()

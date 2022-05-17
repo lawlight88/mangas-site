@@ -30,7 +30,7 @@ class ScanlatorController extends Controller
 
     public function view(int $id_scan)
     {
-        if(!$scan = Scanlator::with('leader')->find($id_scan))
+        if(!$scan = Scanlator::withScanInfo()->find($id_scan))
             return back();
 
         $scan->members = $scan->membersPaginate();
@@ -44,7 +44,7 @@ class ScanlatorController extends Controller
         if($member_edit)
             $this->authorize('editScanRole', $member_edit);
 
-        if(!$scan = Scanlator::with('leader')->find($id_scan))
+        if(!$scan = Scanlator::withScanInfo()->find($id_scan))
             return back();
 
         $scan->members = $scan->membersPaginate();
@@ -134,5 +134,27 @@ class ScanlatorController extends Controller
         $scan->delete();
 
         return redirect()->route('app.index');
+    }
+
+    public function mangasView(int $id_scan)
+    {
+        if(!$scan = Scanlator::select('id', 'name')->find($id_scan))
+            return back();
+
+        $scan->mangas = $scan->mangasPaginate();
+
+        return view('scan_mangas', compact('scan'));
+    }
+
+    public function mgmtMangasView(int $id_scan)
+    {
+        $this->authorize('mgmtMangasView', [Scanlator::class, $id_scan]);
+
+        if(!$scan = Scanlator::select('id', 'name')->find($id_scan))
+            return back();
+
+        $scan->mangas = $scan->mangasPaginate();
+
+        return view('manga.management.scan_mangas', compact('scan'));
     }
 }

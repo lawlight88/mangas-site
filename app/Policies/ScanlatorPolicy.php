@@ -36,4 +36,16 @@ class ScanlatorPolicy
     {
         return $user->role == Role::IS_ADMIN || $scan->id_leader == $user->id;
     }
+
+    public function mgmtMangasView(User $user, int|null $id_scan)
+    {
+        return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER]) && $user->id_scanlator == $id_scan
+                                                                                    || $user->role == Role::IS_ADMIN;
+    }
+
+    public function removeManga(User $user, Scanlator $scan)
+    {
+        return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER]) && $user->id_scanlator == $scan->id
+                                                                                    || $user->role == Role::IS_ADMIN;
+    }
 }

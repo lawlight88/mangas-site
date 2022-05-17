@@ -15,17 +15,30 @@
                 </div> 
             </div>
         @endif
-        <div>Leader: <a class="text-info" href="{{ route('user.profile', $scan->leader->id) }}">{{ $scan->leader->name }}</a></div>
-        <div class="d-flex justify-content-between">
-            <span>Main Mangas: ...</span>
+        <div>Leader: <a class="text-light" href="{{ route('user.profile', $scan->leader->id) }}">{{ $scan->leader->name }}</a></div>
+        <div class="row">
+            <div class="col-md-9">
+                <a href="{{ route('app.scan.mangas', $scan->id) }}" class="text-decoration-none text-info">Mangas: </a>
+                @if (empty($scan->mangas->first()))
+                    <span class="text-warning">None</span>
+                @else
+                    @foreach ($scan->mangas as $key => $manga)
+                        <a href="{{ route('app.manga.main', $manga->id) }}" class="text-light">{{ $manga->name }}</a>
+                        {{ ($key+1) != $scan->mangas->count() ? ',' : null }}
+                        {{ ($key+1) == $scan->mangas->count() && ($key+1) != $scan->mangas_count ? '...' : null }}
+                    @endforeach
+                @endif
+            </div>
             @can('update', $scan)
-                <a href="{{ route('scan.edit', $scan->id) }}" class="btn btn-info text-light">Edit</a>
+                <div class="col-md-3 d-flex justify-content-end">
+                    <a href="{{ route('scan.edit', $scan->id) }}" class="btn btn-info text-light">Edit</a>
+                </div>
             @endcan
         </div>
     </div>
     <div class="col-12 mt-3">
-        @foreach ($scan->members as $member)
-            <div class="list-group">
+        <div class="list-group">
+            @foreach ($scan->members as $member)
                 <div class="list-group-item list-group-item-action flex-column align-items-start bg-light-1">
                     <div class="d-flex w-100 justify-content-between">
                         <a href="{{ route('user.profile', $member->id) }}" class="h5 mb-1 text-decoration-none text-dark">
@@ -41,7 +54,7 @@
                             <span class="mb-1">{{ $member->scan_role }}</span>
                         </div>
                         <div class="col-3 d-flex justify-content-end">
-                            @if (!$member_edit)
+                            @if (!isset($member_edit) && Request::routeIs('scan.view'))
                                 <form action="{{ route('user.scan.remove', $member->id) }}" method="post" class="d-inline">
                                     @method('put')
                                     @csrf
@@ -54,7 +67,7 @@
                                 </form>
                             @endif
                         </div>
-                        @if ($member_edit && $member_edit->id == $member->id && Auth::user()->can('editScanRole', $member_edit))
+                        @if (isset($member_edit) && Request::routeIs('scan.view') && $member_edit->id == $member->id && Auth::user()->can('editScanRole', $member_edit))
                             <div class="col-9">
                                 <form action="{{ route('user.scan.role.edit', $member) }}" method="post">
                                     @csrf
@@ -68,8 +81,8 @@
                         @endif
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
     <div class="d-flex justify-content-center mt-3">
         {{ $scan->members->links() }}

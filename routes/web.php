@@ -28,6 +28,7 @@ Route::group([
 
     Route::group(['controller' => ScanlatorController::class], function() {
         Route::get('/scans', 'allScans')->name('scans');
+        Route::get('/scan/{scan}/m', 'mangasView')->name('scan.mangas');
         Route::get('/scan/{id_scan}', 'view')->name('scan.view');
     });
 });
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::get('/edit/{id_scan}', 'edit')->name('edit');
             Route::put('/update/{scan}', 'update')->name('update');
             Route::delete('/delete/{scan}', 'delete')->name('delete');
+            Route::get('/{id_scan}/m', 'mgmtMangasView')->name('mangas');
             Route::get('/{id_scan}/{member_edit?}', 'mgmtScanView')->name('view');
         });
 

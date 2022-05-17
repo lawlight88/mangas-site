@@ -42,7 +42,11 @@
                         @can('adminRequests', \App\Models\Request::class)
                             <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.admin') }}">Requests</a></li>
                         @endcan
-                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="">Scan's Mangas</a></li>
+                        @can('mgmtMangasView', [\App\Models\Scanlator::class, Auth::user()->id_scanlator])
+                            @if (!is_null(Auth::user()->id_scanlator))
+                                <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.mangas', Auth::user()->id_scanlator) }}">Scan's Mangas</a></li>
+                            @endif
+                        @endcan
                         <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.history') }}">History</a></li>
 					</ul>
 				</aside>
