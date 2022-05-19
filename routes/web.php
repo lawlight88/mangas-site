@@ -78,7 +78,7 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::get('/{chapter}', 'edit')->name('edit');
             Route::delete('/{chapter}', 'delete')->name('delete');
-            Route::post('/upload/{manga}', 'upload')->name('upload');
+            Route::post('/upload/{manga}', 'uploadPreview')->name('upload');
             Route::get('/upload/{manga}', 'continueUpload')->name('upload.continue');
             Route::get('/cancel/{manga}', 'cancelUpload')->name('upload.cancel');
         });
@@ -89,6 +89,7 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::put('/order/{manga}', 'orderOnUpload')->name('order');
             Route::get('/remove/{manga}/{order}', 'removeOnUpload')->name('remove');
+            Route::post('/add/{manga}', 'add')->name('add');
         });
 
         Route::group([

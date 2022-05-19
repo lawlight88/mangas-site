@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PageOrderUpdateRequest;
+use App\Http\Requests\PageStoreRequest;
 use App\Models\Manga;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
@@ -22,12 +22,9 @@ class PageController extends Controller
         foreach($orders as $old_order => $new_order) {
             $new_path = str_replace("/$old_order/", "/$new_order/", $old_paths[$old_order]);
             Storage::move($old_paths[$old_order], $new_path);
-            $paths[$new_order] = "storage/$new_path";
         }
 
-        ksort($paths);
-
-        return view('manga.management.chapter_upload', compact('paths', 'manga'));
+        return redirect()->route('chapter.upload.continue', $manga);
     }
 
     public function removeOnUpload(Manga $manga, int $order)
@@ -50,6 +47,20 @@ class PageController extends Controller
         }
 
         Storage::deleteDirectory("$temp_dir/$total_pages");
+
+        return redirect()->route('chapter.upload.continue', $manga);
+    }
+
+    public function add(Manga $manga, PageStoreRequest $req)
+    {
+        $this->authorize('addMorePages', $manga);
+
+        $pages = $req->file('pages');
+        $temp_dir = $manga->getTempFolderPath();
+        $qty_files = count(Storage::allFiles($temp_dir));
+        foreach($pages as $page) {
+            $page->store("$temp_dir/".++$qty_files);
+        }
 
         return redirect()->route('chapter.upload.continue', $manga);
     }

@@ -24,7 +24,7 @@ class ChapterController extends Controller
         dd(func_get_args());
     }
 
-    public function upload(Manga $manga, PageStoreRequest $req)
+    public function uploadPreview(Manga $manga, PageStoreRequest $req)
     {
         $this->authorize('uploadChapter', $manga);
 
@@ -33,10 +33,10 @@ class ChapterController extends Controller
 
         $pages = $req->file('pages');
         foreach($pages as $key => $page) {
-            $paths[++$key] = 'storage/' . $page->store("$temp_dir/$key");
+            $page->store("$temp_dir/".++$key);
         }
         
-        return view('manga.management.chapter_upload', compact('paths', 'manga'));
+        return redirect()->route('chapter.upload.continue', $manga);
     }
 
     public function continueUpload(Manga $manga)

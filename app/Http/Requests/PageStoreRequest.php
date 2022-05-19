@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Storage;
 
 class PageStoreRequest extends FormRequest
 {
@@ -13,8 +14,14 @@ class PageStoreRequest extends FormRequest
 
     public function rules()
     {
+        $max = 100;
+        if(url()->previous() != route('manga.edit', $this->manga)) {
+            $qty_temp_files = count(Storage::allFiles($this->manga->getTempFolderPath()));
+            $max = 100 - $qty_temp_files;
+        }
+
         return [
-            'pages' => 'required|array|min:2|max:100',
+            'pages' => "required|array|min:1|max:$max",
             'pages.*' => 'required|max:2048|mimes:jpeg,jpg,png,pdf'
         ];
     }
@@ -23,7 +30,7 @@ class PageStoreRequest extends FormRequest
     {
         return [
             'pages.required' => 'There are not any image.',
-            'pages.min' => 'It is necessary at least 2 images.',
+            'pages.min' => 'It is necessary at least 1 image.',
             'pages.*.required' => 'There are not any image.',
             'pages.*.mimes' => 'The files must be of the following types: :values.'
         ];

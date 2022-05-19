@@ -34,5 +34,16 @@
             <button class="btn btn-success text-light" {{ count($paths) <= 2 ? 'disabled' : null }} type="submit" formaction="#">Upload</button>
         </div>
     </form>
+    <form action="{{ route('page.add', $manga) }}" method="post" enctype="multipart/form-data">
+        <div class="row mt-2 justify-content-end">
+            @csrf
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="file" name="pages[]" class="form-control" multiple>
+                    <button class="btn btn-info text-light" type="submit">Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
 
 @endsection
