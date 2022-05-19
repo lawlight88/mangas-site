@@ -26,7 +26,34 @@ class PageController extends Controller
         }
 
         ksort($paths);
-        
+
         return view('manga.management.chapter_upload', compact('paths', 'manga'));
+    }
+
+    public function removeOnUpload(Manga $manga, int $order)
+    {
+        $this->authorize('removePagesOnUpload', $manga);
+
+        $temp_dir = $manga->getTempFolderPath();
+        $total_pages = count(Storage::allFiles($temp_dir));
+        $resting_pages = $total_pages - $order;
+
+        $files = Storage::files("$temp_dir/$order");
+        Storage::delete($files);
+
+        if($resting_pages > 0) {
+            for($i = ++$order; $i <= $total_pages; $i++) {
+                $file_old_path = Storage::files("$temp_dir/$i")[0];
+                $file_new_path = str_replace("/$i/", '/'.($i - 1).'/', $file_old_path);
+                Storage::move($file_old_path, $file_new_path);
+            }
+        }
+
+        Storage::deleteDirectory("$temp_dir/$total_pages");
+
+        if(count(Storage::allFiles($temp_dir)) < 2)
+            return redirect()->route('manga.edit', $manga);
+
+        return redirect()->route('chapter.upload.continue', $manga);
     }
 }

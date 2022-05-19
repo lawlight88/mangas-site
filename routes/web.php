@@ -87,6 +87,7 @@ Route::group(['middleware' => 'auth'], function() {
             'prefix' => 'p',
         ], function() {
             Route::put('/order/{manga}', 'orderOnUpload')->name('order');
+            Route::get('/remove/{manga}/{order}', 'removeOnUpload')->name('remove');
         });
 
         Route::group([

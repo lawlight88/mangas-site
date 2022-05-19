@@ -14,12 +14,15 @@
             @foreach ($paths as $order => $path)
                 <div class="img-block d-inline-block bg-dark-1 mb-1">
                     <a href="{{ asset($path) }}" target="_blank">
-                        <img src="{{ asset($path) }}" alt="page {{$order}}" class="img-fluid">
+                        <img src="{{ asset($path) }}" alt="page {{$order}}" class="img-fluid d-block mx-auto">
                     </a>
                     <div class="row justify-content-center my-1">
-                        <div class="col-3">
+                        <div class="col-5">
                             {{-- <input type="number" name="order" min="1" max="{{count($paths)}}" placeholder="{{$order}}" class="form-control form-control-sm"> --}}
-                            <input type="number" name="orders[{{$order}}]" min="1" max="{{count($paths)}}" placeholder="{{$order}}" value="{{ old("orders.$order") ?? $order }}" class="form-control form-control-sm">
+                            <div class="input-group mt-2">
+                                <input type="number" name="orders[{{$order}}]" min="1" max="{{count($paths)}}" placeholder="{{$order}}" value="{{ old("orders.$order") ?? $order }}" class="form-control form-control-sm">
+                                <a href="{{ route('page.remove', ['manga' => $manga, 'order' => $order]) }}" class="btn btn-small btn-danger"><i class="fa-solid fa-x fa-sm text-light"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>

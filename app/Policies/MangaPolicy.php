@@ -34,4 +34,9 @@ class MangaPolicy
     {
         return self::edit($user, $manga);
     }
+
+    public function removePagesOnUpload(User $user, Manga $manga)
+    {
+        return self::edit($user, $manga);
+    }
 }
