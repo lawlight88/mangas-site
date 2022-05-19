@@ -51,9 +51,6 @@ class PageController extends Controller
 
         Storage::deleteDirectory("$temp_dir/$total_pages");
 
-        if(count(Storage::allFiles($temp_dir)) < 2)
-            return redirect()->route('manga.edit', $manga);
-
         return redirect()->route('chapter.upload.continue', $manga);
     }
 }

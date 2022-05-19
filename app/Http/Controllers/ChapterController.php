@@ -33,9 +33,6 @@ class ChapterController extends Controller
 
         $pages = $req->file('pages');
         foreach($pages as $key => $page) {
-        // foreach($pages as $key => $page) {
-            // $ext = $page->extension();
-            // $paths[] = 'storage/' . $page->storeAs($temp_dir, ++$key.".$ext");
             $paths[++$key] = 'storage/' . $page->store("$temp_dir/$key");
         }
         
@@ -56,5 +53,15 @@ class ChapterController extends Controller
         }
 
         return view('manga.management.chapter_upload', compact('paths', 'manga'));
+    }
+
+    public function cancelUpload(Manga $manga)
+    {
+        $this->authorize('cancelUpload', $manga);
+
+        $temp_dir = $manga->getTempFolderPath();
+        Storage::deleteDirectory($temp_dir);
+
+        return redirect()->route('manga.edit', $manga);
     }
 }

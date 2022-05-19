@@ -39,4 +39,9 @@ class MangaPolicy
     {
         return self::edit($user, $manga);
     }
+
+    public function cancelUpload(User $user, Manga $manga)
+    {
+        return self::edit($user, $manga);
+    }
 }

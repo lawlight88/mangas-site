@@ -29,8 +29,9 @@
             @endforeach
         </div>
         <div class="text-end mt-4">
+            <a href="{{ route('chapter.upload.cancel', $manga) }}" class="btn btn-danger text-light">Cancel</a>
             <button class="btn btn-primary text-light" type="submit">Edit Order</button>
-            <button class="btn btn-success text-light" type="submit" formaction="#">Upload</button>
+            <button class="btn btn-success text-light" {{ count($paths) <= 2 ? 'disabled' : null }} type="submit" formaction="#">Upload</button>
         </div>
     </form>
 
