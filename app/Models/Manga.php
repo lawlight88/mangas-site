@@ -124,6 +124,11 @@ class Manga extends Model
                                     ->paginate(25);
     }
 
+    public function getTempFolderPath()
+    {
+        return "mangas/$this->id/temp";
+    }
+
     public static function mangaViewQuery(int $chapter_order, int $page_order)
     {
         return Manga::query()->select('id', 'name')

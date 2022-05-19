@@ -8,7 +8,8 @@ use App\Http\Controllers\{
     ScanlatorController,
     RequestController,
     InviteController,
-    ChapterController
+    ChapterController,
+    PageController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -66,17 +67,26 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::get('/create', 'create')->name('create');
             Route::post('/create', 'store');
-            Route::put('/m/{manga}', 'removeFromScan')->name('scan.remove');
-            Route::get('/m/{manga}', 'edit')->name('edit');
+            Route::put('/{manga}', 'removeFromScan')->name('scan.remove');
+            Route::get('/{manga}', 'edit')->name('edit');
         });
 
         Route::group([
             'controller' => ChapterController::class,
             'as' => 'chapter.',
-            'prefix' => 'chapter',
+            'prefix' => 'c',
         ], function() {
-            Route::get('/c/{chapter}', 'edit')->name('edit');
-            Route::delete('/c/{chapter}', 'delete')->name('delete');
+            Route::get('/{chapter}', 'edit')->name('edit');
+            Route::delete('/{chapter}', 'delete')->name('delete');
+            Route::post('/upload/{manga}', 'upload')->name('upload');
+            Route::get('/upload/{manga}', 'continueUpload')->name('upload.continue');
+        });
+        Route::group([
+            'controller' => PageController::class,
+            'as' => 'page.',
+            'prefix' => 'p',
+        ], function() {
+            Route::put('/order/{manga}', 'orderOnUpload')->name('order');
         });
 
         Route::group([

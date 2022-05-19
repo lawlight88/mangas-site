@@ -6,7 +6,6 @@ use App\Http\Requests\StoreUpdateMangaRequest;
 use App\Models\Manga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class MangaController extends Controller
 {
@@ -55,5 +54,4 @@ class MangaController extends Controller
 
         return view('manga.management.scan_manga_edit', compact('manga'));
     }
-
 }

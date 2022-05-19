@@ -4,6 +4,30 @@
 
 @section('content')
 
+    @include('includes.validation-form')
+
+    <div class="d-flex justify-content-center mb-3">
+        <div class="card bg-light-1">
+            <div class="card-body">
+                <form action="{{ route('chapter.upload', $manga) }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="pages[]" class="form-control" multiple>
+                    <div class="text-center mt-3">
+                        <button type="submit" href="{{ route('chapter.upload', $manga) }}" class="btn btn-info text-light">Upload New Chapter</button>
+                        <br>
+                        <small class="text-secondary">Only jpg, png and pdf format are supported.</small>
+                    </div>
+                    @if (Storage::allFiles($manga->getTempFolderPath()))
+                        <hr class="text-dark">
+                        <div class="text-center">
+                            <a href="{{ route('chapter.upload.continue', $manga) }}" class="btn btn-secondary">Continue</a>
+                        </div>
+                    @endif
+                </form>
+            </div>
+        </div>
+    </div>
+
     @if (empty($manga->chapters->first()))
         <div class="text-center my-5">
             <h5>
