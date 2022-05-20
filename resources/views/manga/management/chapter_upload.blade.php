@@ -28,9 +28,11 @@
             @endfor
         </div>
         <div class="text-end mt-4">
-            <a href="{{ route('chapter.upload.cancel', $manga) }}" class="btn btn-danger text-light">Cancel</a>
-            <button class="btn btn-primary text-light" type="submit">Edit Order</button>
-            <a class="btn btn-success text-light {{ $qty_temp_files <= 2 ? 'disabled' : null }}" formaction="#">Upload</a>
+            <span class="btn-group" role="group">
+                <a href="{{ route('chapter.upload.cancel', $manga) }}" class="btn btn-danger text-light">Cancel</a>
+                <button class="btn btn-primary text-light" type="submit">Edit Order</button>
+                <a href="{{ route('chapter.upload.finish', $manga) }}" class="btn btn-success text-light {{ $qty_temp_files < 2 ? 'disabled' : null }}">Upload</a>
+            </span>
         </div>
     </form>
     <form action="{{ route('page.add', $manga) }}" method="post" enctype="multipart/form-data">

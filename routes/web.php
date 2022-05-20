@@ -80,6 +80,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::delete('/{chapter}', 'delete')->name('delete');
             Route::post('/upload/{manga}', 'uploadPreview')->name('upload');
             Route::get('/upload/{manga}', 'continueUpload')->name('upload.continue');
+            Route::get('/upload/{manga}/finish', 'upload')->name('upload.finish');
             Route::get('/cancel/{manga}', 'cancelUpload')->name('upload.cancel');
         });
         Route::group([

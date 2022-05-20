@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('pages', function (Blueprint $table) {
-            $table->foreignId('id_chapter')->constrained('chapters');
+            $table->foreignId('id_chapter')->constrained('chapters')->onDelete('cascade');
             $table->integer('order')->unsigned();
             $table->string('path')->unique();
         });
