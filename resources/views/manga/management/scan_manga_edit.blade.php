@@ -17,7 +17,7 @@
                         <br>
                         <small class="text-secondary">Only jpg, png and pdf format are supported.</small>
                     </div>
-                    @if (Storage::allFiles($manga->getTempFolderPath()))
+                    @if (Storage::disk('temp')->allFiles($manga->id))
                         <hr class="text-dark">
                         <div class="text-center">
                             <a href="{{ route('chapter.upload.continue', $manga) }}" class="btn btn-secondary">Continue</a>

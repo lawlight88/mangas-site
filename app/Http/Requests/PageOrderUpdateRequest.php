@@ -16,7 +16,7 @@ class PageOrderUpdateRequest extends FormRequest
 
     public function rules()
     {
-        $qty_temp_files = count(Storage::allFiles($this->manga->getTempFolderPath()));
+        $qty_temp_files = count(Storage::disk('temp')->allFiles($this->manga->id));
 
         return [
             'orders' => "array|required|size:$qty_temp_files", //

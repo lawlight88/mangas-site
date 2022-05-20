@@ -36,6 +36,12 @@ return [
             'throw' => false,
         ],
 
+        'temp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/temp_mangas_upload'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

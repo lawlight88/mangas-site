@@ -11,27 +11,26 @@
         @csrf
         @method('put')
         <div>
-            @foreach ($paths as $order => $path)
+            @for ($order = 1; $order <= $qty_temp_files; $order++)
                 <div class="img-block d-inline-block bg-dark-1 mb-1">
-                    <a href="{{ asset($path) }}" target="_blank">
-                        <img src="{{ asset($path) }}" alt="page {{$order}}" class="img-fluid d-block mx-auto">
+                    <a href="{{ route('page.display', ['manga' => $manga, 'order' => $order]) }}" target="_blank">
+                        <img src="{{ route('page.display', ['manga' => $manga, 'order' => $order]) }}" alt="page {{$order}}" class="img-fluid d-block mx-auto">
                     </a>
                     <div class="row justify-content-center my-1">
                         <div class="col-5">
-                            {{-- <input type="number" name="order" min="1" max="{{count($paths)}}" placeholder="{{$order}}" class="form-control form-control-sm"> --}}
                             <div class="input-group mt-2">
-                                <input type="number" name="orders[{{$order}}]" min="1" max="{{count($paths)}}" placeholder="{{$order}}" value="{{ old("orders.$order") ?? $order }}" class="form-control form-control-sm">
+                                <input type="number" name="orders[{{$order}}]" min="1" max="{{$qty_temp_files}}" placeholder="{{$order}}" value="{{ old("orders.$order") ?? $order }}" class="form-control form-control-sm">
                                 <a href="{{ route('page.remove', ['manga' => $manga, 'order' => $order]) }}" class="btn btn-small btn-danger"><i class="fa-solid fa-x fa-sm text-light"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @endfor
         </div>
         <div class="text-end mt-4">
             <a href="{{ route('chapter.upload.cancel', $manga) }}" class="btn btn-danger text-light">Cancel</a>
             <button class="btn btn-primary text-light" type="submit">Edit Order</button>
-            <button class="btn btn-success text-light" {{ count($paths) <= 2 ? 'disabled' : null }} type="submit" formaction="#">Upload</button>
+            <a class="btn btn-success text-light {{ $qty_temp_files <= 2 ? 'disabled' : null }}" formaction="#">Upload</a>
         </div>
     </form>
     <form action="{{ route('page.add', $manga) }}" method="post" enctype="multipart/form-data">

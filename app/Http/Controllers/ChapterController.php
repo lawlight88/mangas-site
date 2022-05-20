@@ -27,13 +27,12 @@ class ChapterController extends Controller
     public function uploadPreview(Manga $manga, PageStoreRequest $req)
     {
         $this->authorize('uploadChapter', $manga);
-
-        $temp_dir = $manga->getTempFolderPath();
-        Storage::deleteDirectory($temp_dir);
+        
+        Storage::disk('temp')->deleteDirectory($manga->id);
 
         $pages = $req->file('pages');
         foreach($pages as $key => $page) {
-            $page->store("$temp_dir/".++$key);
+            Storage::disk('temp')->put("$manga->id/".++$key, $page);
         }
         
         return redirect()->route('chapter.upload.continue', $manga);
@@ -43,24 +42,17 @@ class ChapterController extends Controller
     {
         $this->authorize('uploadChapter', $manga);
 
-        $temp_dir = $manga->getTempFolderPath();
-        if(!$qty_temp_files = count(Storage::allFiles($temp_dir)))
+        if(!$qty_temp_files = count(Storage::disk('temp')->allFiles($manga->id)))
             return back();
 
-        for($order = 1; $order <= $qty_temp_files; $order++) {
-            $file_path = Storage::files("$temp_dir/$order")[0];
-            $paths[$order] = "storage/$file_path";
-        }
-
-        return view('manga.management.chapter_upload', compact('paths', 'manga'));
+        return view('manga.management.chapter_upload', compact('qty_temp_files', 'manga'));
     }
 
     public function cancelUpload(Manga $manga)
     {
         $this->authorize('cancelUpload', $manga);
 
-        $temp_dir = $manga->getTempFolderPath();
-        Storage::deleteDirectory($temp_dir);
+        Storage::disk('temp')->deleteDirectory($manga->id);
 
         return redirect()->route('manga.edit', $manga);
     }
