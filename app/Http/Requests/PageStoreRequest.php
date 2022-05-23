@@ -15,9 +15,13 @@ class PageStoreRequest extends FormRequest
     public function rules()
     {
         $max = 100;
-        if(url()->previous() != route('manga.edit', $this->manga)) {
-            $qty_temp_files = count(Storage::disk('temp')->allFiles($this->manga->id));
-            $max = 100 - $qty_temp_files;
+        if(isset($this->manga)) {
+            if(url()->previous() != route('manga.edit', $this->manga)) {
+                $qty_temp_files = count(Storage::disk('temp')->allFiles($this->manga->id));
+                $max = 100 - $qty_temp_files;
+            }
+        } else {
+            $max = 100 - $this->chapter->pages->count();
         }
 
         return [

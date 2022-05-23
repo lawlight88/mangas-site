@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 
 class Chapter extends Model
 {
@@ -44,6 +45,19 @@ class Chapter extends Model
             $this->pages()
                 ->where('id', $id)
                 ->update(['order' => $order]);
+        }
+    }
+
+    public function addPagesOnEdit(array $pages)
+    {
+        $path = $this->getPath();
+        foreach($pages as $key => $page) {
+            $filepath = $page->store($path);
+            Page::create([
+                'id_chapter' => $this->id,
+                'path' => "storage/$filepath",
+                'order' => $this->pages->count() + ++$key
+            ]);
         }
     }
 

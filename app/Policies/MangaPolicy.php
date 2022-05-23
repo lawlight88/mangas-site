@@ -45,11 +45,6 @@ class MangaPolicy
         return self::edit($user, $manga);
     }
 
-    public function addMorePages(User $user, Manga $manga)
-    {
-        return self::edit($user, $manga);
-    }
-
     public function displayPage(User $user, Manga $manga)
     {
         return self::edit($user, $manga);

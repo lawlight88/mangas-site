@@ -83,7 +83,7 @@ class PageController extends Controller
 
     public function addOnUpload(Manga $manga, PageStoreRequest $req)
     {
-        $this->authorize('addMorePages', $manga);
+        $this->authorize('addOnUpload', [Page::class, $manga]);
 
         $pages = $req->file('pages');
         $qty_files = count(Storage::disk('temp')->allFiles($manga->id));
@@ -92,6 +92,15 @@ class PageController extends Controller
         }
 
         return redirect()->route('chapter.upload.continue', $manga);
+    }
+
+    public function addOnEdit(Chapter $chapter, PageStoreRequest $req)
+    {
+        $this->authorize('addOnEdit', [Page::class, $chapter]);
+
+        $chapter->addPagesOnEdit($req->pages);
+
+        return back();
     }
 
     public function display(Manga $manga, int $order)

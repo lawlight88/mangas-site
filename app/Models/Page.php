@@ -21,7 +21,7 @@ class Page extends Model
 
     public static function upload(Manga $manga, int $upload_chapter_order, int $upload_chapter_id, int $page_order)
     {
-        $chapter = "chapter_$upload_chapter_order";
+        $chapter = "Chapter_$upload_chapter_order";
         $path = "mangas/$manga->id/$chapter";
         $file = Storage::disk('temp')->files("$manga->id/$page_order")[0];
         $file_public_path = "$path/".basename($file);

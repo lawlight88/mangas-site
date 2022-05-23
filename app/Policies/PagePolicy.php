@@ -23,11 +23,21 @@ class PagePolicy
     {
         return self::removeOnEdit($user, $chapter);
     }
+
+    public function addOnEdit(User $user, Chapter $chapter)
+    {
+        return self::removeOnEdit($user, $chapter);
+    }
     
     public function orderOnUpload(User $user, Manga $manga)
     {
         return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER])
                 && $user->id_scanlator == $manga->id_scanlator
                 || $user->role == Role::IS_ADMIN;
+    }
+
+    public function addOnUpload(User $user, Manga $manga)
+    {
+        return self::orderOnUpload($user, $manga);
     }
 }

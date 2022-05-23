@@ -17,7 +17,7 @@
     </div>
     <div class="text-end mt-4">
         <span class="btn-group" role="group">
-            <a href="{{ isset($qty_temp_files) ? route('chapter.upload.cancel', $manga) : route('manga.edit', $manga) }}" class="btn btn-danger text-light">{{ isset($qty_temp_files) ? 'Cancel' : 'Return' }}</a>
+            <a href="{{ isset($qty_temp_files) ? route('chapter.upload.cancel', $manga) : route('manga.edit', $chapter->manga) }}" class="btn btn-danger text-light">{{ isset($qty_temp_files) ? 'Cancel' : 'Return' }}</a>
             <button class="btn btn-primary text-light" type="submit">Edit Order</button>
             @if (isset($qty_temp_files))
                 <a href="{{ route('chapter.upload.finish', $manga) }}" class="btn btn-success text-light {{ $qty_temp_files < 2 || isset($chapter) && $chapter->pages->count() < 2 ? 'disabled' : null }}">Upload</a>
@@ -25,7 +25,7 @@
         </span>
     </div>
 </form>
-<form action="{{ route('page.add', $manga) }}" method="post" enctype="multipart/form-data">
+<form action="{{ isset($qty_temp_files) ? route('page.onUpload.add', $manga) : route('page.onEdit.add', $chapter) }}" method="post" enctype="multipart/form-data">
     <div class="row mt-2 justify-content-end">
         @csrf
         <div class="col-md-4">

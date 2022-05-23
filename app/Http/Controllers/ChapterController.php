@@ -15,10 +15,9 @@ class ChapterController extends Controller
     {
         $this->authorize('edit', $chapter);
 
-        $manga = $chapter->manga;
         $chapter->pages;
 
-        return view('manga.management.chapter_upload', compact('chapter', 'manga'));
+        return view('manga.management.chapter_upload', compact('chapter'));
     }
 
     public function delete(Chapter $chapter)
