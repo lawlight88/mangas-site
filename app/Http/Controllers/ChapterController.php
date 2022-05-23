@@ -33,7 +33,7 @@ class ChapterController extends Controller
 
     public function uploadPreview(Manga $manga, PageStoreRequest $req)
     {
-        $this->authorize('uploadChapter', $manga);
+        $this->authorize('upload', [Chapter::class, $manga]);
         
         Storage::disk('temp')->deleteDirectory($manga->id);
 
@@ -47,7 +47,7 @@ class ChapterController extends Controller
 
     public function upload(Manga $manga)
     {
-        $this->authorize('uploadChapter', $manga);
+        $this->authorize('upload', [Chapter::class, $manga]);
 
         $chapters = Storage::directories("mangas/$manga->id");
         $last_chapter = count($chapters);
@@ -70,7 +70,7 @@ class ChapterController extends Controller
 
     public function continueUpload(Manga $manga)
     {
-        $this->authorize('uploadChapter', $manga);
+        $this->authorize('upload', [Chapter::class, $manga]);
 
         if(!$qty_temp_files = count(Storage::disk('temp')->allFiles($manga->id)))
             return back();
@@ -80,7 +80,7 @@ class ChapterController extends Controller
 
     public function cancelUpload(Manga $manga)
     {
-        $this->authorize('cancelUpload', $manga);
+        $this->authorize('cancelUpload', [Chapter::class, $manga]);
 
         Storage::disk('temp')->deleteDirectory($manga->id);
 

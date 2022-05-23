@@ -41,7 +41,7 @@ class PageController extends Controller
 
     public function removeOnUpload(Manga $manga, int $order)
     {
-        $this->authorize('removePagesOnUpload', $manga);
+        $this->authorize('removeOnUpload', [Page::class, $manga]);
 
         $total_pages = count(Storage::disk('temp')->allFiles($manga->id));
         $resting_pages = $total_pages - $order;
@@ -105,7 +105,7 @@ class PageController extends Controller
 
     public function display(Manga $manga, int $order)
     {
-        $this->authorize('displayPage', $manga);
+        $this->authorize('display', [Page::class, $manga]);
 
         $file = Storage::disk('temp')->files("$manga->id/$order")[0];
         $filepath = config('filesystems.disks.temp.root')."/$file";

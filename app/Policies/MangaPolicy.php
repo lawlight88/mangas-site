@@ -24,29 +24,4 @@ class MangaPolicy
                 && $user->id_scanlator == $manga->id_scanlator
                 || $user->role == Role::IS_ADMIN;
     }
-
-    public function uploadChapter(User $user, Manga $manga)
-    {
-        return self::edit($user, $manga);
-    }
-
-    // public function orderPages(User $user, Manga $manga)
-    // {
-    //     return self::edit($user, $manga);
-    // }
-
-    public function removePagesOnUpload(User $user, Manga $manga)
-    {
-        return self::edit($user, $manga);
-    }
-
-    public function cancelUpload(User $user, Manga $manga)
-    {
-        return self::edit($user, $manga);
-    }
-
-    public function displayPage(User $user, Manga $manga)
-    {
-        return self::edit($user, $manga);
-    }
 }

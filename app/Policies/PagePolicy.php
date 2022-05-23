@@ -40,4 +40,14 @@ class PagePolicy
     {
         return self::orderOnUpload($user, $manga);
     }
+    
+    public function removeOnUpload(User $user, Manga $manga)
+    {
+        return self::orderOnUpload($user, $manga);
+    }
+
+    public function display(User $user, Manga $manga)
+    {
+        return self::orderOnUpload($user, $manga);
+    }
 }

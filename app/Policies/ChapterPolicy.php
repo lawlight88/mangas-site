@@ -23,4 +23,16 @@ class ChapterPolicy
     {
         return self::edit($user, $chapter);
     }
+
+    public function upload(User $user, Manga $manga)
+    {
+        return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER])
+                && $user->id_scanlator == $manga->id_scanlator
+                || $user->role == Role::IS_ADMIN;
+    }
+
+    public function cancelUpload(User $user, Manga $manga)
+    {
+        return self::upload($user, $manga);
+    }
 }
