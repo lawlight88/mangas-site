@@ -38,6 +38,15 @@ class Chapter extends Model
                 ->decrement('order');
     }
 
+    public function updatePagesOrders(array $orders)
+    {
+        foreach($orders as $id => $order) {
+            $this->pages()
+                ->where('id', $id)
+                ->update(['order' => $order]);
+        }
+    }
+
     public function manga()
     {
         return $this->belongsTo(Manga::class, 'id_manga');

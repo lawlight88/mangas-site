@@ -88,11 +88,12 @@ Route::group(['middleware' => 'auth'], function() {
             'as' => 'page.',
             'prefix' => 'p',
         ], function() {
-            Route::put('/order/{manga}', 'orderOnUpload')->name('order');
-            Route::get('/remove/{manga}/{order}', 'removeOnUpload')->name('remove');
+            Route::put('/order/{manga}', 'orderOnUpload')->name('onUpload.order');
+            Route::put('/edit/order/{chapter}', 'orderOnEdit')->name('onEdit.order');
+            Route::get('/remove/{manga}/{order}', 'removeOnUpload')->name('onUpload.remove');
             Route::post('/add/{manga}', 'addOnUpload')->name('add');
             Route::get('/display/{manga}/{order}', 'display')->name('display');
-            Route::get('/edit/remove/{chapter}/{order}', 'removeOnEdit')->name('edit.remove');
+            Route::get('/edit/remove/{chapter}/{order}', 'removeOnEdit')->name('onEdit.remove');
         });
 
         Route::group([

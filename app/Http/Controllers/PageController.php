@@ -6,13 +6,14 @@ use App\Http\Requests\PageOrderUpdateRequest;
 use App\Http\Requests\PageStoreRequest;
 use App\Models\Chapter;
 use App\Models\Manga;
+use App\Models\Page;
 use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
 {
     public function orderOnUpload(Manga $manga, PageOrderUpdateRequest $req)
     {
-        $this->authorize('orderPagesOnUpload', $manga);
+        $this->authorize('orderOnUpload', [Page::class, $manga]);
 
         $orders = $req->orders;
         foreach($orders as $old_order => $new_order) {
@@ -25,6 +26,17 @@ class PageController extends Controller
         }
 
         return redirect()->route('chapter.upload.continue', $manga);
+    }
+
+    public function orderOnEdit(Chapter $chapter, PageOrderUpdateRequest $req)
+    {
+        $this->authorize('orderOnEdit', [Page::class, $chapter]);
+
+        $orders = $req->orders;
+
+        $chapter->updatePagesOrders($orders);
+
+        return back();
     }
 
     public function removeOnUpload(Manga $manga, int $order)
@@ -54,7 +66,8 @@ class PageController extends Controller
     {
         $this->authorize('removeOnEdit', [Page::class, $chapter]);
 
-        if(!in_array($order, range(1, $chapter->pages->count())))
+        if(!in_array($order, range(1, $chapter->pages->count()))
+            || $chapter->pages->count() <= 2)
             return back();
 
         $page = $chapter->getPageByOrder($order);

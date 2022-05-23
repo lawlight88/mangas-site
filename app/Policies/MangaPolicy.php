@@ -30,10 +30,10 @@ class MangaPolicy
         return self::edit($user, $manga);
     }
 
-    public function orderPagesOnUpload(User $user, Manga $manga)
-    {
-        return self::edit($user, $manga);
-    }
+    // public function orderPages(User $user, Manga $manga)
+    // {
+    //     return self::edit($user, $manga);
+    // }
 
     public function removePagesOnUpload(User $user, Manga $manga)
     {

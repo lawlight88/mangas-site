@@ -39,13 +39,19 @@ class Page extends Model
         ]);
     }
 
+    public static function checkOrders(array $orders, int $max)
+    {
+        if($max > 100)
+            $max = 100;
+        $range = range(1, $max);
+        $keys = array_keys($orders);
+
+        return in_array(min($keys), $range)
+            && in_array(max($keys), $range);
+    }
+
     public function chapter()
     {
         return $this->belongsTo(Chapter::class, 'id_chapter');
     }
-
-    // public function manga()
-    // {
-    //     return $this->belongsTo(Manga::class, 'id_manga');
-    // }
 }
