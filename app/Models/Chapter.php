@@ -61,6 +61,22 @@ class Chapter extends Model
         }
     }
 
+    public static function upload(Manga $manga, int $upload_chapter_order, int $n_upload_pages)
+    {
+        $chapter = Chapter::create([
+            'name' => "Chapter $upload_chapter_order",
+            'id_manga' => $manga->id,
+            'order' => $upload_chapter_order,
+        ]);
+
+        for($order = 1; $order <= $n_upload_pages; $order++) {
+            Page::upload(
+                chapter: $chapter,
+                page_order: $order
+            );
+        }
+    }
+
     public function manga()
     {
         return $this->belongsTo(Manga::class, 'id_manga');

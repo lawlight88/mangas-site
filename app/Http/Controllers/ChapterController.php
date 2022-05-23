@@ -57,20 +57,11 @@ class ChapterController extends Controller
         if($n_upload_pages < 2)
             return back();
 
-        $id_chapter = Chapter::create([
-            'name' => "Chapter $upload_chapter_order",
-            'id_manga' => $manga->id,
-            'order' => $upload_chapter_order,
-        ])->id;
-
-        for($order = 1; $order <= $n_upload_pages; $order++) {
-            Page::upload(
-                manga:$manga,
-                upload_chapter_order:$upload_chapter_order,
-                upload_chapter_id:$id_chapter,
-                page_order:$order
-            );
-        }
+        Chapter::upload(
+            manga: $manga,
+            upload_chapter_order: $upload_chapter_order,
+            n_upload_pages: $n_upload_pages,
+        );
 
         Storage::disk('temp')->deleteDirectory($manga->id);
 

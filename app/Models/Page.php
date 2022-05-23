@@ -19,11 +19,10 @@ class Page extends Model
 
     public $timestamps = false;
 
-    public static function upload(Manga $manga, int $upload_chapter_order, int $upload_chapter_id, int $page_order)
+    public static function upload(Chapter $chapter, int $page_order)
     {
-        $chapter = "Chapter_$upload_chapter_order";
-        $path = "mangas/$manga->id/$chapter";
-        $file = Storage::disk('temp')->files("$manga->id/$page_order")[0];
+        $path = "mangas/$chapter->id_manga/Chapter_$chapter->order";
+        $file = Storage::disk('temp')->files("$chapter->id_manga/$page_order")[0];
         $file_public_path = "$path/".basename($file);
 
         $mountManager = new MountManager([
@@ -34,7 +33,7 @@ class Page extends Model
 
         Page::create([
             'order' => $page_order,
-            'id_chapter' => $upload_chapter_id,
+            'id_chapter' => $chapter->id,
             'path' => "storage/$file_public_path",
         ]);
     }
