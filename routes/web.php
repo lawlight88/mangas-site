@@ -90,8 +90,9 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::put('/order/{manga}', 'orderOnUpload')->name('order');
             Route::get('/remove/{manga}/{order}', 'removeOnUpload')->name('remove');
-            Route::post('/add/{manga}', 'add')->name('add');
+            Route::post('/add/{manga}', 'addOnUpload')->name('add');
             Route::get('/display/{manga}/{order}', 'display')->name('display');
+            Route::get('/edit/remove/{chapter}/{order}', 'removeOnEdit')->name('edit.remove');
         });
 
         Route::group([

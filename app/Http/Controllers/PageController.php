@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PageOrderUpdateRequest;
 use App\Http\Requests\PageStoreRequest;
+use App\Models\Chapter;
 use App\Models\Manga;
 use Illuminate\Support\Facades\Storage;
 
@@ -49,7 +50,25 @@ class PageController extends Controller
         return redirect()->route('chapter.upload.continue', $manga);
     }
 
-    public function add(Manga $manga, PageStoreRequest $req)
+    public function removeOnEdit(Chapter $chapter, int $order)
+    {
+        $this->authorize('removeOnEdit', [Page::class, $chapter]);
+
+        if(!in_array($order, range(1, $chapter->pages->count())))
+            return back();
+
+        $page = $chapter->getPageByOrder($order);
+        $path = str_replace('storage/', '', $page->path);
+
+        Storage::delete($path);
+        $page->delete();
+
+        $chapter->rearrangePagesOrder(removed_page_order: $order);
+
+        return back();
+    }
+
+    public function addOnUpload(Manga $manga, PageStoreRequest $req)
     {
         $this->authorize('addMorePages', $manga);
 

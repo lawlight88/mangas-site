@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->foreignId('id_chapter')->constrained('chapters')->onDelete('cascade');
+            $table->id();
             $table->integer('order')->unsigned();
             $table->string('path')->unique();
         });

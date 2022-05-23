@@ -15,14 +15,21 @@ class ChapterController extends Controller
     {
         $this->authorize('edit', $chapter);
 
-        dd(func_get_args());
+        $manga = $chapter->manga;
+        $chapter->pages;
+
+        return view('manga.management.chapter_upload', compact('chapter', 'manga'));
     }
 
     public function delete(Chapter $chapter)
     {
         $this->authorize('delete', $chapter);
 
-        dd(func_get_args());
+        Storage::deleteDirectory($chapter->getPath());
+
+        $chapter->delete();
+
+        return back();
     }
 
     public function uploadPreview(Manga $manga, PageStoreRequest $req)
