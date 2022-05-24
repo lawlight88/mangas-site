@@ -64,6 +64,8 @@ class Manga extends Model
         'ongoing' => 'boolean',
     ];
 
+    public $incrementing = false;
+
     public static function genId()
     {
         $id = [
@@ -77,21 +79,34 @@ class Manga extends Model
         return $validate ? $id['id'] : Manga::genId();
     }
 
-    public static function convertGenreKey(array $data_genres)
+    // public static function convertGenreKey(array $data_genres)
+    // {
+    //     $genres = self::$genres;
+    //     $genres_converted = [];
+
+    //     foreach($data_genres as $genre_key) {
+    //         foreach($genres as $key2 => $genre) {
+    //             if($genre_key == $key2) {
+    //                 $genres_converted[] = $genre;
+    //                 break;
+    //             }
+    //         }
+    //     }
+
+    //     return $genres_converted;
+    // }
+
+    public function convertGenresKeys()
     {
-        $genres = self::$genres;
-        $genres_converted = [];
-
-        foreach($data_genres as $genre_key) {
-            foreach($genres as $key2 => $genre) {
-                if($genre_key == $key2) {
-                    $genres_converted[] = $genre;
-                    break;
-                }
-            }
+        $genres_models = $this->genres;
+        $genres_list = self::$genres;
+        $converted_genres = [];
+        // dd($genres_models);
+        foreach($genres_models as $genre_model) {
+            if(isset($genres_list[$genre_model->genre_key]))
+                $converted_genres[$genre_model->genre_key] = $genres_list[$genre_model->genre_key];
         }
-
-        return $genres_converted;
+        $this->genres = $converted_genres;
     }
 
     public static function getIndexMangas(int $limit = 25, int $skip = 0)
@@ -107,14 +122,16 @@ class Manga extends Model
                         ->paginate(25);
     }
 
-    public static function withChaptersScan()
+    public static function withChaptersScanGenres()
     {
-        return Manga::with([
-            'chapters' => function($q) {
-                $q->orderBy('order', 'asc');
-            },
-            'scanlator',
-        ]);
+        // return Manga::with([
+        //     'chapters' => function($q) {
+        //         $q->orderBy('order', 'asc');
+        //     },
+        //     'scanlator',
+        // ]);
+
+        return Manga::with('chapters', 'scanlator', 'genres');
     }
 
     public function orderedChaptersPaginate()
@@ -151,12 +168,17 @@ class Manga extends Model
         }]);
     }
 
-    public static function genRandomGenres()
-    {
-        $genre_key_array = array_rand(self::$genres, random_int(2, 7));
-        $genres = self::convertGenreKey($genre_key_array);
-        return implode('#', $genres);
-    }
+    // public static function genRandomGenres()
+    // {
+    //     $genre_key_array = array_rand(self::$genres, random_int(2, 7));
+    //     $genres = self::convertGenreKey($genre_key_array);
+    //     return implode('#', $genres);
+    // }
+
+    // public static function getByGenre(int $genre_key)
+    // {
+    //     return Manga::where();
+    // }
 
     public function scanlator()
     {
@@ -170,11 +192,16 @@ class Manga extends Model
 
     public function chapters()
     {
-        return $this->hasMany(Chapter::class, 'id_manga');
+        return $this->hasMany(Chapter::class, 'id_manga')->orderBy('order');
     }
     
     public function pages()
     {
         return $this->hasManyThrough(Page::class, Chapter::class, 'id_manga', 'id_chapter');
+    }
+
+    public function genres()
+    {
+        return $this->hasMany(Genre::class, 'id_manga');
     }
 }

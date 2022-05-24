@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateMangaRequest;
+use App\Models\Genre;
 use App\Models\Manga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,23 +17,27 @@ class MangaController extends Controller
         return view('manga.management.create_manga', compact('user', 'genres'));
     }
 
-    public function store(StoreUpdateMangaRequest $request)
+    public function store(StoreUpdateMangaRequest $req)
     {
-        $data = $request->except('_token', 'genres');
+        $data = $req->except('genres');
         $data['ongoing'] = isset($data['ongoing']);
-        $data['genres'] = Manga::convertGenreKey($request->genres);
-        $data['genres'] = implode('#', $data['genres']);
         $data['id'] = Manga::genId();
 
-        if($cover = $request->cover) {
-            $ext = $cover->extension();
-            $cover_path = $cover->storeAs("mangas/{$data['id']}", "cover.$ext");
-            $data['cover'] = "storage/$cover_path";
+        $cover = $req->cover;
+        $ext = $cover->extension();
+        $cover_path = $cover->storeAs("mangas/{$data['id']}", "cover.$ext");
+        $data['cover'] = "storage/$cover_path";
+
+        $manga = Manga::create($data);
+
+        foreach($req->genres as $genre_key) {
+            Genre::create([
+                'id_manga' => $manga->id,
+                'genre_key' => $genre_key
+            ]);
         }
 
-        Manga::create($data);
-
-        return redirect()->route('manga.index'); //change
+        return redirect()->route('app.index');
     }
 
     public function removeFromScan(Manga $manga)

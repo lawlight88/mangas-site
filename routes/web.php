@@ -26,6 +26,8 @@ Route::group([
         Route::get('/', 'index')->name('index');
         Route::get('/m/{id}', 'mangaMain')->name('manga.main');
         Route::get('/m/{id}/{chapter_order}/{page_order?}/{id_comment_edit?}', 'mangaView')->name('manga.view');
+        Route::get('/genres', 'genres')->name('genres');
+        Route::get('/genre/{genre_key}', 'genre')->name('genre');
     });
 
     Route::group(['controller' => ScanlatorController::class], function() {

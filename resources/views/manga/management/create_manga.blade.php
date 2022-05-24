@@ -24,19 +24,19 @@
 
                 Genres:
                 <div class="row">
-                    @foreach ($genres as $key => $genre)
-                        @if ($key == 0 || $key == 11 || $key == 22)
+                    @foreach ($genres as $genre_key => $genre)
+                        @if (in_array($genre_key, [0, 11, 22]))
                             <div class="col-4">
                         @endif
 
                             <div class="form-check">
-                                <input type="checkbox" name="genres[{{ $key }}]" value="{{ $key }}" id="{{ $genre }}"
-                                    {{ old("genres.$key") ? 'checked="checked"' : null  }}
+                                <input type="checkbox" name="genres[]" value="{{ $genre_key }}" id="{{ $genre }}"
+                                    {{ old("genres.$genre_key") ? 'checked="checked"' : null  }}
                                 >
                                 <label for="{{ $genre }}">{{ Str::ucfirst($genre) }}</label>
                             </div>
 
-                        @if ($key == 10 || $key == 21 || $key == 32)
+                        @if (in_array($genre_key, [10, 21, 32]))
                             </div>
                         @endif
                         

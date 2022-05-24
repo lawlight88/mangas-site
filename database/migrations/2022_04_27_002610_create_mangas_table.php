@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('author');
             $table->text('desc');
             $table->boolean('ongoing')->default(true);
-            $table->string('genres');
             $table->string('cover');
             $table->foreignId('id_scanlator')->nullable()->default(null)->constrained('scanlators');
             $table->dateTime('last_chapter_uploaded_at')->nullable()->default(null);
@@ -41,6 +40,10 @@ return new class extends Migration
         $dirs = Storage::disk('public')->allDirectories();
         foreach($dirs as $dir) {
             Storage::deleteDirectory($dir);
+        }
+        $temp_dirs = Storage::disk('temp')->allDirectories();
+        foreach($temp_dirs as $temp_dir) {
+            Storage::disk('temp')->deleteDirectory($temp_dir);
         }
     }
 };

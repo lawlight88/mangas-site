@@ -23,14 +23,14 @@ class AppController extends Controller
 
     public function mangaMain(int $id)
     {
-        if(!$manga = Manga::withChaptersScan()->find($id))
+        if(!$manga = Manga::withChaptersScanGenres()->find($id))
             return back();
+
+        $manga->convertGenresKeys();
         
         $requested = null;
         if(Auth::check() && Auth::user()->role == Role::IS_SCAN_LEADER && is_null($manga->scanlator))
             $requested = ModelsRequest::checkIfAlreadyRequested(id_requester: Auth::user()->id_scanlator, id_manga: $id);
-        
-        $manga->genres = explode('#', $manga->genres);
 
         return view('manga.main', compact('manga', 'requested'));
     }
@@ -46,5 +46,25 @@ class AppController extends Controller
         $comments = $manga->chapters->first()->comments;
 
         return view('manga.chapter', compact('manga', 'page', 'chapter_order', 'comments', 'id_comment_edit'));
+    }
+
+    public function genres()
+    {
+        $genres = Manga::$genres;
+        return view('genres', compact('genres'));
+    }
+
+    public function genre(int $genre_key)
+    {
+        $genres = Manga::$genres;
+
+        if(!in_array($genre_key, array_keys($genres)))
+            return back();
+
+        dd(Manga::whereHas('genres', function($q) use($genre_key) {
+            $q->where('genre_key', $genre_key);
+        })->get());
+
+        dd($genres[$genre_key]);
     }
 }

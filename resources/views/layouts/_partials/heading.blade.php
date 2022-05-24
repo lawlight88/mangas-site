@@ -16,13 +16,14 @@
             </a>
             <ul class="dropdown-menu text-small">
                 <li><a class="dropdown-item" href="#">Random</a></li>
-                <li><a class="dropdown-item" href="#">Genres</a></li>
+                <li><a class="dropdown-item" href="{{ route('app.genres') }}">Genres</a></li>
                 <li><a class="dropdown-item" href="#">Authors</a></li>
                 <li><a class="dropdown-item" href="{{ route('app.scans') }}">Scans</a></li>
                 <li><hr class="dropdown-divider"></li>
                 @auth
                     @can('adminAllScans', \App\Models\Scanlator::class)
                         <li><a class="dropdown-item" href="{{ route('scan.all') }}">Admin - Scans</a></li>
+                        <li><a class="dropdown-item" href="{{ route('manga.create') }}">Create Manga</a></li>
                     @endcan
                     @can('create', \App\Models\Scanlator::class)
                         <li><a class="dropdown-item" href="{{ route('scan.create') }}">Create Scan</a></li>

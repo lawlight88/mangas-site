@@ -25,6 +25,10 @@
     background-color: #D3D3D3 !important;
 }
 
+.text-success-1 {
+    color: greenyellow;
+}
+
 .list-group-item-dark-1 {
     background-color: #37373800 !important;
     /* background-color: #212529 !important; */
@@ -32,6 +36,10 @@
 
 .text-decoration-none {
     text-decoration: none;
+}
+
+a:hover.grey-hover {
+    color: #36454f88;
 }
 
 .main-cover {

@@ -30,18 +30,18 @@ class MangasSeeder extends Seeder
         for($i = 1; $i <= 10; $i++) {
             $id = Manga::genId();
 
-            $genre_key_array = array_rand(Manga::$genres, random_int(2, 7));
-            $genres = Manga::convertGenreKey($genre_key_array);
-            $one_shot = in_array('one shot', $genres) ? false : null;
-            $genres = implode('#', $genres);
+            // $genre_key_array = array_rand(Manga::$genres, random_int(2, 7));
+            // $genres = Manga::convertGenreKey($genre_key_array);
+            // $one_shot = in_array('one shot', $genres) ? false : null;
+            // $genres = implode('#', $genres);
 
             $m_title= "example-manga#$id";
 
-            $number_of_chapters = is_null($one_shot) ? random_int(3, 5) : 1;
+            $number_of_chapters = random_int(1, 5);
 
             //cover
             $m_path = public_path() . "/storage/mangas/$id";
-            $m_name = "manga#$i";
+            $m_name = "Manga#$id";
             $cover_text = "cover";
             $im = @imagecreate ($width,$height);
 
@@ -57,15 +57,24 @@ class MangasSeeder extends Seeder
             imagedestroy($im);
             //end cover
 
-            Manga::create([
-                'name' => "manga#$i",
-                'id' => $id,
-                'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid censes in Latino fore? Quorum sine causa fieri nihil putandum est. Ille enim occurrentia nescio quae comminiscebatur; Duo Reges: constructio interrete. Ergo illi intellegunt quid Epicurus dicat, ego non intellego? Illa argumenta propria videamus, cur omnia sint paria peccata. Graece donan, Latine voluptatem vocant.',
-                'author' => $faker->name(),
-                'ongoing' => $one_shot ?? rand(0, 1),
-                'genres' => $genres,
-                'cover' => str_replace(public_path().'/', '', $cover_path),
-            ]);
+            Manga::factory()
+                    ->create([
+                        'name' => $m_name,
+                        'id' => $id,
+                        'author' => $faker->name(),
+                        'ongoing' => rand(0, 1),
+                        'cover' => str_replace(public_path().'/', '', $cover_path),
+                    ]);
+
+            // Manga::create([
+            //     'name' => "manga#$i",
+            //     'id' => $id,
+            //     'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid censes in Latino fore? Quorum sine causa fieri nihil putandum est. Ille enim occurrentia nescio quae comminiscebatur; Duo Reges: constructio interrete. Ergo illi intellegunt quid Epicurus dicat, ego non intellego? Illa argumenta propria videamus, cur omnia sint paria peccata. Graece donan, Latine voluptatem vocant.',
+            //     'author' => $faker->name(),
+            //     'ongoing' => $one_shot ?? rand(0, 1),
+            //     // 'genres' => $genres,
+            //     'cover' => str_replace(public_path().'/', '', $cover_path),
+            // ]);
 
             for($b = 1; $b <= $number_of_chapters; $b++) {
                 $m_chapter = "Chapter_$b";

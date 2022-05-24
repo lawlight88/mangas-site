@@ -11,14 +11,19 @@
         <div class="col-md-9">
             <h1>{{ $manga->name }}</h1>
             <h4>Author: {{ $manga->author }}</h4>
-            <small>
-                Genres:
-                @foreach ($manga->genres as $genre)
-                    <a href="#" class="badge bg-secondary rounded-pill text-decoration-none" >{{ $genre }}</a>
-                @endforeach
-            </small><br><br>
-            <p>{{ $manga->desc }}</p>
+            <div class="mb-1">
+                <small>
+                    Genres: <br>
+                    @foreach ($manga->genres as $genre_key => $genre)
+                        <a href="{{ route('app.genre', $genre_key) }}" class="badge grey-hover bg-secondary rounded-pill text-decoration-none" >{{ $genre }}</a>
+                    @endforeach
+                </small>
+            </div>
             <div>
+                <small>Description:</small>
+            </div>
+            <div class="px-3 mb-1">{{ $manga->desc }}</div>
+            <div class="text-success-1">
                 {{ $manga->ongoing ? 'Ongoing' : 'Finished' }}
             </div>
             <small>Chapters: {{ $manga->chapters->count() }}</small><br>
