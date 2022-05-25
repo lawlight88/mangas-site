@@ -15,7 +15,7 @@
                 <small>
                     Genres: <br>
                     @foreach ($manga->genres as $genre_key => $genre)
-                        <a href="{{ route('app.genre', $genre_key) }}" class="badge grey-hover bg-secondary rounded-pill text-decoration-none" >{{ $genre }}</a>
+                        <a href="{{ route('app.genre', $genre_key) }}" class="badge black-hover bg-secondary rounded-pill text-decoration-none" >{{ $genre }}</a>
                     @endforeach
                 </small>
             </div>
@@ -42,6 +42,18 @@
                     <button class="btn {{ is_null($requested) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($requested) ? '' : 'disabled' }} type="submit">Request</button>
                 </form>
             @endcan
+            @auth
+                <form action="{{ route('favorite.create', $manga) }}" method="post" class="mt-2">
+                    @csrf
+
+                    @if (\App\Models\Favorite::isMangaOnFavorites(Auth::id(), $manga->id))
+                        @method('delete')
+                        <button class="btn btn-danger text-light" formaction="{{ route('favorite.remove', $manga) }}" type="submit">Remove from Favorites</button>
+                    @else
+                        <button class="btn btn-warning text-light" type="submit">Favorite</button>
+                    @endif
+                </form>
+            @endauth
         </div>
     </div>
 

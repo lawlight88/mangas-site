@@ -168,6 +168,13 @@ class Manga extends Model
         }]);
     }
 
+    public static function paginateByGenre(int $genre_key)
+    {
+        return Manga::whereHas('genres', function($q) use($genre_key) {
+                        $q->where('genre_key', $genre_key);
+                    })->paginate(25);
+    }
+
     // public static function genRandomGenres()
     // {
     //     $genre_key_array = array_rand(self::$genres, random_int(2, 7));
@@ -178,6 +185,16 @@ class Manga extends Model
     // public static function getByGenre(int $genre_key)
     // {
     //     return Manga::where();
+    // }
+
+    // public static function favoritesMangas()
+    // {
+    //     return Manga::select('name', 'id', 'cover')
+    //                 ->whereHas('favorites', function($q) {
+    //                     $q->where('id_user', Auth::id())
+    //                         ->orderBy('id', 'desc');
+    //                 })
+    //                 ->paginate(25);
     // }
 
     public function scanlator()
@@ -203,5 +220,10 @@ class Manga extends Model
     public function genres()
     {
         return $this->hasMany(Genre::class, 'id_manga');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'id_manga')->orderBy('id', 'desc');
     }
 }

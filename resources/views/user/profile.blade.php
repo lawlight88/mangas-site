@@ -37,31 +37,33 @@
             @endcan
         </div>
         @can('view', [\App\Models\Invite::class, $user])
-            <div class="col-md-3">
-                <div class="text-info">
-                    Invite(s) to Scans:
+            @if ($user->invites->first())
+                <div class="col-md-3">
+                    <div class="text-info">
+                        Invite(s) to Scans:
+                    </div>
+                    <ul class="list-group">
+                        @foreach ($user->invites as $invite)
+                            <li class="list-group-item bg-dark text-light border border-light">
+                                <a href="#" class="text-decoration-none text-primary">{{ $invite->scanlator->name }}</a> 
+                                <span>Scan invited you</span>
+                                <div class="d-flex justify-content-end">
+                                    <form action="{{ route('invite.accept', $invite->id) }}" method="post" class="d-inline">
+                                        @method('put')
+                                        @csrf
+                                        <button class="text-light fa-sm btn btn-sm d-inline-block"><i class="fas text-success fa-check"></i></button>
+                                    </form>
+                                    <form action="{{ route('invite.refuse', $invite->id) }}" method="post" class="d-inline">
+                                        @method('put')
+                                        @csrf
+                                        <button type="submit" class="text-light fa-sm btn btn-sm d-inline-block"><i class="fa-solid text-danger fa-x"></i></button>
+                                    </form>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
-                <ul class="list-group">
-                    @foreach ($user->invites as $invite)
-                        <li class="list-group-item bg-dark text-light border border-light">
-                            <a href="#" class="text-decoration-none text-primary">{{ $invite->scanlator->name }}</a> 
-                            <span>Scan invited you</span>
-                            <div class="d-flex justify-content-end">
-                                <form action="{{ route('invite.accept', $invite->id) }}" method="post" class="d-inline">
-                                    @method('put')
-                                    @csrf
-                                    <button class="text-light fa-sm btn btn-sm d-inline-block"><i class="fas text-success fa-check"></i></button>
-                                </form>
-                                <form action="{{ route('invite.refuse', $invite->id) }}" method="post" class="d-inline">
-                                    @method('put')
-                                    @csrf
-                                    <button type="submit" class="text-light fa-sm btn btn-sm d-inline-block"><i class="fa-solid text-danger fa-x"></i></button>
-                                </form>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+            @endif
         @endcan
     </div>
     <div class="row bg-dark-1 px-4 pb-4 pt-3 mb-4">
@@ -70,9 +72,11 @@
             <hr>
         </div>
         <div class="d-flex justify-content-around flex-wrap">
-            {{-- @foreach ($mangas_new as $id => $cover)
-                @include('_partials.manga_block')
-            @endforeach --}}
+            @foreach ($user->favorites as $favorite)
+                <div class="border border-secondary border-5">
+                    @include('_partials.manga_block')
+                </div>
+            @endforeach
         </div>
     </div>
     <div class="row bg-dark-1 px-4 pb-4 pt-3 mb-4">

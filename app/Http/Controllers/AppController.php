@@ -61,10 +61,15 @@ class AppController extends Controller
         if(!in_array($genre_key, array_keys($genres)))
             return back();
 
-        dd(Manga::whereHas('genres', function($q) use($genre_key) {
-            $q->where('genre_key', $genre_key);
-        })->get());
+        $mangas = Manga::paginateByGenre($genre_key);
+        $genre = $genres[$genre_key];
 
-        dd($genres[$genre_key]);
+        return view('genre_mangas', compact('mangas', 'genre'));
+    }
+
+    public function random()
+    {
+        $id_manga = Manga::select('id')->has('chapters')->inRandomOrder()->first()->id;
+        return redirect()->route('app.manga.main', $id_manga);
     }
 }

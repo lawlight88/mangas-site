@@ -1,7 +1,7 @@
 .manga-block {
     padding: 7px;
     width: 250px;
-    height: 400px;
+    max-height: 400px;
 }
 
 .scan-block {
@@ -38,8 +38,8 @@
     text-decoration: none;
 }
 
-a:hover.grey-hover {
-    color: #36454f88;
+a:hover.black-hover {
+    color: black;
 }
 
 .main-cover {

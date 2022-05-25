@@ -31,23 +31,23 @@
 				<aside class="col-md-2">
 					<ul class="list-group">
                         @can('adminAllScans', \App\Models\Scanlator::class)
-						    <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.all') }}">Scans</a></li>
+						    <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.all') }}">Scans</a></li>
                         @endcan
                         @if(!is_null(Auth::user()->id_scanlator))
-                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->id_scanlator) }}">Scan</a></li>
+                            <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->id_scanlator) }}">Scan</a></li>
                         @endif
                         @can('scanRequests', \App\Models\Request::class)
-                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.scan') }}">Scan's Requests</a></li>
+                            <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.scan') }}">Scan's Requests</a></li>
                         @endcan                        
                         @can('adminRequests', \App\Models\Request::class)
-                            <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.admin') }}">Requests</a></li>
+                            <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.admin') }}">Requests</a></li>
                         @endcan
                         @can('mgmtMangasView', [\App\Models\Scanlator::class, Auth::user()->id_scanlator])
                             @if (!is_null(Auth::user()->id_scanlator))
-                                <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.mangas', Auth::user()->id_scanlator) }}">Scan's Mangas</a></li>
+                                <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.mangas', Auth::user()->id_scanlator) }}">Scan's Mangas</a></li>
                             @endif
                         @endcan
-                        <li class="list-group-item list-group-item-dark-1"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.history') }}">History</a></li>
+                        <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.history') }}">History</a></li>
 					</ul>
 				</aside>
                 <!-- Page Content -->

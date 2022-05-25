@@ -15,9 +15,8 @@
                 <img src="{{ asset('img/down_arrow.png') }}" alt="mdo" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small">
-                <li><a class="dropdown-item" href="#">Random</a></li>
+                <li><a class="dropdown-item" href="{{ route('app.random') }}">Random</a></li>
                 <li><a class="dropdown-item" href="{{ route('app.genres') }}">Genres</a></li>
-                <li><a class="dropdown-item" href="#">Authors</a></li>
                 <li><a class="dropdown-item" href="{{ route('app.scans') }}">Scans</a></li>
                 <li><hr class="dropdown-divider"></li>
                 @auth
@@ -58,6 +57,7 @@
                         @endif
                     </a>
                 </li>
+                <li><a class="dropdown-item" href="{{ route('favorite.view') }}">Favorites</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
             </ul>

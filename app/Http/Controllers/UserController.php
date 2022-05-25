@@ -14,9 +14,9 @@ class UserController extends Controller
 {
     public function profile(int $id)
     {
-        if(!$user = User::withUserInfos()->find($id))
+        if(!$user = User::withInfo()->find($id))
             return back();
-
+        
         $invite = null;
         if(Auth::check()) {
             if(Auth::user()->id == $user->id)

@@ -9,7 +9,8 @@ use App\Http\Controllers\{
     RequestController,
     InviteController,
     ChapterController,
-    PageController
+    PageController,
+    FavoriteController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::group([
         Route::get('/m/{id}/{chapter_order}/{page_order?}/{id_comment_edit?}', 'mangaView')->name('manga.view');
         Route::get('/genres', 'genres')->name('genres');
         Route::get('/genre/{genre_key}', 'genre')->name('genre');
+        Route::get('/random', 'random')->name('random');
     });
 
     Route::group(['controller' => ScanlatorController::class], function() {
@@ -58,6 +60,16 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/{id_chapter}', 'store')->name('store');
         Route::put('/{comment}', 'update')->name('update');
         Route::delete('/{comment}', 'delete')->name('delete');
+    });
+
+    Route::group([
+        'as' => 'favorite.',
+        'prefix' => 'f',
+        'controller' => FavoriteController::class
+    ], function() {
+        Route::post('/create/{manga}', 'store')->name('create');
+        Route::delete('/remove/{manga}', 'remove')->name('remove');
+        Route::get('/view', 'view')->name('view');
     });
     
     //management

@@ -13,7 +13,7 @@
 
                     <div class="text-center">
                         <h1 class="text-uppercase">
-                            <a href="{{ route('app.genre', $key) }}" class="text-decoration-none grey-hover badge rounded-pill bg-secondary">
+                            <a href="{{ route('app.genre', $key) }}" class="text-decoration-none black-hover badge rounded-pill bg-secondary">
                                 {{$genre}}
                             </a>
                         </h1>

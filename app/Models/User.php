@@ -48,15 +48,19 @@ class User extends Authenticatable
         'joined_scan_at' => 'datetime',
     ];
 
-    public static function withUserInfos()
+    public static function withInfo()
     {
         return User::select('name', 'id', 'profile_image', 'created_at', 'role')
                     ->with(['comments' => function($q) {
                         $q->orderBy('created_at', 'desc')
                             ->limit(5);
-                    }, 'comments.chapter' => function($q) {
-                        $q->select('id_manga', 'chapters.id', 'order');
-        }]);
+                    },
+                    'comments.chapter:id_manga,id,order',
+                    'favorites' => function($q) {
+                        $q->limit(4);
+                    },
+                    'favorites.manga:id,name,cover'
+        ]);
     }
 
     public static function onlyIdRole()
@@ -93,5 +97,10 @@ class User extends Authenticatable
     public function scanlator()
     {
         return $this->belongsTo(Scanlator::class, 'id_scanlator');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'id_user')->orderBy('id', 'desc');
     }
 }
