@@ -150,6 +150,14 @@ class Manga extends Model
                     })->paginate(25);
     }
 
+    public static function searchBy(string $search)
+    {
+        return Manga::select('name', 'cover', 'id')
+                        ->where('name', 'like', "%$search%")
+                        ->orWhere('author', 'like', "%$search%")
+                        ->paginate(25);
+    }
+
     public function scanlator()
     {
         return $this->belongsTo(Scanlator::class, 'id_scanlator')->select('id', 'name');

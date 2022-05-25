@@ -9,6 +9,7 @@ use App\Models\Manga;
 use App\Models\Role;
 use App\Models\Scanlator;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -148,14 +149,18 @@ class ScanlatorController extends Controller
         return view('scan_mangas', compact('scan'));
     }
 
-    public function mgmtMangasView(int $id_scan)
+    public function mgmtMangasView(int $id_scan, Request $req)
     {
         $this->authorize('mgmtMangasView', [Scanlator::class, $id_scan]);
 
         if(!$scan = Scanlator::select('id', 'name')->find($id_scan))
             return back();
 
-        $scan->mangas = $scan->mangasPaginate();
+        if($req->search) {
+            $scan->mangas = $scan->searchMangas($req->search);
+        } else {
+            $scan->mangas = $scan->mangasPaginate();
+        }
 
         return view('manga.management.scan_mangas', compact('scan'));
     }

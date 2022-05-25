@@ -6,8 +6,8 @@
     </span>
 
     <div class="col-12 col-md-8 mb-2 mb-md-0 row">
-        <form class="col-10 col-md-5 mb-2 justify-content-center mb-md-0">
-            <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+        <form method="get" action="{{ route('app.search') }}" class="col-10 col-md-5 mb-2 justify-content-center mb-md-0">
+            <input name="search" type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
         </form>
 
         <div class="col-2 col-md-1 my-auto dropdown text-end">

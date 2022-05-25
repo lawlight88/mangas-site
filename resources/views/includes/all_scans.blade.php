@@ -12,7 +12,7 @@
                     {{$scan->name}}
                 </div>
                 <div>
-                    <small>Created At: {{$scan->created_at->format('Y-m-d')}}</small>
+                    <small>Created At: {{Timezone::convertToLocal($scan->created_at, 'Y-m-d')}}</small>
                 </div>
             </div>
         </div>

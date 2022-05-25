@@ -56,7 +56,15 @@ class Scanlator extends Model
     public function mangasPaginate()
     {
         return Manga::where('id_scanlator', $this->id)
-                        ->paginate(30);
+                        ->paginate(5);
+    }
+
+    public function searchMangas(string $search)
+    {
+        return $this->mangas()
+                    ->where('name', 'like', "%$search%")
+                    ->orWhere('author', 'like', "%$search%")
+                    ->paginate(5);
     }
 
     public function mangas()

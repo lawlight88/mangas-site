@@ -31,7 +31,8 @@ class ScanlatorFactory extends Factory
             $leader->update([
                 'role' => Role::IS_SCAN_LEADER,
                 'scan_role' => 'Leader',
-                'id_scanlator' => $scan->id
+                'id_scanlator' => $scan->id,
+                'joined_scan_at' => now()
             ]);
         });
     }

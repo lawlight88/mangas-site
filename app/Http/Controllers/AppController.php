@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Manga;
 use App\Models\Request as ModelsRequest;
 use App\Models\Role;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AppController extends Controller
@@ -71,5 +72,11 @@ class AppController extends Controller
     {
         $id_manga = Manga::select('id')->has('chapters')->inRandomOrder()->first()->id;
         return redirect()->route('app.manga.main', $id_manga);
+    }
+
+    public function search(Request $req)
+    {
+        $mangas = Manga::searchBy($req->search);
+        return view('manga.search', compact('mangas'));
     }
 }

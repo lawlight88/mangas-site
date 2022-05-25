@@ -8,6 +8,13 @@
         <h4>
             {{ $scan->name }}'s Mangas
         </h4>
+        <div class="mt-2 row">
+            <div class="col-md-4 offset-md-4">
+                <form method="get" action="{{ route('scan.mangas', $scan->id) }}">
+                    <input name="search" type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+                </form>
+            </div>
+        </div>
     </div>
 
     @if (empty($scan->mangas->first()))
@@ -49,8 +56,8 @@
         </div>
     @endif
 
-    <div class="d-flex justify-content-center mb-4">
-        {{ $scan->mangas->links() }}
+    <div class="d-flex justify-content-center mt-3">
+        {{ $scan->mangas->withQueryString()->links() }}
     </div>
 
 @endsection
