@@ -20,7 +20,18 @@
                         <label for="profile_image">Profile Image:</label>
                         <input class="form-control" type="file" name="profile_image" id="profile_image">
                     </div>
-                    <div class="col-md-3 offset-md-2">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                          <label for="timezone">Timezone:</label>
+                          <select class="form-control" name="timezone" id="timezone">
+                            <option>{{ $user->timezone }}</option>
+                            @foreach (timezone_identifiers_list() as $tz)
+                                <option>{{$tz}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 offset-md-1">
                         @include('includes.validation-form')
                     </div>
                 </div>

@@ -24,7 +24,7 @@
                         <a href="{{ route('app.manga.main', $manga->id) }}" class="h5 mb-1 text-decoration-none text-dark">
                             {{$manga->name}}
                         </a>
-                        <small class="text-black-50">Last Updated At: {{$manga->updated_at->format('Y-m-d H:i')}}</small>
+                        <small class="text-black-50">Last Updated At: {{$manga->updated_at->diffForHumans()}}</small>
                     </div>
                     <div>
                         <div>Total Views:</div>

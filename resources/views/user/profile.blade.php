@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-6">
             <div>Name: {{ $user->name }}</div>
-            <div>Joined: {{ $user->created_at->format('Y-m-d H:i') }}</div>
+            <div>Joined: {{ Timezone::convertToLocal($user->created_at, 'Y-m-d H:i') }}</div>
             @if (Auth::id() == $user->id)
                 <a href="{{ route('user.edit') }}" class="text-light">Edit Profile</a>
             @endif

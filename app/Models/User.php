@@ -26,6 +26,7 @@ class User extends Authenticatable
         'role',
         'scan_role',
         'joined_scan_at',
+        'timezone',
     ];
 
     /**

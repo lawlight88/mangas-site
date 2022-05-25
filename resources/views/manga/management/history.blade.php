@@ -20,7 +20,7 @@
                 </div>
                 @cannot('adminRequests', \App\Models\Request::class)
                     <div class="col-6 d-flex justify-content-end">
-                        <small class="text-secondary">Answered At: {{ $request->updated_at->format('Y-m-d H:i') }}</small>
+                        <small class="text-secondary">Answered At: {{ $request->updated_at->diffForHumans() }}</small>
                     </div>
                 @endcannot
             </div>

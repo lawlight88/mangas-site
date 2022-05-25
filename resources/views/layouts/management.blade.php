@@ -37,10 +37,24 @@
                             <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('scan.view', Auth::user()->id_scanlator) }}">Scan</a></li>
                         @endif
                         @can('scanRequests', \App\Models\Request::class)
-                            <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.scan') }}">Scan's Requests</a></li>
+                            <li class="list-group-item list-group-item-dark-1 border-light border">
+                                <a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.scan') }}">
+                                    Scan's Requests
+                                    @if ($scan_unanswered_reqs = \App\Models\Request::countUnanswered(Auth::user()->id_scanlator))
+                                        <span class="badge rounded-pill bg-warning text-light">{{ $scan_unanswered_reqs }}</span>
+                                    @endif            
+                                </a>
+                            </li>
                         @endcan                        
                         @can('adminRequests', \App\Models\Request::class)
-                            <li class="list-group-item list-group-item-dark-1 border-light border"><a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.admin') }}">Requests</a></li>
+                            <li class="list-group-item list-group-item-dark-1 border-light border">
+                                <a class="d-block text-decoration-none text-white text-capitalize" href="{{ route('request.admin') }}">
+                                    Requests
+                                    @if ($unanswered_reqs = \App\Models\Request::countUnanswered())
+                                        <span class="badge rounded-pill bg-danger text-light">{{ $unanswered_reqs }}</span>
+                                    @endif            
+                                </a>
+                            </li>
                         @endcan
                         @can('mgmtMangasView', [\App\Models\Scanlator::class, Auth::user()->id_scanlator])
                             @if (!is_null(Auth::user()->id_scanlator))

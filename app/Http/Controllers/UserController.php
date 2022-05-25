@@ -42,6 +42,9 @@ class UserController extends Controller
         $user = User::find($id);
 
         $data = $req->only('name');
+        
+        if(in_array($req->timezone, timezone_identifiers_list()))
+            $data['timezone'] = $req->timezone;
 
         if($req->password)
             $data['password'] = bcrypt($req->password);

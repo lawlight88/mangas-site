@@ -16,7 +16,7 @@
                     @if ($comment->updated_at > $comment->created_at)
                         <small>(edited)</small>
                     @endif
-                    {{$comment->created_at->format('Y-m-d H:i')}}
+                    {{$comment->created_at->diffForHumans()}}
                 </span>
             </div>
             <div class="py-2 px-4" id="{{ $comment->id }}">

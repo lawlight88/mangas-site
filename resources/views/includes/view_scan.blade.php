@@ -5,7 +5,7 @@
     <div class="col-md-8">
         <div class="d-flex justify-content-between">
             <span>Name: {{ $scan->name }}</span>
-            <small class="text-white-50">Created At: {{ $scan->created_at->format('Y-m-d H:i') }}</small>
+            <small class="text-white-50">Created At: {{ Timezone::convertToLocal($scan->created_at, 'Y-m-d H:i') }}</small>
         </div>
         @if ($scan->desc)
             <div>
@@ -47,7 +47,7 @@
                                 <i class="text-warning fa-sm fa-spin fa-solid fa-star"></i>
                             @endif
                         </a>
-                        <small class="text-black-50">Joined At: {{$member->joined_scan_at->format('Y-m-d H:i')}}</small>
+                        <small class="text-black-50">Joined At: {{ Timezone::convertToLocal($member->joined_scan_at, 'Y-m-d H:i') }}</small>
                     </div>
                     <div class="row">
                         <div class="col-9">

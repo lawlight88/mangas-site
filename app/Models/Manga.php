@@ -79,29 +79,11 @@ class Manga extends Model
         return $validate ? $id['id'] : Manga::genId();
     }
 
-    // public static function convertGenreKey(array $data_genres)
-    // {
-    //     $genres = self::$genres;
-    //     $genres_converted = [];
-
-    //     foreach($data_genres as $genre_key) {
-    //         foreach($genres as $key2 => $genre) {
-    //             if($genre_key == $key2) {
-    //                 $genres_converted[] = $genre;
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     return $genres_converted;
-    // }
-
     public function convertGenresKeys()
     {
         $genres_models = $this->genres;
         $genres_list = self::$genres;
         $converted_genres = [];
-        // dd($genres_models);
         foreach($genres_models as $genre_model) {
             if(isset($genres_list[$genre_model->genre_key]))
                 $converted_genres[$genre_model->genre_key] = $genres_list[$genre_model->genre_key];
@@ -124,13 +106,6 @@ class Manga extends Model
 
     public static function withChaptersScanGenres()
     {
-        // return Manga::with([
-        //     'chapters' => function($q) {
-        //         $q->orderBy('order', 'asc');
-        //     },
-        //     'scanlator',
-        // ]);
-
         return Manga::with('chapters', 'scanlator', 'genres');
     }
 
@@ -174,28 +149,6 @@ class Manga extends Model
                         $q->where('genre_key', $genre_key);
                     })->paginate(25);
     }
-
-    // public static function genRandomGenres()
-    // {
-    //     $genre_key_array = array_rand(self::$genres, random_int(2, 7));
-    //     $genres = self::convertGenreKey($genre_key_array);
-    //     return implode('#', $genres);
-    // }
-
-    // public static function getByGenre(int $genre_key)
-    // {
-    //     return Manga::where();
-    // }
-
-    // public static function favoritesMangas()
-    // {
-    //     return Manga::select('name', 'id', 'cover')
-    //                 ->whereHas('favorites', function($q) {
-    //                     $q->where('id_user', Auth::id())
-    //                         ->orderBy('id', 'desc');
-    //                 })
-    //                 ->paginate(25);
-    // }
 
     public function scanlator()
     {

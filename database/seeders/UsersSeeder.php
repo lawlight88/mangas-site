@@ -18,25 +18,24 @@ class UsersSeeder extends Seeder
     {
         $password = bcrypt('12341234');
 
-        User::create([
+        User::factory()->create([
             'name' => 'micael',
             'email' => 'micael@teste.com',
             'password' => $password,
         ]);
 
-        User::create([
+        User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => $password,
             'role' => Role::IS_ADMIN,
         ]);
 
-        User::factory()
-                    ->create([
-                        'name' => 'Jose',
-                        'email' => 'jose@teste.com',
-                        'password' => $password,
-                    ]);
+        User::factory()->create([
+            'name' => 'Jose',
+            'email' => 'jose@teste.com',
+            'password' => $password,
+        ]);
 
         User::factory()
                 ->count(100)

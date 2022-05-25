@@ -69,6 +69,15 @@ class Request extends Model
                     ->orderBy('updated_at', 'desc');
     }
 
+    public static function countUnanswered(int $id_scan = null)
+    {
+        $q = Request::whereNull('status');
+        if($id_scan)
+            return $q->where('id_requester', $id_scan)->count();
+
+        return $q->count();
+    }
+
     public function manga()
     {
         return $this->belongsTo(Manga::class, 'id_manga');

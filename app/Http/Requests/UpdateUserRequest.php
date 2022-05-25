@@ -30,6 +30,7 @@ class UpdateUserRequest extends FormRequest
             'profile_image' => 'nullable|image|max:2048',
             'role' => 'prohibited',
             'scan_role' => 'prohibited',
+            'timezone' => 'required|string',
         ];
     }
 }

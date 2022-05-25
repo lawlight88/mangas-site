@@ -42,7 +42,7 @@
                         <a href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter->order]) }}" class="h5 mb-1 text-decoration-none text-dark">
                             {{$chapter->name}}
                         </a>
-                        <small class="text-black-50">Uploaded At: {{$chapter->created_at->format('Y-m-d H:i')}}</small>
+                        <small class="text-black-50">Uploaded At: {{$chapter->created_at->diffForHumans()}}</small>
                     </div>
                     <div class="row">
                         <div class="col-9">Today Views:</div>
