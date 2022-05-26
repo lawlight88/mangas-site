@@ -18,8 +18,14 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
+    <body class="bg-dark">
+        <br><br>
+        <div class="my-5">
+            <img src="img/favicon.png" class="img-fluid mx-auto d-block" alt="logo">
+        </div>
+
+        {{-- <div class="font-sans text-gray-900 antialiased"> --}}
+        <div class="row justify-content-center">
             {{ $slot }}
         </div>
     </body>
