@@ -44,8 +44,11 @@
                         </a>
                         <small class="text-black-50">Uploaded At: {{$chapter->created_at->diffForHumans()}}</small>
                     </div>
+                    <div>Total Views: {{$chapter->_views->total}}</div>
+                    <div>Last 30 Days Views: {{$chapter->_views->month}}</div>
+                    <div>Last 7 Days Views: {{$chapter->_views->week}}</div>
                     <div class="row">
-                        <div class="col-9">Today Views:</div>
+                        <div class="col-9">Today Views: {{$chapter->_views->today}}</div>
                         <div class="col-3 d-flex justify-content-end">
                             <form action="{{ route('chapter.delete', $chapter) }}" method="post" class="d-inline">
                                 @method('delete')

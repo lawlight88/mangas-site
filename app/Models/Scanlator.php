@@ -4,10 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\Support\Period;
 
-class Scanlator extends Model
+class Scanlator extends Model implements Viewable
 {
+    use InteractsWithViews;
     use HasFactory;
+
+    protected $removeViewsOnDelete = true;
 
     protected $fillable = [
         'name',
@@ -19,7 +25,8 @@ class Scanlator extends Model
     public static function getIndexScans()
     {
         return Scanlator::select('id', 'name', 'image', 'created_at')
-                        ->paginate(28);
+                        ->orderByViews('desc', Period::pastWeeks(1))
+                        ->paginate(25);
     }
 
     public static function withPendingRequests()
@@ -50,21 +57,35 @@ class Scanlator extends Model
                                         ->limit(3);
                                 }
                             ])
-                            ->withCount('mangas'); //all
+                            ->withCount('mangas');
     }
 
     public function mangasPaginate()
     {
-        return Manga::where('id_scanlator', $this->id)
+        $mangas = $this->mangas()
+                        ->orderByViews()
                         ->paginate(5);
+
+        foreach($mangas as $manga) {
+            $manga->getViews();
+        }
+
+        return $mangas;
     }
 
     public function searchMangas(string $search)
     {
-        return $this->mangas()
-                    ->where('name', 'like', "%$search%")
-                    ->orWhere('author', 'like', "%$search%")
-                    ->paginate(5);
+        $mangas = $this->mangas()
+                        ->where('name', 'like', "%$search%")
+                        ->orWhere('author', 'like', "%$search%")
+                        ->orderByViews('desc', Period::pastWeeks(1))
+                        ->paginate(5);
+
+        foreach($mangas as $manga) {
+            $manga->getViews();
+        }
+
+        return $mangas;
     }
 
     public function mangas()

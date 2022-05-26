@@ -34,11 +34,11 @@
                         <small class="text-black-50">Last Updated At: {{$manga->updated_at->diffForHumans()}}</small>
                     </div>
                     <div>
-                        <div>Total Views:</div>
-                        <div>Month Views:</div>
-                        <div>Week Views:</div>
+                        <div>Total Views: {{$manga->_views->total}}</div>
+                        <div>Last 30 Days Views: {{$manga->_views->month}}</div>
+                        <div>Last 7 Days Views: {{$manga->_views->week}}</div>
                         <div class="mb-1 row">
-                            <div class="col-9">Today Views:</div>
+                            <div class="col-9">Today Views: {{$manga->_views->today}}</div>
                             <div class="col-3 d-flex justify-content-end">
                                 <form action="{{ route('manga.scan.remove', $manga) }}" method="post" class="d-inline">
                                     @method('put')

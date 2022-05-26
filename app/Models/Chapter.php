@@ -4,17 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\Support\Period;
+use stdClass;
 
-class Chapter extends Model
+class Chapter extends Model implements Viewable
 {
+    use InteractsWithViews;
     use HasFactory;
+
+    public $_views;
+    protected $removeViewsOnDelete = true;
 
     protected $fillable = [
         'id_manga',
         'name',
         'order',
     ];
+
+    public function __construct()
+    {
+        $this->_views = new stdClass;
+    }
 
     public function getPath()
     {
@@ -75,6 +87,26 @@ class Chapter extends Model
                 page_order: $order
             );
         }
+    }
+
+    public function getViews()
+    {
+        $this->_views->total = views($this)
+                                ->count();
+
+        $this->_views->month = views($this)
+                                ->period(Period::pastMonths(1))
+                                ->count();  
+
+        $this->_views->week = views($this)
+                                ->period(Period::pastWeeks(1))
+                                ->count();
+                                
+        $this->_views->today = views($this)
+                                ->period(Period::subDays(1))
+                                ->count();
+
+        return $this->_views;
     }
 
     public function manga()

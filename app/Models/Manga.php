@@ -7,10 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\Support\Period;
+use stdClass;
 
-class Manga extends Model
+class Manga extends Model implements Viewable
 {
     use HasFactory;
+    use InteractsWithViews;
+
+    public $_views;
+    protected $removeViewsOnDelete = true;
 
     public static $genres = [
         'action',
@@ -66,6 +74,11 @@ class Manga extends Model
 
     public $incrementing = false;
 
+    public function __construct()
+    {
+        $this->_views = new stdClass;
+    }
+
     public static function genId()
     {
         $id = [
@@ -109,16 +122,20 @@ class Manga extends Model
         return Manga::with('chapters', 'scanlator', 'genres');
     }
 
-    public function orderedChaptersPaginate()
+    public function chaptersPaginateViews()
     {
         $this->chapters = Chapter::where('id_manga', $this->id)
                                     ->orderBy('order', 'asc')
-                                    ->paginate(25);
+                                    ->paginate(10);
+
+        foreach($this->chapters as $chapter) {
+            $chapter->getViews();
+        }
     }
 
     public static function mangaViewQuery(int $chapter_order, int $page_order)
     {
-        return Manga::query()->select('id', 'name')
+        return Manga::query()->select('id', 'name', 'id_scanlator')
             ->withCount([
                 'pages' => function($q) use($chapter_order) {
                     $q->where('chapters.order', $chapter_order);
@@ -140,14 +157,18 @@ class Manga extends Model
             },
                 'chapters.comments.user' => function($q) {
                     $q->select('users.id', 'users.name', 'users.profile_image');
-        }]);
+            },
+                'scanlator:id'
+        ]);
     }
 
     public static function paginateByGenre(int $genre_key)
     {
         return Manga::whereHas('genres', function($q) use($genre_key) {
                         $q->where('genre_key', $genre_key);
-                    })->paginate(25);
+                    })
+                    ->orderByViews('desc', Period::pastWeeks(1))
+                    ->paginate(25);
     }
 
     public static function searchBy(string $search)
@@ -155,8 +176,30 @@ class Manga extends Model
         return Manga::select('name', 'cover', 'id')
                         ->where('name', 'like', "%$search%")
                         ->orWhere('author', 'like', "%$search%")
+                        ->orderByViews('desc', Period::pastWeeks(1))
                         ->paginate(25);
     }
+
+    public function getViews()
+    {
+        $this->_views->total = views($this)
+                                ->count();
+
+        $this->_views->month = views($this)
+                                ->period(Period::pastMonths(1))
+                                ->count();  
+
+        $this->_views->week = views($this)
+                                ->period(Period::pastWeeks(1))
+                                ->count();
+                                
+        $this->_views->today = views($this)
+                                ->period(Period::subDays(1))
+                                ->count();
+
+        return $this->_views;
+    }
+
 
     public function scanlator()
     {
@@ -170,7 +213,7 @@ class Manga extends Model
 
     public function chapters()
     {
-        return $this->hasMany(Chapter::class, 'id_manga')->orderBy('order');
+        return $this->hasMany(Chapter::class, 'id_manga')->orderBy('order')->orderBy('order', 'asc');
     }
     
     public function pages()

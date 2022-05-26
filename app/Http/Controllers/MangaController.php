@@ -55,7 +55,7 @@ class MangaController extends Controller
     {
         $this->authorize('edit', $manga);
 
-        $manga->orderedChaptersPaginate();
+        $manga->chaptersPaginateViews();
 
         return view('manga.management.scan_manga_edit', compact('manga'));
     }

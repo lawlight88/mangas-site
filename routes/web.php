@@ -15,10 +15,6 @@ use App\Http\Controllers\{
 use Illuminate\Support\Facades\Route;
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 //app
 Route::group([
     'as' => 'app.',

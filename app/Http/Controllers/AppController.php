@@ -43,6 +43,18 @@ class AppController extends Controller
 
         if(!$page = $manga->pages->first())
             return back();
+
+        $expires_at = now()->addDay();
+
+        views($manga)
+            ->cooldown($expires_at)
+            ->record();
+        views($manga->chapters->first())
+            ->cooldown($expires_at)
+            ->record();
+        views($manga->scanlator)
+            ->cooldown($expires_at)
+            ->record();
         
         $comments = $manga->chapters->first()->comments;
 
