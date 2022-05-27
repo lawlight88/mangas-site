@@ -167,16 +167,15 @@ class Manga extends Model implements Viewable
         return Manga::whereHas('genres', function($q) use($genre_key) {
                         $q->where('genre_key', $genre_key);
                     })
-                    ->orderByViews('desc', Period::pastWeeks(1))
+                    ->orderByViews('desc', Period::subWeeks(1))
                     ->paginate(25);
     }
 
     public static function searchBy(string $search)
     {
-        return Manga::select('name', 'cover', 'id')
-                        ->where('name', 'like', "%$search%")
+        return Manga::where('name', 'like', "%$search%")
                         ->orWhere('author', 'like', "%$search%")
-                        ->orderByViews('desc', Period::pastWeeks(1))
+                        ->orderByViews('desc', Period::subWeeks(1))
                         ->paginate(25);
     }
 
@@ -186,11 +185,11 @@ class Manga extends Model implements Viewable
                                 ->count();
 
         $this->_views->month = views($this)
-                                ->period(Period::pastMonths(1))
+                                ->period(Period::subMonths(1))
                                 ->count();  
 
         $this->_views->week = views($this)
-                                ->period(Period::pastWeeks(1))
+                                ->period(Period::subWeeks(1))
                                 ->count();
                                 
         $this->_views->today = views($this)

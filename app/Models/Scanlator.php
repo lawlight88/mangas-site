@@ -25,7 +25,7 @@ class Scanlator extends Model implements Viewable
     public static function getIndexScans()
     {
         return Scanlator::select('id', 'name', 'image', 'created_at')
-                        ->orderByViews('desc', Period::pastWeeks(1))
+                        ->orderByViews('desc', Period::subWeeks(1))
                         ->paginate(25);
     }
 
@@ -78,7 +78,7 @@ class Scanlator extends Model implements Viewable
         $mangas = $this->mangas()
                         ->where('name', 'like', "%$search%")
                         ->orWhere('author', 'like', "%$search%")
-                        ->orderByViews('desc', Period::pastWeeks(1))
+                        ->orderByViews('desc', Period::subWeeks(1))
                         ->paginate(5);
 
         foreach($mangas as $manga) {

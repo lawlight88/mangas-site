@@ -74,7 +74,7 @@ class AppController extends Controller
         if(!in_array($genre_key, array_keys($genres)))
             return back();
 
-        $mangas = Manga::paginateByGenre($genre_key);
+        $mangas = Manga::select('id', 'name', 'cover')->paginateByGenre($genre_key);
         $genre = $genres[$genre_key];
 
         return view('genre_mangas', compact('mangas', 'genre'));

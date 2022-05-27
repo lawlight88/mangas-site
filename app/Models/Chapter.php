@@ -109,6 +109,21 @@ class Chapter extends Model implements Viewable
         return $this->_views;
     }
 
+    public static function chapterComments(int $id_manga, int $chapter_order)
+    {
+        return Chapter::whereMangaChapterOrder($id_manga, $chapter_order)
+            ->with('comments')
+            ->first();
+    }
+
+    public static function whereMangaChapterOrder(int $id_manga, int $chapter_order)
+    {
+        return Chapter::where([
+            ['id_manga', $id_manga],
+            ['order', $chapter_order]
+        ]);
+    }
+
     public function manga()
     {
         return $this->belongsTo(Manga::class, 'id_manga');
