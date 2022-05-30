@@ -42,8 +42,11 @@
                     <button class="d-inline btn {{ is_null($requested) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($requested) ? '' : 'disabled' }} type="submit">Request</button>
                 </form>
             @endcan
+            @can('edit', $manga)
+                <a href="{{ route('manga.edit', $manga) }}" class="btn btn-primary text-light">Edit Chapters</a>
+            @endcan
             @can('editInfo', $manga)
-                <a href="{{ route('manga.edit.info', $manga) }}" class="btn btn-primary text-light">Edit</a>
+                <a href="{{ route('manga.edit.info', $manga) }}" class="btn btn-primary text-light">Edit Info</a>
             @endcan
             @auth
                 <form action="{{ route('favorite.create', $manga) }}" method="post" class="mt-2 d-inline">
@@ -68,7 +71,7 @@
                             {{ $chapter->name }}
                         </div>
                         <div class="d-flex col-6 justify-content-end">
-                            Uploaded at: {{ $chapter->created_at }}
+                            Uploaded at: {{ $chapter->created_at->diffForHumans() }}
                         </div>
                     </div>
                 </a>

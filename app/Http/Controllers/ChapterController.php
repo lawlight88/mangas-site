@@ -24,6 +24,7 @@ class ChapterController extends Controller
     {
         $this->authorize('delete', $chapter);
 
+        $chapter->updateParentIfLastUploaded();
         $chapter->rearrangeChaptersOrder();
         Storage::deleteDirectory($chapter->getPath());
         $chapter->delete();
@@ -64,6 +65,8 @@ class ChapterController extends Controller
         );
 
         Storage::disk('temp')->deleteDirectory($manga->id);
+
+        $manga->update(['last_chapter_uploaded_at' => now()]);
 
         return redirect()->route('manga.edit', $manga);
     }

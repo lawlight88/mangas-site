@@ -93,6 +93,6 @@ class MangaController extends Controller
         $manga->update($data);
         $manga->updateGenres($req->genres);
 
-        return back();
+        return redirect()->route('manga.main', $manga->id);
     }
 }

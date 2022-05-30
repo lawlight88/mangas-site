@@ -104,16 +104,15 @@ class Manga extends Model implements Viewable
         $this->genres = $converted_genres;
     }
 
-    public static function getIndexMangas(int $limit = 25, int $skip = 0)
+    public static function popularNow()
     {
-        return Manga::skip($skip)
-                    ->limit($limit)
-                    ->get();
+        return Manga::orderByViews('desc', Period::subDays(1))
+                        ->limit(5);
     }
 
     public static function latestUpdatedPaginate()
     {
-        return Manga::orderBy('updated_at', 'desc')
+        return Manga::orderBy('last_chapter_uploaded_at', 'desc')
                         ->paginate(25);
     }
 
@@ -229,7 +228,7 @@ class Manga extends Model implements Viewable
 
     public function chapters()
     {
-        return $this->hasMany(Chapter::class, 'id_manga')->orderBy('order')->orderBy('order', 'asc');
+        return $this->hasMany(Chapter::class, 'id_manga')->orderBy('order', 'asc');
     }
     
     public function pages()

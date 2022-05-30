@@ -118,6 +118,30 @@ class Chapter extends Model implements Viewable
         return $this->_views;
     }
 
+    public function updateParentIfLastUploaded()
+    {
+        $next_chapter = Chapter::where('id_manga', $this->id_manga)
+                                    ->where('created_at', '>', $this->created_at)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
+
+        if($next_chapter)
+        {
+            return 0;
+        }
+        $prev_chapter = Chapter::where('id_manga', $this->id_manga)
+                                    ->where('created_at', '<', $this->created_at)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
+        
+        if(!$prev_chapter)
+        {
+            $this->manga->update(['last_chapter_uploaded_at' => null]);
+            return 0;
+        }
+        $this->manga->update(['last_chapter_uploaded_at' => $prev_chapter->created_at]);
+    }
+
     public static function chapterComments(int $id_manga, int $chapter_order)
     {
         return Chapter::whereMangaChapterOrder($id_manga, $chapter_order)

@@ -12,7 +12,7 @@ class AppController extends Controller
 {
     public function index()
     {
-        $mangas_pop = Manga::getIndexMangas(limit:5, skip:0); //
+        $mangas_pop = Manga::popularNow()->get(); //
         $mangas_new = Manga::latestUpdatedPaginate();
 
         $user = null;
