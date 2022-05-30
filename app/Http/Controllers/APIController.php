@@ -41,12 +41,12 @@ class APIController extends Controller
             return response(['message' => 'Unauthorized'], 401);
         }
 
-        $temp_files = count(Storage::disk('temp')->allFiles($id_manga));
-        if(!$temp_files)
+        $qty_temp_files = count(Storage::disk('temp')->allFiles($id_manga));
+        if(!$qty_temp_files)
         {
             return response(['Result' => "Manga's temp folder is empty"], 200);
         }
-        for($i = 1; $i <= $temp_files; $i++)
+        for($i = 1; $i <= $qty_temp_files; $i++)
         {
             $response["page_$i"] = route('page.display', [
                 'manga' => $manga,

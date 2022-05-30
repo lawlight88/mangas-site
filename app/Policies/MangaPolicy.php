@@ -24,4 +24,14 @@ class MangaPolicy
                 && $user->id_scanlator == $manga->id_scanlator
                 || $user->role == Role::IS_ADMIN;
     }
+
+    public function editInfo(User $user, Manga $manga)
+    {
+        return self::removeFromScan($user, $manga);
+    }
+
+    public function create(User $user)
+    {
+        return $user->role = Role::IS_ADMIN;
+    }
 }

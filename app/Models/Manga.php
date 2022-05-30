@@ -199,6 +199,23 @@ class Manga extends Model implements Viewable
         return $this->_views;
     }
 
+    public function updateGenres(array $req_genres)
+    {
+        $manga_prev_genres = $this->genres->pluck('genre_key')->toArray();
+        $new_genres = array_diff($req_genres, $manga_prev_genres);
+        
+        $this->genres()->whereNotIn('genre_key', $req_genres)
+                        ->delete();
+
+        if($new_genres)
+        {
+            foreach($new_genres as $new_genre)
+            {
+                $new_genre_arrays[] = ['genre_key' => $new_genre];
+            }
+            $this->genres()->createMany($new_genre_arrays);
+        }
+    }
 
     public function scanlator()
     {

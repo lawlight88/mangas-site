@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.management')
 
-@section('title', 'Manga Upload')
+@section('title', 'Manga Info Edit')
 
 @section('content')
 
