@@ -1,7 +1,20 @@
 @include('includes.validation-form')
 
-<div>Pages:</div>
 <form action="{{ isset($qty_temp_files) ? route('page.onUpload.order', $manga) : route('page.onEdit.order', $chapter) }}" method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="chapter">Chapter Name:</label>
+            <input type="text"
+                name="name"
+                value="{{ $chapter->name ?? null }}"
+                placeholder="{{ Request::routeIs('chapter.edit') ? null : 'The name will only be saved on the upload' }}"
+                class="form-control"
+                id="chapter"
+                maxlength="30"
+            >
+        </div>
+    </div>
+    <div class="my-2">Pages:</div>
     @csrf
     @method('put')
     <div>
@@ -18,9 +31,14 @@
     <div class="text-end mt-4">
         <span class="btn-group" role="group">
             <a href="{{ isset($qty_temp_files) ? route('chapter.upload.cancel', $manga) : route('manga.edit', $chapter->manga) }}" class="btn btn-danger text-light">{{ isset($qty_temp_files) ? 'Cancel' : 'Return' }}</a>
-            <button class="btn btn-primary text-light" type="submit">Edit Order</button>
+            <button class="btn btn-primary text-light" type="submit">{{ Request::routeIs('chapter.edit') ? 'Edit' : 'Edit Order' }}</button>
             @if (isset($qty_temp_files))
-                <a href="{{ route('chapter.upload.finish', $manga) }}" class="btn btn-success text-light {{ $qty_temp_files < 2 || isset($chapter) && $chapter->pages->count() < 2 ? 'disabled' : null }}">Upload</a>
+                <button formaction="{{ route('chapter.upload.finish', $manga) }}"
+                    class="btn btn-success text-light"
+                    {{ $qty_temp_files < 2 || isset($chapter) && $chapter->pages->count() < 2 ? 'disabled' : null }}
+                >
+                    Upload
+                </button>
             @endif
         </span>
     </div>

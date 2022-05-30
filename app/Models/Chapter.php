@@ -82,10 +82,10 @@ class Chapter extends Model implements Viewable
         }
     }
 
-    public static function upload(Manga $manga, int $upload_chapter_order, int $n_upload_pages)
+    public static function upload(Manga $manga, int $upload_chapter_order, int $n_upload_pages, string $chapter_name)
     {
         $chapter = Chapter::create([
-            'name' => "Chapter $upload_chapter_order",
+            'name' => $chapter_name,
             'id_manga' => $manga->id,
             'order' => $upload_chapter_order,
         ]);

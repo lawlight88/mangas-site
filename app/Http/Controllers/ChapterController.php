@@ -46,9 +46,12 @@ class ChapterController extends Controller
         return redirect()->route('chapter.upload.continue', $manga);
     }
 
-    public function upload(Manga $manga)
+    public function upload(Manga $manga, Request $req)
     {
         $this->authorize('upload', [Chapter::class, $manga]);
+        $this->validate($req, [
+            'name' => 'required|string|min:1|max:30'
+        ]);
 
         $chapters = Storage::directories("mangas/$manga->id");
         $last_chapter = count($chapters);
@@ -62,6 +65,7 @@ class ChapterController extends Controller
             manga: $manga,
             upload_chapter_order: $upload_chapter_order,
             n_upload_pages: $n_upload_pages,
+            chapter_name: $req->name
         );
 
         Storage::disk('temp')->deleteDirectory($manga->id);
