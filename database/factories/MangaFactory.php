@@ -24,7 +24,9 @@ class MangaFactory extends Factory
             'id' => $this->faker->unique()->randomNumber(5, true),
             'desc' => $this->faker->paragraph(),
             'ongoing' => random_int(0, 1),
-            'cover' => 'img/favicon.png'
+            'cover' => 'img/favicon.png',
+            'updated_at' => now(),
+            'created_at' => now()
         ];
     }
 

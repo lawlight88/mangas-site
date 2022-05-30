@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('invites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_scanlator')->constrained('scanlators');
-            $table->foreignId('id_invited')->constrained('users');
+            $table->foreignId('id_scanlator')->constrained('scanlators')->onDelete('cascade');
+            $table->foreignId('id_invited')->constrained('users')->onDelete('cascade');
             $table->boolean('response')->nullable()->default(null);
             $table->timestamps();
         });

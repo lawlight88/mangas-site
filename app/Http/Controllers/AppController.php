@@ -52,9 +52,12 @@ class AppController extends Controller
         views($manga->chapters->first())
             ->cooldown($expires_at)
             ->record();
-        views($manga->scanlator)
-            ->cooldown($expires_at)
-            ->record();
+        if($manga->scanlator)
+        {
+            views($manga->scanlator)
+                ->cooldown($expires_at)
+                ->record();
+        }
         
         $comments = $manga->chapters->first()->comments;
 

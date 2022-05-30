@@ -93,6 +93,6 @@ class MangaController extends Controller
         $manga->update($data);
         $manga->updateGenres($req->genres);
 
-        return redirect(route('scan.mangas', $manga->id_scanlator)."?search=$manga->name");
+        return back();
     }
 }

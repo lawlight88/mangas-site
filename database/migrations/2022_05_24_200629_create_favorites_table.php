@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user')->constrained('users');
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
 
             $table->integer('id_manga')->unsigned();
-            $table->foreign('id_manga')->references('id')->on('mangas');
+            $table->foreign('id_manga')->references('id')->on('mangas')->onDelete('cascade');
         });
     }
     

@@ -185,15 +185,15 @@ class Manga extends Model implements Viewable
                                 ->count();
 
         $this->_views->month = views($this)
-                                ->period(Period::subMonths(1))
+                                ->period(Period::pastMonths(1))
                                 ->count();  
 
         $this->_views->week = views($this)
-                                ->period(Period::subWeeks(1))
+                                ->period(Period::pastWeeks(1))
                                 ->count();
                                 
         $this->_views->today = views($this)
-                                ->period(Period::subDays(1))
+                                ->period(Period::since(today()))
                                 ->count();
 
         return $this->_views;

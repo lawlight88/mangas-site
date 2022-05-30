@@ -51,6 +51,15 @@ class Chapter extends Model implements Viewable
                 ->decrement('order');
     }
 
+    public function rearrangeChaptersOrder()
+    {
+        Chapter::where([
+            ['id_manga', $this->id_manga],
+            ['order', '>', $this->order]
+        ])
+        ->decrement('order');
+    }
+
     public function updatePagesOrders(array $orders)
     {
         foreach($orders as $id => $order) {
@@ -103,7 +112,7 @@ class Chapter extends Model implements Viewable
                                 ->count();
                                 
         $this->_views->today = views($this)
-                                ->period(Period::subDays(1))
+                                ->period(Period::since(today()))
                                 ->count();
 
         return $this->_views;

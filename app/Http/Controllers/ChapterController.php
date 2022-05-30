@@ -24,8 +24,8 @@ class ChapterController extends Controller
     {
         $this->authorize('delete', $chapter);
 
+        $chapter->rearrangeChaptersOrder();
         Storage::deleteDirectory($chapter->getPath());
-
         $chapter->delete();
 
         return back();
