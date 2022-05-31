@@ -20,7 +20,7 @@ class Manga extends Model implements Viewable
     public $_views;
     protected $removeViewsOnDelete = true;
 
-    public static $genres = [
+    public static $genres_list = [
         'action',
         'adventure',
         'historical',
@@ -95,7 +95,7 @@ class Manga extends Model implements Viewable
     public function convertGenresKeys()
     {
         $genres_models = $this->genres;
-        $genres_list = self::$genres;
+        $genres_list = self::$genres_list;
         $converted_genres = [];
         foreach($genres_models as $genre_model) {
             if(isset($genres_list[$genre_model->genre_key]))
@@ -214,6 +214,16 @@ class Manga extends Model implements Viewable
             }
             $this->genres()->createMany($new_genre_arrays);
         }
+    }
+
+    public function likeThis()
+    {
+        $manga_genres = $this->genres->pluck('genre_key');
+        
+        return Manga::select('id', 'name', 'cover')
+                        ->whereHas('genres', function($q) use($manga_genres) {
+                            $q->whereIn('genre_key', $manga_genres);
+                        });
     }
 
     public function scanlator()

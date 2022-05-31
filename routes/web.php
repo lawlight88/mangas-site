@@ -27,6 +27,7 @@ Route::group([
         Route::get('/genre/{genre_key}', 'genre')->name('genre');
         Route::get('/random', 'random')->name('random');
         Route::get('/search', 'search')->name('search');
+        Route::get('/like/{manga_base}', 'moreLikeThis')->name('like.this');
     });
 
     Route::group(['controller' => ScanlatorController::class], function() {

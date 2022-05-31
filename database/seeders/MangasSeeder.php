@@ -73,7 +73,7 @@ class MangasSeeder extends Seeder
 
             //genres 
             $qty_genres = random_int(1, 10);
-            $genres_keys = (array) array_rand(array_keys(Manga::$genres), $qty_genres);
+            $genres_keys = (array) array_rand(array_keys(Manga::$genres_list), $qty_genres);
             foreach($genres_keys as $genre_key)
             {
                 $genres_keys_arrays[] = ['genre_key' => $genre_key];

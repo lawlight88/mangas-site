@@ -27,13 +27,14 @@ class AppController extends Controller
         if(!$manga = Manga::withChaptersScanGenres()->find($id))
             return back();
 
+        $mangas_like_this = $manga->likeThis()->limit(8)->get();
         $manga->convertGenresKeys();
         
         $requested = null;
         if(Auth::check() && Auth::user()->role == Role::IS_SCAN_LEADER && is_null($manga->scanlator))
             $requested = ModelsRequest::checkIfAlreadyRequested(id_requester: Auth::user()->id_scanlator, id_manga: $id);
 
-        return view('manga.main', compact('manga', 'requested'));
+        return view('manga.main', compact('manga', 'requested', 'mangas_like_this'));
     }
 
     public function mangaView(int $id, int $chapter_order, int $page_order = 1, int $id_comment_edit = null)
@@ -66,13 +67,13 @@ class AppController extends Controller
 
     public function genres()
     {
-        $genres = Manga::$genres;
+        $genres = Manga::$genres_list;
         return view('genres', compact('genres'));
     }
 
     public function genre(int $genre_key)
     {
-        $genres = Manga::$genres;
+        $genres = Manga::$genres_list;
 
         if(!in_array($genre_key, array_keys($genres)))
             return back();
@@ -93,5 +94,11 @@ class AppController extends Controller
     {
         $mangas = Manga::searchBy($req->search);
         return view('manga.search', compact('mangas'));
+    }
+
+    public function moreLikeThis(Manga $manga_base)
+    {
+        $mangas = $manga_base->likeThis()->paginate(25);
+        return view('more_like_this', compact('manga_base', 'mangas'));
     }
 }

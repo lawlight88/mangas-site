@@ -75,18 +75,53 @@
     </div>
 
     <div class="bg-dark-1 p-4 mb-4">
-        @foreach ($manga->chapters as $chapter)
-                <a href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter->order]) }}" class="d-block bg-light w-100 my-2 p-2 text-dark text-decoration-none">
-                    <div class="row">
-                        <div class="d-flex col-6 justify-content-start">
-                            {{ $chapter->name }}
+        @if (!empty($manga->chapters->first()))
+            <div class="d-flex justify-content-end">
+                <a href="#{{$manga->chapters->last()->id}}" class="link-light">Last Chapter</a>
+            </div>
+            @foreach ($manga->chapters as $chapter)
+                    <a id="{{ $chapter->id }}" href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter->order]) }}" class="d-block bg-light w-100 my-2 p-2 text-dark text-decoration-none">
+                        <div class="row">
+                            <div class="d-flex col-6 justify-content-start">
+                                {{ $chapter->name }}
+                            </div>
+                            <div class="d-flex col-6 justify-content-end">
+                                Uploaded: {{ $chapter->created_at->diffForHumans() }}
+                            </div>
                         </div>
-                        <div class="d-flex col-6 justify-content-end">
-                            Uploaded: {{ $chapter->created_at->diffForHumans() }}
-                        </div>
-                    </div>
+                    </a>
+            @endforeach
+            <div class="d-flex justify-content-end">
+                <a href="#{{$manga->chapters->first()->id}}" class="link-light">First Chapter</a>
+            </div>
+        @else
+            <div class="mt-3 text-center">
+                <h2>This manga does not have chapters</h2>
+            </div>
+        @endif
+    </div>
+
+    <div class="bg-dark-1 p-4 mb-4">
+        <div class="row justify-content-center">
+            <h2 class="text-light col-4 text-center">
+                Like This
+                <hr>
+            </h2>
+        </div>
+        <div class="row justify-content-around flex-wrap">
+            @foreach ($mangas_like_this as $manga_like_this)
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    @include('_partials.manga_block')
+                </div>
+            @endforeach
+        </div>
+        <div class="row justify-content-center">
+            <h3 class="col-4 text-center">
+                <a href="{{ route('app.like.this', $manga) }}" class="link-light text-decoration-none">
+                    More
                 </a>
-        @endforeach
+            </h3>
+        </div>
     </div>
 
 @endsection

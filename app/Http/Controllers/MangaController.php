@@ -13,7 +13,7 @@ class MangaController extends Controller
     public function create() 
     {
         $this->authorize('create', Manga::class);
-        $genres = Manga::$genres;
+        $genres = Manga::$genres_list;
         return view('manga.management.create_manga', compact('genres'));
     }
 
@@ -64,7 +64,7 @@ class MangaController extends Controller
     {
         $this->authorize('editInfo', $manga);
 
-        $genres = Manga::$genres;
+        $genres = Manga::$genres_list;
         $manga->genres;
         $manga_genres = $manga->genres->pluck('genre_key')->toArray();
 
