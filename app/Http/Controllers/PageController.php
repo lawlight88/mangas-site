@@ -28,13 +28,18 @@ class PageController extends Controller
         return redirect()->route('chapter.upload.continue', $manga);
     }
 
-    public function orderOnEdit(Chapter $chapter, PageOrderUpdateRequest $req)
+    public function orderOnEditAndName(Chapter $chapter, PageOrderUpdateRequest $req)
     {
         $this->authorize('orderOnEdit', [Page::class, $chapter]);
 
         $orders = $req->orders;
-
         $chapter->updatePagesOrders($orders);
+
+        if($req->name)
+        {
+            $this->validate($req, ['name' => 'string|min:1|max:30']);
+            $chapter->update(['name' => $req->name]);
+        }
 
         return back();
     }

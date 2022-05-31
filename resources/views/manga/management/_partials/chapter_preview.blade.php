@@ -1,6 +1,6 @@
 @include('includes.validation-form')
 
-<form action="{{ isset($qty_temp_files) ? route('page.onUpload.order', $manga) : route('page.onEdit.order', $chapter) }}" method="post">
+<form action="{{ isset($qty_temp_files) ? route('page.onUpload.order', $manga) : route('page.onEdit.order&name', $chapter) }}" method="post">
     <div class="row">
         <div class="col-md-4">
             <label for="chapter">Chapter Name:</label>

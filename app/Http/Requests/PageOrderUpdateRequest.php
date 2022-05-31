@@ -17,7 +17,7 @@ class PageOrderUpdateRequest extends FormRequest
 
     public function rules()
     {
-        $is_prev_edit = request()->route()->action['as'] == 'page.onEdit.order';
+        $is_prev_edit = request()->route()->action['as'] == 'page.onEdit.order&name';
         //keys form orders array from above route are pages' ids
 
         if($is_prev_edit) {
