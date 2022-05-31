@@ -141,7 +141,35 @@ class APIController extends Controller
             return response(['Result' => 'User not found'], 404);
         }
         $comments = $user->comments()->paginate(25);
+        if(!$comments->first())
+        {
+            return response(['Result' => 'User does not have comments'], 200);
+        }
 
         return response(['comments' => $comments], 200);
     }
+
+    public function userFavorites(int $id_user)
+    {
+        if(!$user = User::with('favorites')->find($id_user))
+        {
+            return response(['Result' => 'User not found'], 404);
+        }
+        if(auth()->id() == $user->id
+            || auth()->user()->role == Role::IS_ADMIN)
+        {
+            $favorites = $user->favorites;
+        }
+        else
+        {
+            $favorites = $user->favorites()->limit(4)->get();
+        }
+        if(!$favorites->first())
+        {
+            return response(['Result' => 'User does not have favorites'], 200);
+        }
+
+        return response(['favorites' => $favorites], 200);
+    }
+
 }

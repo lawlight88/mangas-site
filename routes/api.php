@@ -30,7 +30,7 @@ Route::group(['controller' => AuthAPIController::class], function() {
 
 Route::group(['controller' => APIController::class], function() {
 
-    Route::get('/user/{id_user}/comments/', 'userComments');
+    Route::get('/user/{id_user}/comments', 'userComments');
 
     Route::group(['prefix' => 'mangas'], function() {
         Route::get('/{id_manga?}', 'mangas');
@@ -40,6 +40,9 @@ Route::group(['controller' => APIController::class], function() {
     });
 
     Route::group(['middleware' => 'auth:sanctum'], function() {
+        
+        Route::get('/user/{id_user}/favorites', 'userFavorites');
+
         Route::group(['prefix' => 'mangas'], function() {
             Route::post('/{id_manga}/chapters/{chapter_order}/comments', 'createComment');
             Route::get('/{id_manga}/temp', 'mangaTempFiles');

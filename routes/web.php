@@ -71,7 +71,10 @@ Route::group(['middleware' => 'auth'], function() {
     });
     
     //management
-    Route::group(['prefix' => 'mgmt'], function() {
+    Route::group([
+        'prefix' => 'mgmt',
+        'middleware' => 'mgmt'
+    ], function() {
         Route::group([
             'controller' => MangaController::class,
             'as' => 'manga.',
