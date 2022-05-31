@@ -33,6 +33,6 @@ class InvitePolicy
 
     public function refuse(User $user, Invite $invite)
     {
-        return $user->id == $invite->id_invited && $user->role == Role::IS_USER;
+        return self::accept($user, $invite);
     }
 }

@@ -16,12 +16,14 @@ class ScanlatorPolicy
 
     public function create(User $user)
     {
-        return $user->role == Role::IS_USER && is_null($user->id_scanlator);
+        return $user->role == Role::IS_USER 
+                && is_null($user->id_scanlator);
     }
 
     public function view(User $user)
     {
-        return $user->role == Role::IS_ADMIN || !is_null($user->id_scanlator);
+        return $user->role == Role::IS_ADMIN 
+                || !is_null($user->id_scanlator);
     }
 
     public function adminAllScans(User $user)
@@ -31,17 +33,19 @@ class ScanlatorPolicy
 
     public function update(User $user, Scanlator $scan)
     {
-        return $user->role == Role::IS_ADMIN || $scan->id_leader == $user->id;
+        return $user->role == Role::IS_ADMIN
+                || $scan->id_leader == $user->id;
     }
 
     public function delete(User $user, Scanlator $scan)
     {
-        return $user->role == Role::IS_ADMIN || $scan->id_leader == $user->id;
+        return self::update($user, $scan);
     }
 
     public function mgmtMangasView(User $user, int|null $id_scan)
     {
-        return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER]) && $user->id_scanlator == $id_scan
-                                                                                    || $user->role == Role::IS_ADMIN;
+        return in_array($user->role, [Role::IS_SCAN_HELPER, Role::IS_SCAN_LEADER]) 
+                && $user->id_scanlator == $id_scan
+                || $user->role == Role::IS_ADMIN;
     }
 }

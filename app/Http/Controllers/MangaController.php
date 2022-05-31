@@ -95,4 +95,13 @@ class MangaController extends Controller
 
         return redirect()->route('manga.main', $manga->id);
     }
+
+    public function delete(Manga $manga)
+    {
+        $this->authorize('delete', $manga);
+
+        $manga->delete();
+        
+        return redirect()->route('app.index');
+    }
 }

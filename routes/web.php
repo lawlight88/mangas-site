@@ -82,6 +82,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::get('/{manga}', 'edit')->name('edit');
             Route::get('/{manga}/edit/info', 'editInfo')->name('edit.info');
             Route::put('/{manga}/edit/info', 'updateInfo')->name('edit.info');
+            Route::delete('/{manga}', 'delete')->name('delete');
         });
 
         Route::group([

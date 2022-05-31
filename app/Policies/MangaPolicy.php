@@ -34,4 +34,9 @@ class MangaPolicy
     {
         return $user->role = Role::IS_ADMIN;
     }
+
+    public function delete(User $user)
+    {
+        return self::create($user);
+    }
 }

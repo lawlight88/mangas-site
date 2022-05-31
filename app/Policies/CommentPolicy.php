@@ -19,11 +19,11 @@ class CommentPolicy
 
     public function update(User $user, Comment $comment)
     {
-        return $user->role == Role::IS_ADMIN || $user->id == $comment->user->id;
+        return $user->role == Role::IS_ADMIN || $user->id == $comment->id_user;
     }
 
     public function delete(User $user, Comment $comment)
     {
-        return $user->role == Role::IS_ADMIN || $user->id == $comment->id_user;
+        return self::update($user, $comment);
     }
 }

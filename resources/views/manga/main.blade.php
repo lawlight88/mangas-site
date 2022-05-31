@@ -36,30 +36,41 @@
                     @endif
                 </small>
             </div>
-            @can('request', [\App\Models\Request::class, $manga])
-                <form action="{{ route('request.create', $manga->id) }}" method="post" class="d-inline">
-                    @csrf
-                    <button class="d-inline btn {{ is_null($requested) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($requested) ? '' : 'disabled' }} type="submit">Request</button>
-                </form>
-            @endcan
-            @can('edit', $manga)
-                <a href="{{ route('manga.edit', $manga) }}" class="btn btn-primary text-light">Edit Chapters</a>
-            @endcan
-            @can('editInfo', $manga)
-                <a href="{{ route('manga.edit.info', $manga) }}" class="btn btn-primary text-light">Edit Info</a>
-            @endcan
-            @auth
-                <form action="{{ route('favorite.create', $manga) }}" method="post" class="mt-2 d-inline">
-                    @csrf
-
-                    @if (\App\Models\Favorite::isMangaOnFavorites(Auth::id(), $manga->id))
+            <div class="d-flex justify-content-between">
+                <div>
+                    @can('request', [\App\Models\Request::class, $manga])
+                        <form action="{{ route('request.create', $manga->id) }}" method="post" class="d-inline">
+                            @csrf
+                            <button class="d-inline btn {{ is_null($requested) ? 'btn-primary' : 'btn-secondary' }}" {{ is_null($requested) ? '' : 'disabled' }} type="submit">Request</button>
+                        </form>
+                    @endcan
+                    @can('edit', $manga)
+                        <a href="{{ route('manga.edit', $manga) }}" class="btn btn-primary text-light">Edit Chapters</a>
+                    @endcan
+                    @can('editInfo', $manga)
+                        <a href="{{ route('manga.edit.info', $manga) }}" class="btn btn-primary text-light">Edit Info</a>
+                    @endcan
+                    @auth
+                        <form action="{{ route('favorite.create', $manga) }}" method="post" class="mt-2 d-inline">
+                            @csrf
+        
+                            @if (\App\Models\Favorite::isMangaOnFavorites(Auth::id(), $manga->id))
+                                @method('delete')
+                                <button class="btn btn-danger text-light d-inline" formaction="{{ route('favorite.remove', $manga) }}" type="submit">Remove from Favorites</button>
+                            @else
+                                <button class="btn btn-warning text-light d-inline" type="submit">Favorite</button>
+                            @endif
+                        </form>
+                    @endauth
+                </div>
+                @can('delete', $manga)
+                    <form action="{{ route('manga.delete', $manga) }}" method="post">
+                        @csrf
                         @method('delete')
-                        <button class="btn btn-danger text-light d-inline" formaction="{{ route('favorite.remove', $manga) }}" type="submit">Remove from Favorites</button>
-                    @else
-                        <button class="btn btn-warning text-light d-inline" type="submit">Favorite</button>
-                    @endif
-                </form>
-            @endauth
+                        <button class="btn btn-danger text-light d-inline" type="submit">Delete</button>
+                    </form>
+                @endcan
+            </div>
         </div>
     </div>
 
@@ -71,7 +82,7 @@
                             {{ $chapter->name }}
                         </div>
                         <div class="d-flex col-6 justify-content-end">
-                            Uploaded at: {{ $chapter->created_at->diffForHumans() }}
+                            Uploaded: {{ $chapter->created_at->diffForHumans() }}
                         </div>
                     </div>
                 </a>

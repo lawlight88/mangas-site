@@ -30,17 +30,17 @@ class RequestPolicy
 
     public function refuse(User $user)
     {
-        return $user->role == Role::IS_ADMIN;
+        return self::accept($user);
+    }
+
+    public function adminRequests(User $user)
+    {
+        return self::accept($user);
     }
 
     public function cancel(User $user)
     {
         return $user->role == Role::IS_SCAN_LEADER;
-    }
-
-    public function adminRequests(User $user)
-    {
-        return $user->role == Role::IS_ADMIN;
     }
 
     public function history(User $user)
