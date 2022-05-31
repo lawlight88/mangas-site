@@ -74,11 +74,6 @@ class Manga extends Model implements Viewable
 
     public $incrementing = false;
 
-    public function __construct()
-    {
-        $this->_views = new stdClass;
-    }
-
     public static function genId()
     {
         $id = [
@@ -180,6 +175,8 @@ class Manga extends Model implements Viewable
 
     public function getViews()
     {
+        $this->_views = new stdClass;
+
         $this->_views->total = views($this)
                                 ->count();
 

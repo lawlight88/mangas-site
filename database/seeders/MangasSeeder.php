@@ -27,12 +27,10 @@ class MangasSeeder extends Seeder
         $height = 1835;
         $font = public_path('/fonts/ARIAL.TTF');
         
-        for($i = 1; $i <= 50; $i++) {
+        for($i = 1; $i <= 10; $i++) {
             $id = Manga::genId();
 
-            $m_title= "example-manga#$id";
-
-            $number_of_chapters = random_int(1, 5);
+            $m_title= "example-manga?id=$id";
 
             //cover
             $m_path = public_path() . "/storage/mangas/$id";
@@ -52,34 +50,13 @@ class MangasSeeder extends Seeder
             imagedestroy($im);
             //end cover
 
-            //factory stopped working suddenly, "id's default value is not set..."
-            // Manga::factory()
-            //         ->create([
-            //             'name' => $m_name,
-            //             'id' => $id,
-            //             'cover' => str_replace(public_path().'/', '', $cover_path),
-            //         ]);
+            Manga::factory()
+                    ->create([
+                        'id' => $id,
+                        'cover' => str_replace(public_path().'/', '', $cover_path),
+                    ]);
 
-            $manga = Manga::create([
-                'name' => "manga#$i",
-                'id' => $id,
-                'desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid censes in Latino fore? Quorum sine causa fieri nihil putandum est. Ille enim occurrentia nescio quae comminiscebatur; Duo Reges: constructio interrete. Ergo illi intellegunt quid Epicurus dicat, ego non intellego? Illa argumenta propria videamus, cur omnia sint paria peccata. Graece donan, Latine voluptatem vocant.',
-                'author' => $faker->name(),
-                'ongoing' => rand(0, 1),
-                'cover' => str_replace(public_path().'/', '', $cover_path),
-                'updated_at' => now(),
-                'created_at' => now(),
-            ]);
-
-            //genres 
-            $qty_genres = random_int(1, 10);
-            $genres_keys = (array) array_rand(array_keys(Manga::$genres_list), $qty_genres);
-            foreach($genres_keys as $genre_key)
-            {
-                $genres_keys_arrays[] = ['genre_key' => $genre_key];
-            }
-            $manga->genres()->createMany($genres_keys_arrays);
-            //
+            $number_of_chapters = random_int(1, 5);
 
             for($b = 1; $b <= $number_of_chapters; $b++) {
                 $m_chapter = "Chapter_$b";
@@ -88,11 +65,14 @@ class MangasSeeder extends Seeder
 
                 $number_of_pages = random_int(5, 10);
 
-                $id_chapter = Chapter::create([
+                $chapter = Chapter::create([
                     'name' => str_replace('_', ' ', $m_chapter),
                     'id_manga' => $id,
                     'order' => $b,
-                ])->id;
+                ]);
+                $chapter->manga->update(['last_chapter_uploaded_at' => now()]);
+                
+                $id_chapter = $chapter->id;
 
                 for($c = 1; $c <= $number_of_pages; $c++) {
                     $m_page = "page_$c";

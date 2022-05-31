@@ -36,11 +36,9 @@ class MangaFactory extends Factory
             $qty_genres = random_int(1, 10);
             $genres_keys = (array) array_rand(array_keys(Manga::$genres_list), $qty_genres);
             foreach($genres_keys as $genre_key) {
-                Genre::create([
-                    'id_manga' => $manga->id,
-                    'genre_key' => $genre_key
-                ]);
+                $genres_keys_array[] = ['genre_key' => $genre_key];
             }
+            $manga->genres()->createMany($genres_keys_array);
         });
     }
 }

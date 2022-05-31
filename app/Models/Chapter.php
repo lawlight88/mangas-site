@@ -23,11 +23,6 @@ class Chapter extends Model implements Viewable
         'order',
     ];
 
-    public function __construct()
-    {
-        $this->_views = new stdClass;
-    }
-
     public function getPath()
     {
         $page_path = $this->pages[0]->path;
@@ -100,6 +95,8 @@ class Chapter extends Model implements Viewable
 
     public function getViews()
     {
+        $this->_views = new stdClass;
+
         $this->_views->total = views($this)
                                 ->count();
 
