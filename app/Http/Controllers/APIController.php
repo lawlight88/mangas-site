@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Manga;
 use App\Models\Role;
 use App\Models\User;
+use CyrildeWit\EloquentViewable\Support\Period;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,7 +21,7 @@ class APIController extends Controller
             return $manga ?? ['Result' => 'Manga not found'];
         }
 
-        return Manga::withCount('chapters')->paginate(10)->get();
+        return Manga::withCount('chapters')->orderByViews('desc', Period::subDays(7))->paginate(10);
     }
 
     public function mangasSearch(string $search)
@@ -59,7 +60,7 @@ class APIController extends Controller
 
     public function chapters(int $id_manga)
     {
-        $chapters = Chapter::with('pages')->where('id_manga', $id_manga)->paginate(25);
+        $chapters = Chapter::with('pages')->where('id_manga', $id_manga)->paginate(10);
         if(!$chapters->first())
         {
             return response(['Result' => 'Given manga does not have chapters'], 404);
@@ -140,7 +141,7 @@ class APIController extends Controller
         {
             return response(['Result' => 'User not found'], 404);
         }
-        $comments = $user->comments()->paginate(25);
+        $comments = $user->comments()->paginate(10);
         if(!$comments->first())
         {
             return response(['Result' => 'User does not have comments'], 200);
@@ -151,14 +152,14 @@ class APIController extends Controller
 
     public function userFavorites(int $id_user)
     {
-        if(!$user = User::with('favorites')->find($id_user))
+        if(!$user = User::find($id_user))
         {
             return response(['Result' => 'User not found'], 404);
         }
         if(auth()->id() == $user->id
             || auth()->user()->role == Role::IS_ADMIN)
         {
-            $favorites = $user->favorites;
+            $favorites = $user->favorites()->paginate(10);
         }
         else
         {

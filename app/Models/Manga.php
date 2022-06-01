@@ -170,7 +170,7 @@ class Manga extends Model implements Viewable
         return Manga::where('name', 'like', "%$search%")
                         ->orWhere('author', 'like', "%$search%")
                         ->orderByViews('desc', Period::subWeeks(1))
-                        ->paginate(25);
+                        ->paginate(10);
     }
 
     public function getViews()
