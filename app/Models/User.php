@@ -85,6 +85,24 @@ class User extends Authenticatable
                 ->delete();
     }
 
+    public function becomeLeader()
+    {
+        $scan = $this->scanlator;
+        $prev_leader = $scan->leader;
+
+        $scan->update([
+            'id_leader' => $this->id
+        ]);
+        $this->update([
+            'scan_role' => 'Leader',
+            'role' => 3
+        ]);
+        $prev_leader->update([
+            'scan_role' => null,
+            'role' => 2
+        ]);
+    }
+
     public function invites()
     {
         return $this->hasMany(Invite::class, 'id_invited');

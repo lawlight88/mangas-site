@@ -58,11 +58,14 @@
                                 <form action="{{ route('user.scan.remove', $member->id) }}" method="post" class="d-inline">
                                     @method('put')
                                     @csrf
+                                    @can('changeLeader', $member)
+                                        <button formaction="{{ route('user.scan.change.leader', $member) }}" title="Pass the lead" type="submit" class="btn fa d-inline"><i class="text-warning fa-sm fa-solid fa-star"></i></button>
+                                    @endcan
                                     @can('editScanRole', $member)
-                                        <a href="{{ route('scan.view', ['id_scan' => $scan->id, 'member_edit' => $member]) . "#$member->id" }}" class="text-light btn fa d-inline"><i class="fas fa-edit fa-sm text-primary"></i></a>
+                                        <a href="{{ route('scan.view', ['id_scan' => $scan->id, 'member_edit' => $member]) . "#$member->id" }}" title="Edit role" class="text-light btn fa d-inline"><i class="fas fa-edit fa-sm text-primary"></i></a>
                                     @endcan
                                     @can('removeFromScan', $member)
-                                        <button type="submit" class="text-light btn fa d-inline"><i class="fa-solid fa-sm fa-x text-danger"></i></button>
+                                        <button type="submit" title="Kick off" class="text-light btn fa d-inline"><i class="fa-solid fa-sm fa-x text-danger"></i></button>
                                     @endcan
                                 </form>
                             @endif

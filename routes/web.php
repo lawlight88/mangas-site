@@ -30,10 +30,13 @@ Route::group([
         Route::get('/like/{manga_base}', 'moreLikeThis')->name('like.this');
     });
 
-    Route::group(['controller' => ScanlatorController::class], function() {
-        Route::get('/scans', 'allScans')->name('scans');
-        Route::get('/scan/{scan}/m', 'mangasView')->name('scan.mangas');
-        Route::get('/scan/{id_scan}', 'view')->name('scan.view');
+    Route::group([
+        'prefix' => 'scans',
+        'controller' => ScanlatorController::class
+    ], function() {
+        Route::get('/', 'allScans')->name('scans');
+        Route::get('/{scan}/m', 'mangasView')->name('scan.mangas');
+        Route::get('/{id_scan}', 'view')->name('scan.view');
     });
 });
 
@@ -68,6 +71,24 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/create/{manga}', 'store')->name('create');
         Route::delete('/remove/{manga}', 'remove')->name('remove');
         Route::get('/view', 'view')->name('view');
+    });
+
+    Route::group([
+        'as' => 'scan.',
+        'prefix' => 'scan',
+        'controller' => ScanlatorController::class
+    ], function() {
+        Route::get('/create', 'create')->name('create');
+        Route::post('/create', 'store');
+    });
+
+    Route::group([
+        'as' => 'invite.',
+        'prefix' => 'invite',
+        'controller' => InviteController::class,
+    ], function() {
+        Route::put('/refuse/{id_invite}', 'refuse')->name('refuse');
+        Route::put('/accept/{id_invite}', 'accept')->name('accept');
     });
     
     //management
@@ -121,8 +142,6 @@ Route::group(['middleware' => 'auth'], function() {
             'prefix' => 'scan',
         ], function() {
             Route::get('/', 'adminAllScans')->name('all');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/create', 'store');
             Route::get('/edit/{id_scan}', 'edit')->name('edit');
             Route::put('/update/{scan}', 'update')->name('update');
             Route::delete('/delete/{scan}', 'delete')->name('delete');
@@ -151,8 +170,6 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::post('/{id_user}', 'create')->name('create');
             Route::delete('/{id_invite}', 'cancel')->name('cancel');
-            Route::put('/refuse/{id_invite}', 'refuse')->name('refuse');
-            Route::put('/accept/{id_invite}', 'accept')->name('accept');
         });
 
         Route::group([
@@ -162,6 +179,7 @@ Route::group(['middleware' => 'auth'], function() {
         ], function() {
             Route::put('/remove{id_user}', 'removeFromScan')->name('remove');
             Route::put('/{member}', 'editScanRole')->name('role.edit');
+            Route::put('/{member}', 'changeLeader')->name('change.leader');
         });
     });
 });

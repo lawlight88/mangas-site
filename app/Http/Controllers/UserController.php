@@ -91,4 +91,13 @@ class UserController extends Controller
 
         return back();
     }
+
+    public function changeLeader(User $member)
+    {
+        $this->authorize('changeLeader', $member);
+
+        $member->becomeLeader();
+
+        return back();
+    }
 }

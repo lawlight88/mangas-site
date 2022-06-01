@@ -20,14 +20,14 @@ class UserPolicy
 
     public function editScanRole(User $user, User $scan_member)
     {
-        return in_array($user->role, [Role::IS_SCAN_LEADER, Role::IS_ADMIN])
-                && $user->id == $scan_member->scanlator->id_leader;
+        return $user->role == Role::IS_SCAN_LEADER
+            && $user->id == $scan_member->scanlator->id_leader
+            || $user->role == Role::IS_ADMIN;
     }
 
     public function changeLeader(User $user, User $scan_member)
     {
-        return in_array($user->role, [Role::IS_SCAN_LEADER, Role::IS_ADMIN])
-                && $user->id == $scan_member->scanlator->id_leader
-                && $user->id != $scan_member->id;
+        return self::editScanRole($user, $scan_member)
+            && $user->id != $scan_member->id;
     }
 }

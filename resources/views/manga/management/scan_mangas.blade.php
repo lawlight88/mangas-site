@@ -44,11 +44,11 @@
                                     @method('put')
                                     @csrf
                                     @can('editInfo', $manga)
-                                        <a href="{{ route('manga.edit.info', $manga) }}" class="text-light btn fa d-inline"><i class="fa-solid fa-circle-info text-primary"></i></a>
+                                        <a href="{{ route('manga.edit.info', $manga) }}" title="Edit manga's info" class="text-light btn fa d-inline"><i class="fa-solid fa-circle-info text-primary"></i></a>
                                     @endcan
-                                    <a href="{{ route('manga.edit', $manga) }}" class="text-light btn fa d-inline"><i class="fas fa-edit text-info"></i></a>
+                                    <a href="{{ route('manga.edit', $manga) }}" title="Edit chapters" class="text-light btn fa d-inline"><i class="fas fa-edit text-info"></i></a>
                                     @can('removeFromScan', $manga)
-                                        <button type="submit" class="text-light btn fa d-inline"><i class="fa-solid fa-x text-danger"></i></button>
+                                        <button type="submit" title="Remove from scanlator" class="text-light btn fa d-inline"><i class="fa-solid fa-x text-danger"></i></button>
                                     @endcan
                                 </form>
                             </div>
