@@ -101,6 +101,9 @@ class MangaController extends Controller
         $this->authorize('delete', $manga);
 
         $manga->delete();
+
+        Storage::deleteDirectory("mangas/$manga->id");
+        Storage::disk('temp')->deleteDirectory($manga->id);
         
         return redirect()->route('app.index');
     }

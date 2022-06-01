@@ -21,7 +21,7 @@ class MangaFactory extends Factory
         return [
             'name' => ucfirst($this->faker->unique()->words(3, true)),
             'author' => $this->faker->name,
-            'id' => $this->faker->unique()->randomNumber(5, true),
+            'id' => Manga::genId(),
             'desc' => $this->faker->paragraph(),
             'ongoing' => random_int(0, 1),
             'cover' => 'img/favicon.png',
