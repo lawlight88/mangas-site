@@ -1,5 +1,5 @@
 <p align="center">
-    ![logo](https://user-images.githubusercontent.com/101893955/171506198-cbf87dc5-8365-4e13-9fec-d052bb57c883.png)
+    <img src="![logo](https://user-images.githubusercontent.com/101893955/171506198-cbf87dc5-8365-4e13-9fec-d052bb57c883.png)">
 </p>
 
 <h1 align="center">Mangas Site</h1>
