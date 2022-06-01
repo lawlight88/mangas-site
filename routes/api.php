@@ -19,10 +19,6 @@ use App\Http\Controllers\{
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::group(['controller' => AuthAPIController::class], function() {
     Route::post('/login', 'login');
     Route::middleware('auth:sanctum')->delete('/logout', 'logout');
