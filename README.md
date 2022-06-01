@@ -1,6 +1,8 @@
-![logo](https://user-images.githubusercontent.com/101893955/171506198-cbf87dc5-8365-4e13-9fec-d052bb57c883.png)
+<p align="center">
+    ![logo](https://user-images.githubusercontent.com/101893955/171506198-cbf87dc5-8365-4e13-9fec-d052bb57c883.png)
+</p>
 
-# Mangas Site
+<h1 align="center">Mangas Site</h1>
 
 A site where a user can read, add mangas to favorites, comment
 on chapters and create a scanlator, which can upload, edit and remove
