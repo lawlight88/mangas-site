@@ -12,9 +12,10 @@ class AppController extends Controller
 {
     public function index()
     {
-        $mangas_pop = Manga::popularNow()->get();
-        $mangas_new = Manga::latestUpdatedPaginate();
-        
+        $page = (int) request()->get('page') ?? 1;
+        $mangas_pop = cache()->remember('mangas_pop', 60*5, fn() => Manga::popularNow()->get());
+        $mangas_new = cache()->remember("mangas_new-$page", 60*5, fn() => Manga::latestUpdatedPaginate());
+
         $user = null;
         if(Auth::check())
             $user = Auth::user();
@@ -24,10 +25,10 @@ class AppController extends Controller
 
     public function mangaMain(int $id)
     {
-        if(!$manga = Manga::withChaptersScanGenres()->find($id))
+        if(!$manga = cache()->remember("manga-$id-main", 60*10, fn() => Manga::withChaptersScanGenres()->find($id)))
             return back();
 
-        $mangas_like_this = $manga->likeThis()->limit(8)->get();
+        $mangas_like_this = cache()->remember("manga-like-$id", 60*10, fn() => $manga->likeThis()->limit(8)->get());
         $manga->convertGenresKeys();
         
         $requested = null;
@@ -39,10 +40,10 @@ class AppController extends Controller
 
     public function mangaView(int $id, int $chapter_order, int $page_order = 1, int $id_comment_edit = null)
     {
-        if(!$manga = Manga::mangaViewQuery($chapter_order, $page_order)->find($id))
+        if(!$manga = cache()->remember("manga-$id-$chapter_order", 60*5, fn() => Manga::mangaViewQuery($chapter_order)->find($id)))
             return back();
 
-        if(!$page = $manga->pages->first())
+        if(!$page = $manga->pages->where('order', $page_order)->first())
             return back();
 
         $expires_at = now()->addDay();
@@ -60,7 +61,7 @@ class AppController extends Controller
                 ->record();
         }
         
-        $comments = $manga->chapters->first()->comments;
+        $comments = cache()->remember("manga-$id-$chapter_order-comments", 60*5, fn() => $manga->chapters->first()->commentsWithUsers());
 
         return view('manga.chapter', compact('manga', 'page', 'chapter_order', 'comments', 'id_comment_edit'));
     }

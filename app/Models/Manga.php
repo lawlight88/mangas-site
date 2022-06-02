@@ -127,7 +127,7 @@ class Manga extends Model implements Viewable
         }
     }
 
-    public static function mangaViewQuery(int $chapter_order, int $page_order)
+    public static function mangaViewQuery(int $chapter_order)
     {
         return Manga::query()->select('id', 'name', 'id_scanlator')
             ->withCount([
@@ -141,17 +141,16 @@ class Manga extends Model implements Viewable
                     $q->select('id', 'id_manga')
                         ->where('chapters.order', $chapter_order);
             },
-                'pages' => function($q) use($chapter_order, $page_order) {
+                'pages' => function($q) use($chapter_order) {
                     $q->select('pages.order', 'path')
-                        ->where('chapters.order', $chapter_order)
-                        ->where('pages.order', $page_order);
+                        ->where('chapters.order', $chapter_order);
             },
-                'chapters.comments' => function($q) {
-                    $q->orderBy('comments.created_at', 'desc');
-            },
-                'chapters.comments.user' => function($q) {
-                    $q->select('users.id', 'users.name', 'users.profile_image');
-            },
+            //     'chapters.comments' => function($q) {
+            //         $q->orderBy('comments.created_at', 'desc');
+            // },
+            //     'chapters.comments.user' => function($q) {
+            //         $q->select('users.id', 'users.name', 'users.profile_image');
+            // },
                 'scanlator:id'
         ]);
     }

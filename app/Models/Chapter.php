@@ -146,6 +146,14 @@ class Chapter extends Model implements Viewable
             ->first();
     }
 
+    public function commentsWithUsers()
+    {
+        return $this->comments()
+                    ->with('user:id,name,profile_image')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+    }
+
     public static function whereMangaChapterOrder(int $id_manga, int $chapter_order)
     {
         return Chapter::where([

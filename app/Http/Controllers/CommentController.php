@@ -19,7 +19,7 @@ class CommentController extends Controller
         //need to use User::find() instead of Auth::user()
         //in order to create the comment
 
-        if(!Chapter::find($id_chapter))
+        if(!$chapter = Chapter::find($id_chapter))
             return back();
         
         $user->comments()->create([
@@ -27,6 +27,8 @@ class CommentController extends Controller
             'id_chapter' => $id_chapter,
             'body' => $req->body,
         ]);
+
+        cache()->forget("manga-$chapter->id_manga-$chapter->order-comments");
 
         return back();
     }
@@ -36,9 +38,11 @@ class CommentController extends Controller
         $this->authorize('update', $comment);
 
         $comment->update($req->only('body'));
-        $comment->chapter;
-        
-        return redirect(route('app.manga.view', ['id' => $comment->chapter->id_manga, 'chapter_order' => $comment->chapter->order]) . "#$comment->id");
+        $chapter = $comment->chapter;
+
+        cache()->forget("manga-$chapter->id_manga-$chapter->order-comments");
+
+        return redirect(route('app.manga.view', ['id' => $chapter->id_manga, 'chapter_order' => $chapter->order]) . "#$comment->id");
     }
 
     public function delete(Comment $comment)
@@ -46,6 +50,9 @@ class CommentController extends Controller
         $this->authorize('delete', $comment);
 
         $comment->delete();
+        $chapter = $comment->chapter;
+
+        cache()->forget("manga-$chapter->id_manga-$chapter->order-comments");
 
         return back();
     }
