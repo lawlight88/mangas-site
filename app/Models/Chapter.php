@@ -98,18 +98,22 @@ class Chapter extends Model implements Viewable
         $this->_views = new stdClass;
 
         $this->_views->total = views($this)
+                                ->remember(60*10)
                                 ->count();
 
         $this->_views->month = views($this)
                                 ->period(Period::pastMonths(1))
+                                ->remember(60*10)
                                 ->count();  
 
         $this->_views->week = views($this)
                                 ->period(Period::pastWeeks(1))
+                                ->remember(60*10)
                                 ->count();
                                 
         $this->_views->today = views($this)
                                 ->period(Period::since(today()))
+                                ->remember(60*10)
                                 ->count();
 
         return $this->_views;

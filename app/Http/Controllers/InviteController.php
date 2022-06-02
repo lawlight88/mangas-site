@@ -21,6 +21,8 @@ class InviteController extends Controller
             'id_invited' => $id_invited
         ]);
 
+        cache()->forget("invites-$id_invited");
+
         return back();
     }
 
@@ -31,7 +33,10 @@ class InviteController extends Controller
 
         $this->authorize('cancel', $invite);
 
+        $id_invited = $invite->id_invited;
         $invite->delete();
+
+        cache()->forget("invites-$id_invited");
 
         return back();
     }
@@ -46,6 +51,8 @@ class InviteController extends Controller
         $invite->update([
             'response' => false
         ]);
+
+        cache()->forget("invites-$invite->id_invited");
 
         return back();
     }
@@ -66,6 +73,8 @@ class InviteController extends Controller
         ]);
 
         $user->deleteInvites();
+
+        cache()->forget("invites-$user->id");
 
         return back();
     }

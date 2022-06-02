@@ -145,12 +145,6 @@ class Manga extends Model implements Viewable
                     $q->select('pages.order', 'path')
                         ->where('chapters.order', $chapter_order);
             },
-            //     'chapters.comments' => function($q) {
-            //         $q->orderBy('comments.created_at', 'desc');
-            // },
-            //     'chapters.comments.user' => function($q) {
-            //         $q->select('users.id', 'users.name', 'users.profile_image');
-            // },
                 'scanlator:id'
         ]);
     }
@@ -177,18 +171,22 @@ class Manga extends Model implements Viewable
         $this->_views = new stdClass;
 
         $this->_views->total = views($this)
+                                ->remember(60*10)
                                 ->count();
 
         $this->_views->month = views($this)
                                 ->period(Period::pastMonths(1))
+                                ->remember(60*10)
                                 ->count();  
 
         $this->_views->week = views($this)
                                 ->period(Period::pastWeeks(1))
+                                ->remember(60*10)
                                 ->count();
                                 
         $this->_views->today = views($this)
                                 ->period(Period::since(today()))
+                                ->remember(60*10)
                                 ->count();
 
         return $this->_views;

@@ -40,7 +40,7 @@ class AppController extends Controller
 
     public function mangaView(int $id, int $chapter_order, int $page_order = 1, int $id_comment_edit = null)
     {
-        if(!$manga = cache()->remember("manga-$id-$chapter_order", 60*5, fn() => Manga::mangaViewQuery($chapter_order)->find($id)))
+        if(!$manga = cache()->remember("manga-$id-$chapter_order", 60*60, fn() => Manga::mangaViewQuery($chapter_order)->find($id)))
             return back();
 
         if(!$page = $manga->pages->where('order', $page_order)->first())
@@ -61,7 +61,7 @@ class AppController extends Controller
                 ->record();
         }
         
-        $comments = cache()->remember("manga-$id-$chapter_order-comments", 60*5, fn() => $manga->chapters->first()->commentsWithUsers());
+        $comments = cache()->remember("manga-$id-$chapter_order-comments", 60*60, fn() => $manga->chapters->first()->commentsWithUsers());
 
         return view('manga.chapter', compact('manga', 'page', 'chapter_order', 'comments', 'id_comment_edit'));
     }
