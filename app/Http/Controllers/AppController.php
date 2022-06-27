@@ -46,12 +46,13 @@ class AppController extends Controller
         if(!$page = $manga->pages->where('order', $page_order)->first())
             return back();
 
+        $chapter = $manga->chapters->first();
         $expires_at = now()->addDay();
 
         views($manga)
             ->cooldown($expires_at)
             ->record();
-        views($manga->chapters->first())
+        views($chapter)
             ->cooldown($expires_at)
             ->record();
         if($manga->scanlator)
@@ -61,7 +62,7 @@ class AppController extends Controller
                 ->record();
         }
         
-        $comments = cache()->remember("manga-$id-$chapter_order-comments", 60*60, fn() => $manga->chapters->first()->commentsWithUsers());
+        $comments = cache()->remember("chapter-$chapter->id-comments", 60*60, fn() => $manga->chapters->first()->commentsWithUsers());
 
         return view('manga.chapter', compact('manga', 'page', 'chapter_order', 'comments', 'id_comment_edit'));
     }
@@ -79,7 +80,7 @@ class AppController extends Controller
         if(!in_array($genre_key, array_keys($genres)))
             return back();
 
-        $mangas = Manga::select('id', 'name', 'cover')->paginateByGenre($genre_key);
+        $mangas = Manga::paginateByGenre($genre_key);
         $genre = $genres[$genre_key];
 
         return view('genre_mangas', compact('mangas', 'genre'));

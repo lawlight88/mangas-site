@@ -39,7 +39,8 @@ class UserController extends Controller
     public function update(UpdateUserRequest $req)
     {
         $id = Auth::id();
-        $user = User::find($id);
+        $user = User::with('comments:id,id_user,id_chapter')->find($id);
+        $this->authorize('update', $user);
 
         $data = $req->only('name');
         
@@ -63,6 +64,10 @@ class UserController extends Controller
         }
 
         $user->update($data);
+
+        $user->comments->map(function($i) {
+            cache()->forget("chapter-$i->id_chapter-comments");
+        });
 
         return redirect()->route('user.profile', $id);
     }

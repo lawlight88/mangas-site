@@ -30,4 +30,10 @@ class UserPolicy
         return self::editScanRole($user, $scan_member)
             && $user->id != $scan_member->id;
     }
+
+    public function update(User $user, User $other_user)
+    {
+        return $user->id == $other_user->id
+            || $user->role == Role::IS_ADMIN;
+    }
 }

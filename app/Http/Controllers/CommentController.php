@@ -28,7 +28,7 @@ class CommentController extends Controller
             'body' => $req->body,
         ]);
 
-        cache()->forget("manga-$chapter->id_manga-$chapter->order-comments");
+        cache()->forget("chapter-$chapter->id-comments");
 
         return back();
     }
@@ -40,7 +40,7 @@ class CommentController extends Controller
         $comment->update($req->only('body'));
         $chapter = $comment->chapter;
 
-        cache()->forget("manga-$chapter->id_manga-$chapter->order-comments");
+        cache()->forget("chapter-$chapter->id-comments");
 
         return redirect(route('app.manga.view', ['id' => $chapter->id_manga, 'chapter_order' => $chapter->order]) . "#$comment->id");
     }
@@ -50,9 +50,8 @@ class CommentController extends Controller
         $this->authorize('delete', $comment);
 
         $comment->delete();
-        $chapter = $comment->chapter;
 
-        cache()->forget("manga-$chapter->id_manga-$chapter->order-comments");
+        cache()->forget("chapter-$comment->id_chapter-comments");
 
         return back();
     }
