@@ -32,7 +32,7 @@ class MangaPolicy
 
     public function create(User $user)
     {
-        return $user->role = Role::IS_ADMIN;
+        return $user->role == Role::IS_ADMIN;
     }
 
     public function delete(User $user)
