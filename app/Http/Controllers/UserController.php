@@ -7,6 +7,7 @@ use App\Http\Requests\UserUpdateScanRoleRequest;
 use App\Models\Invite;
 use App\Models\Role;
 use App\Models\User;
+use App\Utils\CacheNames;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -66,7 +67,7 @@ class UserController extends Controller
         $user->update($data);
 
         $user->comments->map(function($i) {
-            cache()->forget("chapter-$i->id_chapter-comments");
+            cache()->forget(CacheNames::chapterComments($i->id_chapter));
         });
 
         return redirect()->route('user.profile', $id);

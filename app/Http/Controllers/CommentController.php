@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUpdateCommentRequest;
 use App\Models\Chapter;
 use App\Models\Comment;
 use App\Models\User;
+use App\Utils\CacheNames;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -14,21 +15,16 @@ class CommentController extends Controller
     {
         $this->authorize('create', Comment::class);
         
-        $id = Auth::id();
-        $user = User::find($id);
-        //need to use User::find() instead of Auth::user()
-        //in order to create the comment
-
         if(!$chapter = Chapter::find($id_chapter))
             return back();
         
-        $user->comments()->create([
-            'id_user' => $id,
+        auth()->user()->comments()->create([
+            'id_user' => auth()->id(),
             'id_chapter' => $id_chapter,
             'body' => $req->body,
         ]);
 
-        cache()->forget("chapter-$chapter->id-comments");
+        cache()->forget(CacheNames::chapterComments($chapter->id));
 
         return back();
     }
@@ -40,7 +36,7 @@ class CommentController extends Controller
         $comment->update($req->only('body'));
         $chapter = $comment->chapter;
 
-        cache()->forget("chapter-$chapter->id-comments");
+        cache()->forget(CacheNames::chapterComments($chapter->id));
 
         return redirect(route('app.manga.view', ['id' => $chapter->id_manga, 'chapter_order' => $chapter->order]) . "#$comment->id");
     }
@@ -51,7 +47,7 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        cache()->forget("chapter-$comment->id_chapter-comments");
+        cache()->forget(CacheNames::chapterComments($comment->id_chapter));
 
         return back();
     }

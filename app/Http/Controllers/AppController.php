@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\CacheNames;
 use App\Models\Manga;
 use App\Models\Request as ModelsRequest;
 use App\Models\Role;
@@ -13,8 +14,8 @@ class AppController extends Controller
     public function index()
     {
         $page = (int) request()->get('page') ?? 1;
-        $mangas_pop = cache()->remember('mangas_pop', 60*5, fn() => Manga::popularNow()->get());
-        $mangas_new = cache()->remember("mangas_new-$page", 60*5, fn() => Manga::latestUpdatedPaginate());
+        $mangas_pop = cache()->remember(CacheNames::mangasPopular(), 60*5, fn() => Manga::popularNow()->get());
+        $mangas_new = cache()->remember(CacheNames::mangasNew($page), 60*5, fn() => Manga::latestUpdatedPaginate());
 
         $user = null;
         if(Auth::check())
@@ -25,10 +26,10 @@ class AppController extends Controller
 
     public function mangaMain(int $id)
     {
-        if(!$manga = cache()->remember("manga-$id-main", 60*10, fn() => Manga::withChaptersScanGenres()->find($id)))
+        if(!$manga = cache()->remember(CacheNames::mangaMain($id), 60*10, fn() => Manga::withChaptersScanGenres()->find($id)))
             return back();
 
-        $mangas_like_this = cache()->remember("manga-like-$id", 60*10, fn() => $manga->likeThis()->limit(8)->get());
+        $mangas_like_this = cache()->remember(CacheNames::mangaLike($id), 60*10, fn() => $manga->likeThis()->limit(8)->get());
         $manga->convertGenresKeys();
         
         $requested = null;
@@ -40,7 +41,7 @@ class AppController extends Controller
 
     public function mangaView(int $id, int $chapter_order, int $page_order = 1, int $id_comment_edit = null)
     {
-        if(!$manga = cache()->remember("manga-$id-$chapter_order", 60*60, fn() => Manga::mangaViewQuery($chapter_order)->find($id)))
+        if(!$manga = cache()->remember(CacheNames::mangaChapterOrder($id, $chapter_order), 60*60, fn() => Manga::mangaViewQuery($chapter_order)->find($id)))
             return back();
 
         if(!$page = $manga->pages->where('order', $page_order)->first())
@@ -62,7 +63,7 @@ class AppController extends Controller
                 ->record();
         }
         
-        $comments = cache()->remember("chapter-$chapter->id-comments", 60*60, fn() => $manga->chapters->first()->commentsWithUsers());
+        $comments = cache()->remember(CacheNames::chapterComments($chapter->id), 60*60, fn() => $manga->chapters->first()->commentsWithUsers());
 
         return view('manga.chapter', compact('manga', 'page', 'chapter_order', 'comments', 'id_comment_edit'));
     }

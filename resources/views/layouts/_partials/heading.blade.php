@@ -42,7 +42,7 @@
         <div class="col-md-3 dropdown text-end">
             <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ Auth::user()->name }}
-                @if ($invites_count = cache()->remember('invites-'.Auth::id(), 60*60*24*7, fn() => \App\Models\Invite::countPendingUserInvites(Auth::id())))
+                @if ($invites_count = cache()->remember(\App\Utils\CacheNames::invites(Auth::id()), 60*60*24*7, fn() => \App\Models\Invite::countPendingUserInvites(Auth::id())))
                     <span class="badge rounded-pill bg-danger text-light">{{ $invites_count }}</span>
                 @endif
             </a>

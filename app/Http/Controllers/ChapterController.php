@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PageStoreRequest;
+use App\Utils\CacheNames;
 use App\Models\Chapter;
 use App\Models\Manga;
-use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -71,6 +71,8 @@ class ChapterController extends Controller
         Storage::disk('temp')->deleteDirectory($manga->id);
 
         $manga->update(['last_chapter_uploaded_at' => now()]);
+
+        cache()->forget(CacheNames::mangaMain($manga->id));
 
         return redirect()->route('manga.edit', $manga);
     }

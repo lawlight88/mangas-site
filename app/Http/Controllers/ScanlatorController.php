@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreScanlatorRequest;
 use App\Http\Requests\UpdateScanlatorRequest;
-use App\Models\Chapter;
-use App\Models\Manga;
 use App\Models\Role;
 use App\Models\Scanlator;
 use App\Models\User;
+use App\Utils\CacheNames;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -18,7 +17,7 @@ class ScanlatorController extends Controller
     public function allScans()
     {
         $page = (int) request()->get('page') ?? 1;
-        $scans = cache()->remember("scans-$page", 60*60, fn() => Scanlator::getIndexScans());
+        $scans = cache()->remember(CacheNames::scans($page), 60*60, fn() => Scanlator::getIndexScans());
         
         return view('all_scans', compact('scans'));
     }
@@ -34,7 +33,7 @@ class ScanlatorController extends Controller
 
     public function view(int $id_scan)
     {
-        if(!$scan = cache()->remember("scan-$id_scan", 60*10, fn() => Scanlator::withScanInfo()->find($id_scan)))
+        if(!$scan = cache()->remember(CacheNames::scan($id_scan), 60*10, fn() => Scanlator::withScanInfo()->find($id_scan)))
             return back();
         
         $scan->members = $scan->membersPaginate();
@@ -48,7 +47,7 @@ class ScanlatorController extends Controller
         if($member_edit)
             $this->authorize('editScanRole', $member_edit);
 
-        if(!$scan = cache()->remember("scan-$id_scan", 60*10, fn() => Scanlator::withScanInfo()->find($id_scan)))
+        if(!$scan = cache()->remember(CacheNames::scan($id_scan), 60*10, fn() => Scanlator::withScanInfo()->find($id_scan)))
             return back();
 
         $scan->members = $scan->membersPaginate();
@@ -118,7 +117,7 @@ class ScanlatorController extends Controller
 
         $scan->update($data);
 
-        cache()->forget("scan-$scan->id");
+        cache()->forget(CacheNames::scan($scan->id));
 
         return redirect()->route('scan.view', $scan->id);
     }
@@ -140,14 +139,14 @@ class ScanlatorController extends Controller
         $id_scan = $scan->id;
         $scan->delete();
 
-        cache()->forget("scan-$id_scan");
+        cache()->forget(CacheNames::scan($id_scan));
 
         return redirect()->route('app.index');
     }
 
     public function mangasView(int $id_scan)
     {
-        if(!$scan = cache()->get("scan-$id_scan") ?? Scanlator::select('id', 'name')->find($id_scan))
+        if(!$scan = cache()->get(CacheNames::scan($id_scan)) ?? Scanlator::select('id', 'name')->find($id_scan))
             return back();
 
         $scan->mangas = $scan->mangasPaginate();
@@ -159,7 +158,7 @@ class ScanlatorController extends Controller
     {
         $this->authorize('mgmtMangasView', [Scanlator::class, $id_scan]);
 
-        if(!$scan = cache()->get("scan-$id_scan") ?? Scanlator::select('id', 'name')->find($id_scan))
+        if(!$scan = cache()->get(CacheNames::scan($id_scan)) ?? Scanlator::select('id', 'name')->find($id_scan))
             return back();
 
         if($req->search) {
