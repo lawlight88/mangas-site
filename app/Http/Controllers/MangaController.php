@@ -19,24 +19,8 @@ class MangaController extends Controller
 
     public function store(MangaStoreRequest $req)
     {
-        $data = $req->except('genres');
-        $data['ongoing'] = isset($data['ongoing']);
-        $data['id'] = Manga::genId();
-
-        $cover = $req->cover;
-        $ext = $cover->extension();
-        $cover_path = $cover->storeAs("mangas/{$data['id']}", "cover.$ext");
-        $data['cover'] = "storage/$cover_path";
-
-        $manga = Manga::create($data);
-
-        foreach($req->genres as $genre_key) {
-            Genre::create([
-                'id_manga' => $manga->id,
-                'genre_key' => $genre_key
-            ]);
-        }
-
+        $id_manga = Manga::createManga($req);
+        Genre::insertGenres($req, $id_manga);
         return redirect()->route('app.index');
     }
 
