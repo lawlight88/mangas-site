@@ -39,7 +39,7 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $req)
     {
-        $id = Auth::id();
+        $id = auth()->id();
         $user = User::with('comments:id,id_user,id_chapter')->find($id);
         $this->authorize('update', $user);
 
@@ -51,9 +51,10 @@ class UserController extends Controller
         if($req->password)
             $data['password'] = bcrypt($req->password);
 
-        $storage_dir = "users/$id";
-        $dir_local = public_path("storage/$storage_dir");
-        if(isset($req->profile_image)) {
+        if(isset($req->profile_image))
+        {
+            $storage_dir = "users/$id";
+            $dir_local = public_path("storage/$storage_dir");
             if(!file_exists($dir_local))
                 mkdir($dir_local, 0777, true);
                 

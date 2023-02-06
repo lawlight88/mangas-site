@@ -39,10 +39,6 @@ class CacheNames
     return "invites-$id_invited";
   }
 
-  public static function scans(int $page): string
-  {
-    return "scans-$page";
-  }
   public static function scan(int $id_scan): string
   {
     return "scan-$id_scan";

@@ -16,9 +16,7 @@ class ScanlatorController extends Controller
 {
     public function allScans()
     {
-        $page = (int) request()->get('page') ?? 1;
-        $scans = cache()->remember(CacheNames::scans($page), 60*60, fn() => Scanlator::getIndexScans());
-        
+        $scans = Scanlator::getIndexScans();
         return view('all_scans', compact('scans'));
     }
 
@@ -65,24 +63,7 @@ class ScanlatorController extends Controller
     public function store(StoreScanlatorRequest $req)
     {
         $this->authorize('create', Scanlator::class);
-
-        $id_leader = Auth::id();
-        $leader = User::find($id_leader);
-
-        $data = $req->all();
-        $data['id_leader'] = $id_leader;
-
-        $path = $req->image->store("scans/$req->id");
-        $data['image'] = "storage/$path";
-
-        $scan = Scanlator::create($data);
-        $leader->update([
-            'id_scanlator' => $scan->id,
-            'role' => Role::IS_SCAN_LEADER,
-            'joined_scan_at' => now(),
-            'scan_role' => 'Leader'
-        ]);
-
+        Scanlator::createScan($req);
         return redirect()->route('app.index');
     }
 

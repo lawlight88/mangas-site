@@ -175,8 +175,7 @@ class Manga extends Model implements Viewable
 
         $cover = $req->cover;
         $ext = $cover->extension();
-        $cover_path = $cover->storeAs("public/mangas/{$data['id']}", "cover.$ext");
-        $cover_path = str_replace('public/', '', $cover_path);
+        $cover_path = $cover->storeAs("mangas/{$data['id']}", "cover.$ext");
         $data['cover'] = "storage/$cover_path";
 
         return Manga::create($data)->id;

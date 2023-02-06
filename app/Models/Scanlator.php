@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\StoreScanlatorRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
@@ -58,6 +59,30 @@ class Scanlator extends Model implements Viewable
                                 }
                             ])
                             ->withCount('mangas');
+    }
+
+    public static function createScan(StoreScanlatorRequest $req): Scanlator
+    {
+        $leader = auth()->user();
+
+        $data = $req->all();
+        $data['id_leader'] = $leader->id;
+
+        if($req->image)
+        {
+            $path = $req->image->store("scans/$req->id");
+            $data['image'] = "storage/$path";
+        }
+
+        $scan = Scanlator::create($data);
+        $leader->update([
+            'id_scanlator' => $scan->id,
+            'role' => Role::IS_SCAN_LEADER,
+            'joined_scan_at' => now(),
+            'scan_role' => 'Leader'
+        ]);
+
+        return $scan;
     }
 
     public function mangasPaginate()
