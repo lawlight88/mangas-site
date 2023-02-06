@@ -1,7 +1,20 @@
-.manga-block {
-    padding: 7px;
+:root
+{
+  --manga-block-padding: 7px;
+  --manga-block-max-height: 400px
+}
+
+.manga-block
+{
+    padding: var(--manga-block-padding);
+    max-height: var(--manga-block-max-height);
     width: 250px;
-    max-height: 400px;
+    border-radius: 1%;
+}
+
+.manga-block img
+{
+    max-height: calc(var(--manga-block-max-height) - 6 * var(--manga-block-padding));
 }
 
 .scan-block {
