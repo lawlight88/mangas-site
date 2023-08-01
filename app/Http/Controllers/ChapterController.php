@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PageStoreRequest;
-use App\Utils\CacheNames;
 use App\Models\Chapter;
 use App\Models\Manga;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -50,10 +50,10 @@ class ChapterController extends Controller
     {
         $this->authorize('upload', [Chapter::class, $manga]);
         $this->validate($req, [
-            'name' => 'required|string|min:1|max:30'
+            'name' => 'required|string|min:1|max:300'
         ]);
 
-        $chapters = Storage::directories("mangas/$manga->id");
+        $chapters = Storage::directories("public/mangas/$manga->id");
         $last_chapter = count($chapters);
         $upload_chapter_order = ++$last_chapter;
 
@@ -71,8 +71,6 @@ class ChapterController extends Controller
         Storage::disk('temp')->deleteDirectory($manga->id);
 
         $manga->update(['last_chapter_uploaded_at' => now()]);
-
-        cache()->forget(CacheNames::mangaMain($manga->id));
 
         return redirect()->route('manga.edit', $manga);
     }

@@ -106,7 +106,7 @@ Route::group(['middleware' => 'auth'], function() {
             Route::put('/{manga}', 'removeFromScan')->name('scan.remove');
             Route::get('/{manga}', 'edit')->name('edit');
             Route::get('/{manga}/edit/info', 'editInfo')->name('edit.info');
-            Route::put('/{manga}/edit/info', 'updateInfo')->name('edit.info');
+            Route::put('/{manga}/edit/info', 'updateInfo')->name('update.info');
             Route::delete('/{manga}', 'delete')->name('delete');
         });
 

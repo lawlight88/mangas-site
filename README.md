@@ -11,7 +11,6 @@ chapters.
 Table of Contents
 =================
 
-* [Installation](#installation)
 * [Roles](#roles)
     * [User](#user)
     * [Scanlator Helper (SH)](#scanlator-helper)
@@ -34,16 +33,6 @@ Table of Contents
         * [Update Comment](#update-comment)
         * [Delete Comment](#delete-comment)
         * [Get Temp Files](#get-temp-files)
-
-# Installation
-
-1. Run `composer install`
-2. Run `cp .env.example .env` or `copy .env.example .env`
-3. Run `php artisan key:generate`
-4. Create database
-5. Run `php artisan migrate`
-6. Run `php artisan db:seed`
-7. Run `php artisan serve`
 
 # Roles
 

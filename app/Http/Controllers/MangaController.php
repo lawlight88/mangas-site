@@ -19,8 +19,25 @@ class MangaController extends Controller
 
     public function store(MangaStoreRequest $req)
     {
-        $id_manga = Manga::createManga($req);
-        Genre::insertGenres($req, $id_manga);
+        $data = $req->except('genres');
+        $data['ongoing'] = isset($data['ongoing']);
+        $data['id'] = Manga::genId();
+
+        $cover = $req->cover;
+        $ext = $cover->extension();
+        $path = "mangas/".$data['id']."/cover.$ext";
+        $cover_path = $cover->storeAs("public/mangas/".$data['id'],"cover.$ext");
+        $data['cover'] = "$path";
+
+        $manga = Manga::create($data);
+
+        foreach($req->genres as $genre_key) {
+            Genre::create([
+                'id_manga' => $manga->id,
+                'genre_key' => $genre_key
+            ]);
+        }
+
         return redirect()->route('app.index');
     }
 
@@ -64,20 +81,22 @@ class MangaController extends Controller
 
         if($req->cover)
         {
-            $coverpath = $manga->cover;
-            $coverpath = str_replace('storage/', '', $coverpath); 
-            Storage::delete($coverpath);
+            $oldCoverPath = $manga->cover;
+            $oldCoverPath = str_replace('storage/', '', $oldCoverPath); 
+            Storage::delete($oldCoverPath);
 
-            $new_cover = $req->cover;
-            $ext = $new_cover->extension();
-            $new_cover_path = $new_cover->storeAs("mangas/$manga->id", "cover.$ext");
-            $data['cover'] = "storage/$new_cover_path";
+            // Store the new cover and update the cover path in the data array
+            $cover = $req->cover;
+            $ext = $cover->extension();
+            $coverPath = "mangas/{$manga->id}/cover.$ext";
+            $cover->storeAs("public/mangas/{$manga->id}", "cover.$ext");
+            $data['cover'] = "storage/{$coverPath}";
         }
 
         $manga->update($data);
         $manga->updateGenres($req->genres);
 
-        return redirect()->route('manga.main', $manga->id);
+        return redirect()->route('app.manga.main', ['id' => $manga->id]);
     }
 
     public function delete(Manga $manga)

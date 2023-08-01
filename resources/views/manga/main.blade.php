@@ -6,7 +6,7 @@
 
     <div class="row bg-dark-1 p-4 mb-4">
         <div class="col-md-3">
-            <img src="{{ asset($manga->cover) }}" alt="cover" class="img-fluid main-cover">
+            <img src="{{ asset('storage/'.$manga->cover) }}" alt="cover" class="img-fluid main-cover">
         </div>
         <div class="col-md-9">
             <h1>{{ $manga->name }}</h1>

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Requests\MangaStoreRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -165,20 +164,6 @@ class Manga extends Model implements Viewable
                         ->orWhere('author', 'like', "%$search%")
                         ->orderByViews('desc', Period::subWeeks(1))
                         ->paginate(10);
-    }
-
-    public static function createManga(MangaStoreRequest $req): int
-    {
-        $data = $req->except('genres');
-        $data['ongoing'] = isset($data['ongoing']);
-        $data['id'] = Manga::genId();
-
-        $cover = $req->cover;
-        $ext = $cover->extension();
-        $cover_path = $cover->storeAs("mangas/{$data['id']}", "cover.$ext");
-        $data['cover'] = "storage/$cover_path";
-
-        return Manga::create($data)->id;
     }
 
     public function getViews()

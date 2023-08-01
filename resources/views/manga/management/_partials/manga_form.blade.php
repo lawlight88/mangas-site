@@ -1,4 +1,4 @@
-<form action="{{ Request::routeIs('manga.edit.info') ? route('manga.edit.info', $manga) : route('manga.create') }}" method="post" enctype="multipart/form-data">
+<form action="{{ Request::routeIs('manga.edit.info') ? route('manga.update.info', $manga) : route('manga.create') }}" method="post" enctype="multipart/form-data">
     @csrf
     @if (Request::routeIs('manga.edit.info'))
         @method('put')

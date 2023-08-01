@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invite;
 use App\Models\Role;
 use App\Models\User;
-use App\Utils\CacheNames;
 use Illuminate\Support\Facades\Auth;
 
 class InviteController extends Controller
@@ -22,7 +21,7 @@ class InviteController extends Controller
             'id_invited' => $id_invited
         ]);
 
-        cache()->forget(CacheNames::invites($id_invited));
+        cache()->forget("invites-$id_invited");
 
         return back();
     }
@@ -37,7 +36,7 @@ class InviteController extends Controller
         $id_invited = $invite->id_invited;
         $invite->delete();
 
-        cache()->forget(CacheNames::invites($id_invited));
+        cache()->forget("invites-$id_invited");
 
         return back();
     }
@@ -53,7 +52,7 @@ class InviteController extends Controller
             'response' => false
         ]);
 
-        cache()->forget(CacheNames::invites($invite->id_invited));
+        cache()->forget("invites-$invite->id_invited");
 
         return back();
     }
@@ -75,7 +74,7 @@ class InviteController extends Controller
 
         $user->deleteInvites();
 
-        cache()->forget(CacheNames::invites($user->id));
+        cache()->forget("invites-$user->id");
 
         return back();
     }

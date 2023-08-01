@@ -7,7 +7,6 @@ use App\Http\Requests\UserUpdateScanRoleRequest;
 use App\Models\Invite;
 use App\Models\Role;
 use App\Models\User;
-use App\Utils\CacheNames;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -39,7 +38,7 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $req)
     {
-        $id = auth()->id();
+        $id = Auth::id();
         $user = User::with('comments:id,id_user,id_chapter')->find($id);
         $this->authorize('update', $user);
 
@@ -51,10 +50,9 @@ class UserController extends Controller
         if($req->password)
             $data['password'] = bcrypt($req->password);
 
-        if(isset($req->profile_image))
-        {
-            $storage_dir = "users/$id";
-            $dir_local = public_path("storage/$storage_dir");
+        $storage_dir = "users/$id";
+        $dir_local = public_path("storage/$storage_dir");
+        if(isset($req->profile_image)) {
             if(!file_exists($dir_local))
                 mkdir($dir_local, 0777, true);
                 
@@ -68,7 +66,7 @@ class UserController extends Controller
         $user->update($data);
 
         $user->comments->map(function($i) {
-            cache()->forget(CacheNames::chapterComments($i->id_chapter));
+            cache()->forget("chapter-$i->id_chapter-comments");
         });
 
         return redirect()->route('user.profile', $id);

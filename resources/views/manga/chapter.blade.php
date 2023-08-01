@@ -4,10 +4,17 @@
 
 @section('content')
 
-    <div class="bg-dark-1 text-center px-4 pt-4 pb-2 mb-3">
+    <div class="bg-dark-1 px-4 pt-4 pb-2 mb-3">
         @include('manga._partials.pagination')
-        <img src="{{ asset($page->path) }}" alt="page-{{ $page->order }}" class="img-fluid mb-3"><br>
+
+        <div class="d-flex justify-content-center">
+            <a href="{{ route('app.manga.view', ['id' => $manga->id, 'chapter_order' => $chapter_order, 'page_order' => $page->order + 1]) }}">
+                <img src="{{ asset($page->path) }}" alt="page-{{ $page->order }}" class="img-fluid mb-3"><br>
+            </a>
+        </div>
+
         @include('manga._partials.pagination')
+
 
         @if ($page->order == $manga->pages_count)
             <div class="d-flex justify-content-center p-2">

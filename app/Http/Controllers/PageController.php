@@ -15,14 +15,11 @@ class PageController extends Controller
     {
         $this->authorize('orderOnUpload', [Page::class, $manga]);
 
-        $orders = $req->orders;
-        foreach($orders as $old_order => $new_order) {
-            $old_paths[$old_order] = Storage::disk('temp')->files("$manga->id/$old_order")[0];
-        }
-
-        foreach($orders as $old_order => $new_order) {
-            $new_path = str_replace("/$old_order/", "/$new_order/", $old_paths[$old_order]);
-            Storage::disk('temp')->move($old_paths[$old_order], $new_path);
+        $orders = $req->validated()['orders'];
+        foreach ($orders as $old_order => $new_order) {
+            $old_path = Storage::disk('temp')->files("$manga->id/$old_order")[0];
+            $new_path = str_replace("/$old_order/", "/$new_order/", $old_path);
+            Storage::disk('temp')->move($old_path, $new_path);
         }
 
         return redirect()->route('chapter.upload.continue', $manga);
@@ -32,11 +29,10 @@ class PageController extends Controller
     {
         $this->authorize('orderOnEdit', [Page::class, $chapter]);
 
-        $orders = $req->orders;
+        $orders = $req->validated()['orders'];
         $chapter->updatePagesOrders($orders);
 
-        if($req->name)
-        {
+        if ($req->filled('name')) {
             $this->validate($req, ['name' => 'string|min:1|max:30']);
             $chapter->update(['name' => $req->name]);
         }
@@ -51,13 +47,13 @@ class PageController extends Controller
         $total_pages = count(Storage::disk('temp')->allFiles($manga->id));
         $resting_pages = $total_pages - $order;
 
-        $file = Storage::disk('temp')->files("$manga->id/$order");
+        $file = Storage::disk('temp')->files("$manga->id/$order")[0];
         Storage::disk('temp')->delete($file);
 
-        if($resting_pages > 0) {
-            for($i = ++$order; $i <= $total_pages; $i++) {
+        if ($resting_pages > 0) {
+            for ($i = ++$order; $i <= $total_pages; $i++) {
                 $file_old_path = Storage::disk('temp')->files("$manga->id/$i")[0];
-                $file_new_path = str_replace("/$i/", '/'.($i - 1).'/', $file_old_path);
+                $file_new_path = str_replace("/$i/", '/' . ($i - 1) . '/', $file_old_path);
                 Storage::disk('temp')->move($file_old_path, $file_new_path);
             }
         }
@@ -71,9 +67,9 @@ class PageController extends Controller
     {
         $this->authorize('removeOnEdit', [Page::class, $chapter]);
 
-        if(!in_array($order, range(1, $chapter->pages->count()))
-            || $chapter->pages->count() <= 2)
+        if (!in_array($order, range(1, $chapter->pages->count())) || $chapter->pages->count() <= 2) {
             return back();
+        }
 
         $page = $chapter->getPageByOrder($order);
         $path = str_replace('storage/', '', $page->path);
@@ -90,10 +86,10 @@ class PageController extends Controller
     {
         $this->authorize('addOnUpload', [Page::class, $manga]);
 
-        $pages = $req->file('pages');
+        $pages = $req->validated()['pages'];
         $qty_files = count(Storage::disk('temp')->allFiles($manga->id));
-        foreach($pages as $page) {
-            Storage::disk('temp')->put("$manga->id/".++$qty_files, $page);
+        foreach ($pages as $page) {
+            Storage::disk('temp')->put("$manga->id/" . ++$qty_files, $page);
         }
 
         return redirect()->route('chapter.upload.continue', $manga);
@@ -103,7 +99,7 @@ class PageController extends Controller
     {
         $this->authorize('addOnEdit', [Page::class, $chapter]);
 
-        $chapter->addPagesOnEdit($req->pages);
+        $chapter->addPagesOnEdit($req->validated()['pages']);
 
         return back();
     }
@@ -113,7 +109,7 @@ class PageController extends Controller
         $this->authorize('display', [Page::class, $manga]);
 
         $file = Storage::disk('temp')->files("$manga->id/$order")[0];
-        $filepath = config('filesystems.disks.temp.root')."/$file";
+        $filepath = config('filesystems.disks.temp.root') . "/$file";
         return response()->file($filepath);
     }
 }
